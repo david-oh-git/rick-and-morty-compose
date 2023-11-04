@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "RAM"
+rootProject.name = "Rick and Morty"
 include(":app")
