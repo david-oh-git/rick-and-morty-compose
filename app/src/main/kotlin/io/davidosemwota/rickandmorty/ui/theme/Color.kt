@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2023, David O
+ * All rights reserved.
+ */
 package io.davidosemwota.rickandmorty.ui.theme
 
 import androidx.compose.ui.graphics.Color

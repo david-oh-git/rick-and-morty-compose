@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2023, David O
+ * All rights reserved.
+ */
 package io.davidosemwota.rickandmorty
 
 import android.os.Bundle
@@ -19,7 +23,7 @@ class MainActivity : ComponentActivity() {
             RAMTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.background,
                 ) {
                     Greeting("Android")
                 }
@@ -32,7 +36,7 @@ class MainActivity : ComponentActivity() {
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
         text = "Hello $name!",
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
