@@ -10,14 +10,16 @@ junitTestExt = "1.1.5"
 lifecycleRuntimeKtx = "2.6.2"
 spotlessPlugin = "6.22.0"
 ktlint = "0.48.0"
-jlleitschuh-ktlint = "10.3.0"
+jlleitschuh-ktlint = "11.6.1"
 truth = "1.1.5"
+detekt = "1.23.3"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinAndroidPlugin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint" ,version.ref = "jlleitschuh-ktlint" }
+detekt = { id = "io.gitlab.arturbosch.detekt" ,version.ref = "detekt" }
 
 [libraries]
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
