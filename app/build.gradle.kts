@@ -47,6 +47,11 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    lint {
+        lintConfig = rootProject.file(".lint/lint.xml")
+        checkAllWarnings = true
+        warningsAsErrors = true
+    }
 }
 
 dependencies {
