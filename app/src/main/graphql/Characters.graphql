@@ -1,0 +1,38 @@
+query CharacterList($page: Int, $filter: FilterCharacter) {
+    characters(page: $page, filter: $filter) {
+        info {
+            count
+            pages
+            next
+            prev
+        }
+        results {
+            id
+            name
+            status
+            image
+            species
+            type
+            gender
+            image
+
+            location {
+                name
+                dimension
+                residents {
+                    id
+                    name
+                    image
+                }
+            }
+            episode {
+                episode
+                name
+                characters {
+                    id
+                    image
+                }
+            }
+        }
+    }
+}

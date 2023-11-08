@@ -14,6 +14,7 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.spotless) apply false
     alias(libs.plugins.ktlint) apply false
+    alias(libs.plugins.apollo3) apply false
 }
 
 subprojects {

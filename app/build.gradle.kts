@@ -24,6 +24,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.apollographql.apollo3")
 }
 
 android {
@@ -87,13 +88,23 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.apollo3.lib)
+
     testImplementation(libs.junit4)
     testImplementation(libs.truth)
+
     androidTestImplementation(libs.androidx.text.ext)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.jnit4)
     androidTestImplementation(libs.truth)
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+apollo {
+    service("rick-and-morty-service") {
+        packageName.set("io.davidosemwota.rickandmorty.graphql")
+    }
 }
