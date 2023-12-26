@@ -1,4 +1,7 @@
+
+
 pluginManagement {
+    includeBuild("plugin-build")
     repositories {
         google()
         mavenCentral()
@@ -13,5 +16,9 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Rick and Morty"
+rootProject.name = "rickandmorty"
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
+include(":core:network")
+include(":core:testing")
