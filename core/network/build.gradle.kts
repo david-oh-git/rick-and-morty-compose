@@ -27,4 +27,3 @@ apollo {
         packageName.set("io.davidosemwota.rickandmorty.network.graphql")
     }
 }
-

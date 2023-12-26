@@ -1,3 +1,5 @@
+import io.davidosemwota.rickandmorty.plugins.RickAndMortyBuildType
+
 /*
  * MIT License
  *
@@ -22,21 +24,17 @@
  * SOFTWARE.
  */
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("com.apollographql.apollo3")
+    alias(libs.plugins.rickandmorty.android.application)
+    alias(libs.plugins.rickandmorty.android.application.compose)
 }
 
 android {
     namespace = "io.davidosemwota.rickandmorty"
-    compileSdk = 34
 
     defaultConfig {
         applicationId = "io.davidosemwota.rickandmorty"
-        minSdk = 24
-        targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -45,26 +43,18 @@ android {
     }
 
     buildTypes {
+
+        debug {
+            applicationIdSuffix = RickAndMortyBuildType.DEBUG.applicationSuffix
+        }
+
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = RickAndMortyBuildType.RELEASE.isMinifyedEnabled
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
     }
     packaging {
         resources {
@@ -88,7 +78,6 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.apollo3.lib)
 
     testImplementation(libs.junit4)
     testImplementation(libs.truth)
@@ -101,10 +90,4 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-}
-
-apollo {
-    service("rick-and-morty-service") {
-        packageName.set("io.davidosemwota.rickandmorty.graphql")
-    }
 }
