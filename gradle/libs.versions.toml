@@ -2,6 +2,7 @@
 androidGradlePlugin = "8.1.2"
 espressoCore = "3.5.1"
 kotlinAndroidPlugin = "1.8.10"
+kotlin = "1.8.10"
 ktx = "1.9.0"
 activity = "1.8.0"
 androidComposeBom = "2023.03.00"
@@ -14,6 +15,14 @@ jlleitschuh-ktlint = "11.6.1"
 truth = "1.1.5"
 detekt = "1.23.3"
 apollo3 = "4.0.0-beta.2"
+okhttpVersion = "4.12.0"
+pagingVersion = "3.2.1"
+androidxComposeCompiler = "1.4.3"
+
+minimumsdk = "24"
+compileSdk = "34"
+appcompat = "1.6.1"
+material = "1.9.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -22,6 +31,12 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint" ,version.ref = "jlleitschuh-ktlint" }
 detekt = { id = "io.gitlab.arturbosch.detekt" ,version.ref = "detekt" }
 apollo3 = { id = "com.apollographql.apollo3" ,version.ref = "apollo3" }
+androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+
+# Project custom plugins
+rickandmorty-android-library = { id = "rickandmorty.android.library", version = "unspecified" }
+rickandmorty-android-application = { id = "rickandmorty.android.application", version = "unspecified" }
+rickandmorty-android-application-compose = { id = "rickandmorty.android.application.compose", version = "unspecified" }
 
 [libraries]
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
@@ -40,5 +55,16 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 truth = {  group = "com.google.truth", name = "truth", version.ref = "truth"}
 apollo3-lib = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo3" }
+apollo3-mockserver = { module = "com.apollographql.apollo3:apollo-mockserver", version.ref = "apollo3" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttpVersion" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor" }
+androidx-paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "pagingVersion"}
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+# Plugin build
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+
 
 [bundles]

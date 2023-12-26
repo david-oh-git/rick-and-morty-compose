@@ -15,7 +15,9 @@ plugins {
     alias(libs.plugins.spotless) apply false
     alias(libs.plugins.ktlint) apply false
     alias(libs.plugins.apollo3) apply false
+    alias(libs.plugins.androidLibrary) apply false
 }
+
 
 subprojects {
     apply<KtlintPlugin>()
@@ -30,7 +32,7 @@ subprojects {
 
             ktlint(libs.versions.ktlint.get()).userData(mapOf("android" to "true"))
             licenseHeaderFile(
-                file("../spotless/copyright.kt"),
+                rootProject.file("spotless/copyright.kt"),
                 "^(package|object|import|interface)"
             ).updateYearWithLatest(false)
 
