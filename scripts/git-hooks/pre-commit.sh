@@ -1,7 +1,7 @@
 #!/bin/sh
 echo "Running pre -commit checks..."
 
-JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+JAVA_HOME="/usr/lib/jvm/java-17-openjdk-17.0.9.0.9-3.fc39.x86_64"
 export JAVA_HOME
 
 OUTPUT="/tmp/res"

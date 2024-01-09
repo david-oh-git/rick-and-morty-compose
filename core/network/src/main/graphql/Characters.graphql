@@ -14,9 +14,13 @@ query CharacterList($page: Int, $filter: FilterCharacter) {
             species
             type
             gender
-            image
-
+            origin {
+                id
+                name
+                dimension
+            }
             location {
+                id
                 name
                 dimension
                 residents {
@@ -26,6 +30,7 @@ query CharacterList($page: Int, $filter: FilterCharacter) {
                 }
             }
             episode {
+                id
                 episode
                 name
                 characters {

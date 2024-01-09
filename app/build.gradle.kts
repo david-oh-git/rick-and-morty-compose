@@ -1,9 +1,7 @@
-import io.davidosemwota.rickandmorty.plugins.RickAndMortyBuildType
-
 /*
  * MIT License
  *
- * Copyright (c) $today.day /$today.month /2023 $today.hour24 : $today.minute   David Osemwota.
+ * Copyright (c) 2024   David Osemwota.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +21,8 @@ import io.davidosemwota.rickandmorty.plugins.RickAndMortyBuildType
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import io.davidosemwota.rickandmorty.plugins.RickAndMortyBuildType
+
 plugins {
     alias(libs.plugins.rickandmorty.android.application)
     alias(libs.plugins.rickandmorty.android.application.compose)

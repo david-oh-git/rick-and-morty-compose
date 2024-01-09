@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) $today.day /$today.month /2023 $today.hour24 : $today.minute   David Osemwota.
+ * Copyright (c) 2023   David Osemwota.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

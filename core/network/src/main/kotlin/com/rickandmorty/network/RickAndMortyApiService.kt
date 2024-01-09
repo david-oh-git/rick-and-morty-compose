@@ -21,26 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.rickandmorty.network
 
-pluginManagement {
-    includeBuild("plugin-build")
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
+interface RickAndMortyApiService {
+
+    suspend fun getCharacters(
+        page: Int? = null,
+        name: String? = null,
+        status: String? = null,
+        species: String? = null,
+        type: String? = null,
+        gender: String? = null,
+    ): CharacterListResponse
 }
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-rootProject.name = "rickandmorty"
-
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-include(":app")
-include(":core:network")
-include(":core:testing")

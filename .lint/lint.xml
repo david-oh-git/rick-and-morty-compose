@@ -33,5 +33,6 @@
         <ignore path="**/**.jar"/>
     </issue>
     <issue id="GradleDependency" severity="ignore"/>
+    <issue id="AndroidGradlePluginVersion" severity="ignore" />
 
 </lint>

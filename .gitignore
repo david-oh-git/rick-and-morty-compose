@@ -36,6 +36,7 @@ local.properties
 .idea/dynamic.xml
 .idea/uiDesigner.xml
 .idea/assetWizardSettings.xml
+core/build/
 
 # Built application files
 *.apk

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) $today.day /$today.month /$today.year $today.hour24 : $today.minute   David Osemwota.
+ * Copyright (c) 2023   David Osemwota.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,3 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package io.davidosemwota.rickandmorty.core.network
+
+/**
+ * Interface representing backend calls to Rick and Morty API.
+ */
+interface RickAndMortyNetworkSource
