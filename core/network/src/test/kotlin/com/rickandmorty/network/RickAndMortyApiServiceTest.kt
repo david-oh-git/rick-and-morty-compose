@@ -52,31 +52,31 @@ class RickAndMortyApiServiceTest {
     @Test
     fun getCharacters_NoQuery_NoFilter_Success() = runTest {
         val testQuery = CharacterListQuery()
-        val info = Info(
+        val info = NetworkInfo(
             count = 826,
             pages = 40,
             next = 2,
             prev = null,
         )
-        val characters = mutableListOf<Character>()
-        val rickSanchez = Character(
+        val characters = mutableListOf<NetworkCharacter>()
+        val rickSanchez = NetworkCharacter(
             id = "1",
             image = "https:LINK_TO_IMAGE",
             name = "Rick Sanchez",
             status = "Alive",
             species = "Human",
             gender = "Male",
-            origin = Origin(
+            origin = NetworkOrigin(
                 id = "1",
                 name = "Earth (c-137)",
                 dimension = "Dimension c-137",
             ),
-            location = Location(
+            location = NetworkLocation(
                 id = "3",
                 name = "Citadel of ricks",
                 dimension = "unknown",
                 residents = listOf(
-                    Resident(
+                    NetworkResident(
                         id = "2",
                         name = "Morty Smith",
                         image = "http IMAGE URL",

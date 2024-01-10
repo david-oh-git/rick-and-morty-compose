@@ -32,5 +32,5 @@ interface RickAndMortyApiService {
         species: String? = null,
         type: String? = null,
         gender: String? = null,
-    ): CharacterListResponse
+    ): NetworkCharacterListResponse
 }

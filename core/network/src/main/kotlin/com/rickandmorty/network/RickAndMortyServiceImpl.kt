@@ -39,7 +39,7 @@ class RickAndMortyServiceImpl constructor(
         species: String?,
         type: String?,
         gender: String?,
-    ): CharacterListResponse {
+    ): NetworkCharacterListResponse {
         val filterCharacter = FilterCharacter(
             Optional.presentIfNotNull(name),
             Optional.presentIfNotNull(status),
@@ -57,19 +57,19 @@ class RickAndMortyServiceImpl constructor(
 
             response.errors
             if (response.hasErrors()) {
-                return response.data?.characters.toCharactersResponse().copy(
+                return response.data?.characters.toNetworkCharacterListResponse().copy(
                     errorResponse = response.exception?.let {
-                        ErrorResponse(it, response.errors?.toListOfResponseError())
+                        NetworkErrorResponse(it, response.errors?.toListOfNetworkError())
                     },
                 )
             }
 
-            return response.data?.characters.toCharactersResponse().copy(
-                errorResponse = response.exception?.let { ErrorResponse(it) },
+            return response.data?.characters.toNetworkCharacterListResponse().copy(
+                errorResponse = response.exception?.let { NetworkErrorResponse(it) },
             )
         } catch (ex: Exception) {
-            return CharacterListResponse(
-                errorResponse = ErrorResponse(ex),
+            return NetworkCharacterListResponse(
+                errorResponse = NetworkErrorResponse(ex),
             )
         }
     }

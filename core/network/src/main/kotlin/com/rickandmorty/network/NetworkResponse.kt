@@ -25,30 +25,30 @@ package com.rickandmorty.network
 
 import io.davidosemwota.rickandmorty.network.graphql.CharacterListQuery
 
-data class CharacterListResponse(
-    val info: Info? = null,
-    val results: List<Character>? = null,
-    val errorResponse: ErrorResponse? = null,
+data class NetworkCharacterListResponse(
+    val info: NetworkInfo? = null,
+    val results: List<NetworkCharacter>? = null,
+    val errorResponse: NetworkErrorResponse? = null,
 )
 
-data class ErrorResponse(
+data class NetworkErrorResponse(
     val exception: Exception? = null,
-    val errors: List<Error>? = null,
+    val errors: List<NetworkError>? = null,
 )
 
-data class Error(
+data class NetworkError(
     val serverErrorMessage: String,
     val code: String,
 )
 
-data class Info(
+data class NetworkInfo(
     val count: Int,
     val pages: Int,
     val next: Int?,
     val prev: Int?,
 )
 
-data class Character(
+data class NetworkCharacter(
     val id: String,
     val name: String = "",
     val status: String = "",
@@ -56,78 +56,78 @@ data class Character(
     val species: String = "",
     val type: String = "",
     val gender: String = "",
-    val origin: Origin? = null,
-    val location: Location? = null,
-    val episode: List<Episode> = emptyList(),
+    val origin: NetworkOrigin? = null,
+    val location: NetworkLocation? = null,
+    val episode: List<NetworkEpisode> = emptyList(),
 )
 
-data class Origin(
+data class NetworkOrigin(
     val id: String,
     val name: String,
     val dimension: String,
 )
 
-data class Resident(
+data class NetworkResident(
     val id: String,
     val name: String,
     val image: String,
 )
 
-data class Location(
+data class NetworkLocation(
     val id: String,
     val name: String,
     val dimension: String,
-    val residents: List<Resident>,
+    val residents: List<NetworkResident>,
 )
 
-data class Episode(
+data class NetworkEpisode(
     val id: String = "",
     val episode: String,
     val name: String,
-    val characters: List<Character> = emptyList(),
+    val characters: List<NetworkCharacter> = emptyList(),
 )
 
-fun CharacterListQuery.Info.toInfoResponse(): Info = Info(
+fun CharacterListQuery.Info.networkInfo(): NetworkInfo = NetworkInfo(
     count = this.count ?: 0,
     pages = this.pages ?: 0,
     next = this.next,
     prev = this.prev,
 )
 
-fun List<com.apollographql.apollo3.api.Error>.toListOfResponseError(): List<Error> {
+fun List<com.apollographql.apollo3.api.Error>.toListOfNetworkError(): List<NetworkError> {
     return this.map {
-        Error(
+        NetworkError(
             serverErrorMessage = it.message,
             code = it.extensions?.get("code").toString(),
         )
     }
 }
 
-fun CharacterListQuery.Resident.toResidentResponse(): Resident = Resident(
+fun CharacterListQuery.Resident.toNetworkResident(): NetworkResident = NetworkResident(
     id = this.id.orEmpty(),
     name = this.name.orEmpty(),
     image = this.image.orEmpty(),
 )
 
-fun CharacterListQuery.Location.toLocationResponse(): Location = Location(
+fun CharacterListQuery.Location.toNetworkLocation(): NetworkLocation = NetworkLocation(
     id = this.id.orEmpty(),
     name = this.name.orEmpty(),
     dimension = this.dimension.orEmpty(),
-    residents = this.residents.filterNotNull().map { it.toResidentResponse() },
+    residents = this.residents.filterNotNull().map { it.toNetworkResident() },
 )
 
-fun CharacterListQuery.Origin.toOriginResponse(): Origin = Origin(
+fun CharacterListQuery.Origin.toNetworkOrigin(): NetworkOrigin = NetworkOrigin(
     id = this.id.orEmpty(),
     name = this.name.orEmpty(),
     dimension = this.dimension.orEmpty(),
 )
 
-fun CharacterListQuery.Episode.toEpisodeResponse(): Episode = Episode(
+fun CharacterListQuery.Episode.toNetworkEpisode(): NetworkEpisode = NetworkEpisode(
     id = this.id.orEmpty(),
     name = this.name.orEmpty(),
     episode = this.episode.orEmpty(),
     characters = this.characters.filterNotNull().map {
-        Character(
+        NetworkCharacter(
             id = it.id.orEmpty(),
             image = it.image.orEmpty(),
             gender = "null",
@@ -141,11 +141,11 @@ fun CharacterListQuery.Episode.toEpisodeResponse(): Episode = Episode(
     },
 )
 
-fun CharacterListQuery.Characters?.toCharactersResponse(): CharacterListResponse {
-    val info = this?.info?.toInfoResponse()
+fun CharacterListQuery.Characters?.toNetworkCharacterListResponse(): NetworkCharacterListResponse {
+    val info = this?.info?.networkInfo()
     val characters = this?.results?.filterNotNull()?.map {
         it.let {
-            Character(
+            NetworkCharacter(
                 id = it.id.orEmpty(),
                 gender = it.gender.orEmpty(),
                 image = it.image.orEmpty(),
@@ -153,15 +153,15 @@ fun CharacterListQuery.Characters?.toCharactersResponse(): CharacterListResponse
                 type = it.type.orEmpty(),
                 status = it.status.orEmpty(),
                 species = it.species.orEmpty(),
-                location = it.location?.toLocationResponse(),
-                origin = it.origin?.toOriginResponse(),
+                location = it.location?.toNetworkLocation(),
+                origin = it.origin?.toNetworkOrigin(),
                 episode = it.episode.map { queryEpisode ->
-                    Episode(
+                    NetworkEpisode(
                         id = queryEpisode?.id.orEmpty(),
                         episode = queryEpisode?.episode.orEmpty(),
                         name = queryEpisode?.name.orEmpty(),
                         characters = queryEpisode?.characters?.map { queryCharacter ->
-                            Character(
+                            NetworkCharacter(
                                 id = queryCharacter?.id.orEmpty(),
                                 image = queryCharacter?.image.orEmpty(),
                             )
@@ -172,5 +172,5 @@ fun CharacterListQuery.Characters?.toCharactersResponse(): CharacterListResponse
         }
     }
 
-    return CharacterListResponse(info, characters, null)
+    return NetworkCharacterListResponse(info, characters, null)
 }

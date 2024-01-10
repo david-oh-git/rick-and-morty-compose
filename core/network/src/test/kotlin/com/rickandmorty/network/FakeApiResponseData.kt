@@ -33,8 +33,8 @@ import io.davidosemwota.rickandmorty.network.graphql.type.buildLocation
 object FakeApiResponseData {
 
     fun generateApiResponseData(
-        testInfo: Info,
-        testResults: List<Character>,
+        testInfo: NetworkInfo,
+        testResults: List<NetworkCharacter>,
     ): CharacterListQuery.Data {
         return CharacterListQuery.Data {
             characters = buildCharacters {
