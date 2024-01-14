@@ -32,7 +32,5 @@ android {
 
 dependencies {
 
-    api(libs.junit4)
-    api(libs.truth)
-    api(libs.kotlin.coroutine.test)
+    api(libs.bundles.test.impl)
 }

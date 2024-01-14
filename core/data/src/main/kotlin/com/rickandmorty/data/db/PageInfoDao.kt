@@ -21,29 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-    id(libs.plugins.ksp.get().pluginId)
-}
+package com.rickandmorty.data.db
 
-android {
-    namespace = "com.rickandmorty.data"
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
-    testOptions.unitTests {
-        isIncludeAndroidResources = true
-        isReturnDefaultValues = true
-    }
-}
+@Dao
+interface PageInfoDao {
 
-dependencies {
-    implementation(libs.room)
-    ksp(libs.room.compiler)
-    implementation(libs.room.ktx)
-    implementation(libs.room.paging)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(pageInfoList: List<PageInfoEntity>)
 
-    testImplementation(projects.core.testing)
-    testImplementation(libs.room.testing)
-    testImplementation(libs.robolectric)
-    testImplementation(libs.test.core)
+    @Query("SELECT * FROM page_info WHERE id = :id")
+    suspend fun getPageInfo(id: String): PageInfoEntity?
+
+    @Query("DELETE FROM page_info")
+    suspend fun clearAllPageInfo()
+
+    @Query("SELECT * FROM page_info")
+    fun getAllItems(): List<PageInfoEntity>
 }

@@ -21,29 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-    id(libs.plugins.ksp.get().pluginId)
-}
+package com.rickandmorty.data.db
 
-android {
-    namespace = "com.rickandmorty.data"
+import androidx.room.Database
+import androidx.room.RoomDatabase
 
-    testOptions.unitTests {
-        isIncludeAndroidResources = true
-        isReturnDefaultValues = true
-    }
-}
+@Database(
+    entities = [ PageInfoEntity::class],
+    version = 1,
+    exportSchema = false,
+)
+abstract class RickAndMortyDatabase : RoomDatabase() {
 
-dependencies {
-    implementation(libs.room)
-    ksp(libs.room.compiler)
-    implementation(libs.room.ktx)
-    implementation(libs.room.paging)
-
-    testImplementation(projects.core.testing)
-    testImplementation(libs.room.testing)
-    testImplementation(libs.robolectric)
-    testImplementation(libs.test.core)
+    abstract fun pageInfoDao(): PageInfoDao
 }

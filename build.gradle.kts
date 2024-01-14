@@ -38,6 +38,7 @@ plugins {
     alias(libs.plugins.ktlint) apply false
     alias(libs.plugins.apollo3) apply false
     alias(libs.plugins.androidLibrary) apply false
+    alias(libs.plugins.ksp) apply false
 }
 
 allprojects {
@@ -49,17 +50,12 @@ allprojects {
 
         kotlin {
             target("**/*.kt")
-            targetExclude(
-                "**/build/**/*.kt",
-                "$rootDir/spotless/copyright.txt",
-            )
-
+            targetExclude("**/build/**/*.kt")
             ktlint(libs.versions.ktlint.get()).userData(mapOf("android" to "true"))
             licenseHeaderFile(
                 rootProject.file("spotless/copyright.txt"),
                 "^(package|object|import|interface)",
-            ).updateYearWithLatest(false)
-
+            )
             trimTrailingWhitespace()
             indentWithSpaces()
             endWithNewline()
