@@ -39,6 +39,7 @@ plugins {
     alias(libs.plugins.apollo3) apply false
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
 }
 
 allprojects {

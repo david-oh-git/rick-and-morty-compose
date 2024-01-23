@@ -25,6 +25,7 @@
 plugins {
     alias(libs.plugins.rickandmorty.android.library)
     id(libs.plugins.ksp.get().pluginId)
+    id(libs.plugins.kotlin.serialization.get().pluginId)
 }
 
 android {
@@ -41,6 +42,8 @@ dependencies {
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)
     implementation(libs.room.paging)
+    implementation(libs.kotlin.serialization)
+    implementation(libs.androidx.paging)
 
     testImplementation(projects.core.testing)
     testImplementation(libs.room.testing)
