@@ -24,10 +24,13 @@
 package com.rickandmorty.data.db
 
 import android.content.Context
+import androidx.paging.PagingSource
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
+import com.rickandmorty.data.generateCharacters
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -38,6 +41,7 @@ internal class RickAndMortyDatabaseTest {
 
     private lateinit var rickAndMortyDatabase: RickAndMortyDatabase
     private lateinit var pageInfoDao: PageInfoDao
+    private lateinit var characterDao: CharacterDao
 
     @Before
     fun setUp() {
@@ -49,6 +53,12 @@ internal class RickAndMortyDatabaseTest {
         ).allowMainThreadQueries().build()
 
         pageInfoDao = rickAndMortyDatabase.pageInfoDao()
+        characterDao = rickAndMortyDatabase.characterDao()
+    }
+
+    @After
+    fun close() {
+        rickAndMortyDatabase.close()
     }
 
     @Test
@@ -139,5 +149,198 @@ internal class RickAndMortyDatabaseTest {
         assertThat(result).isEmpty()
         assertThat(result).doesNotContain(item1)
         assertThat(result).doesNotContain(item2)
+    }
+
+    // CharacterDao Tests
+
+    @Test
+    fun searchUnknownCharacter_verifyNullResponse() = runTest {
+        // Given/Arrange . adds 2 characters with id 1 & 2
+        characterDao.insertAll(generateCharacters())
+
+        // When/Act search for id 100(non existent)
+        val result = characterDao.getCharacter("99")
+
+        // Then/Assert
+        assertThat(result).isNull()
+    }
+
+    @Test
+    fun searchItem_verifyResponse() = runTest {
+        // Given/Arrange
+        characterDao.insertAll(generateCharacters())
+        val id = "46"
+        val evilMorty = CharacterEntity(
+            id = id,
+            name = "Morty Smith",
+            status = "Alive",
+            image = "http://image_url",
+            species = "Human",
+            type = "whatever type",
+            gender = "male",
+            origin = CharacterOriginEntity(
+                id = "40",
+                name = "C -139 Earth",
+                dimension = "C-137",
+            ),
+            location = CharacterLocationEntity(
+                id = "22",
+                name = "londoninion",
+                dimension = "C-137",
+                residents = listOf(
+                    CharacterResidentEntity(
+                        id = "34",
+                        name = "Evil morty",
+                        image = "image url",
+                    ),
+                ),
+            ),
+            episodes = listOf(
+                CharacterEpisodeEntity(
+                    id = "56",
+                    name = "S03E09",
+                ),
+                CharacterEpisodeEntity(
+                    id = "16",
+                    name = "S01E09",
+                ),
+            ),
+        )
+        characterDao.insertAll(listOf(evilMorty))
+        // When/Act
+        val result = characterDao.getCharacter(id)
+        // Then/Assert
+        assertThat(result).isNotNull()
+        assertThat(result).isEqualTo(evilMorty)
+    }
+
+    @Test
+    fun deleteAllItems_verifyItemsAreDeleted() = runTest {
+        // Given/Arrange
+        characterDao.insertAll(generateCharacters())
+
+        // When/Act
+        characterDao.deleteAllItems()
+        val result = characterDao.getCharacters()
+
+        // Then/Assert
+        assertThat(result).isEmpty()
+    }
+
+    @Test
+    fun addMultipleCharacters_verifyPagedResult_NotNull() = runTest {
+        // Given/Arrange
+
+        val rick = CharacterEntity(
+            id = "1",
+            name = "Rick Sanchez",
+            status = "Alive",
+            image = "http://image_url",
+            species = "Human",
+            type = "whatever type",
+            gender = "male",
+            origin = CharacterOriginEntity(
+                id = "40",
+                name = "C -137 Earth",
+                dimension = "C-137",
+            ),
+            location = CharacterLocationEntity(
+                id = "22",
+                name = "londoninion",
+                dimension = "C-137",
+                residents = listOf(
+                    CharacterResidentEntity(
+                        id = "34",
+                        name = "Evil morty",
+                        image = "image url",
+                    ),
+                ),
+            ),
+            episodes = listOf(
+                CharacterEpisodeEntity(
+                    id = "56",
+                    name = "S03E09",
+                ),
+            ),
+        )
+
+        val morty = CharacterEntity(
+            id = "2",
+            name = "Morty Smith",
+            status = "Alive",
+            image = "http://image_url",
+            species = "Human",
+            type = "whatever type",
+            gender = "male",
+            origin = CharacterOriginEntity(
+                id = "40",
+                name = "C -137 Earth",
+                dimension = "C-137",
+            ),
+            location = CharacterLocationEntity(
+                id = "22",
+                name = "londoninion",
+                dimension = "C-137",
+                residents = listOf(
+                    CharacterResidentEntity(
+                        id = "34",
+                        name = "Evil morty",
+                        image = "image url",
+                    ),
+                ),
+            ),
+            episodes = listOf(
+                CharacterEpisodeEntity(
+                    id = "56",
+                    name = "S03E09",
+                ),
+                CharacterEpisodeEntity(
+                    id = "16",
+                    name = "S01E09",
+                ),
+            ),
+        )
+
+        // When/Act
+        characterDao.insertAll(listOf(rick, morty))
+
+        // Then/Assert
+
+        val charactersResult = (
+            characterDao.getPagedCharacters().load(
+                PagingSource.LoadParams.Refresh(
+                    key = null,
+                    loadSize = 50,
+                    placeholdersEnabled = false,
+                ),
+            ) as PagingSource.LoadResult.Page
+            ).data
+
+        assertThat(charactersResult).isNotNull()
+        assertThat(charactersResult).isNotEmpty()
+        assertThat(charactersResult.size).isEqualTo(2)
+    }
+
+    @Test
+    fun addMultipleCharacters_verifyPagedResult_NullOrEmpty() = runTest {
+        // Given/Arrange
+        characterDao.insertAll(generateCharacters())
+
+        // When/Act
+        characterDao.deleteAllItems()
+
+        // Then/Assert
+        val charactersResult = (
+            characterDao.getPagedCharacters().load(
+                PagingSource.LoadParams.Refresh(
+                    key = null,
+                    loadSize = 50,
+                    placeholdersEnabled = false,
+                ),
+            ) as PagingSource.LoadResult.Page
+            ).data
+
+        assertThat(charactersResult).isNotNull()
+        assertThat(charactersResult).isEmpty()
     }
 }

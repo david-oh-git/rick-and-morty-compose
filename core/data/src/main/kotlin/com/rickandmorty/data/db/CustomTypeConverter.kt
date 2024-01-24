@@ -23,19 +23,25 @@
  */
 package com.rickandmorty.data.db
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+import androidx.room.TypeConverter
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
-@Database(
-    entities = [ PageInfoEntity::class, CharacterEntity::class],
-    version = 1,
-    exportSchema = false,
-)
-@TypeConverters(CustomTypeConverter::class)
-abstract class RickAndMortyDatabase : RoomDatabase() {
+class CustomTypeConverter {
 
-    abstract fun pageInfoDao(): PageInfoDao
+    @TypeConverter
+    fun residentListToString(value: List<CharacterResidentEntity>): String =
+        Json.encodeToString(value)
 
-    abstract fun characterDao(): CharacterDao
+    @TypeConverter
+    fun stringToListOfCharacterResident(value: String): List<CharacterResidentEntity> =
+        Json.decodeFromString(value)
+
+    @TypeConverter
+    fun episodeListToString(value: List<CharacterEpisodeEntity>): String =
+        Json.encodeToString(value)
+
+    @TypeConverter
+    fun stringToListOfCharacterEpisode(value: String): List<CharacterEpisodeEntity> =
+        Json.decodeFromString(value)
 }

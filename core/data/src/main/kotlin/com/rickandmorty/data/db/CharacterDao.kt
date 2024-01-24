@@ -23,37 +23,48 @@
  */
 package com.rickandmorty.data.db
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 /**
- * DAO for [PageInfoEntity]
+ *  Data access object for [CharacterEntity]
  */
 @Dao
-interface PageInfoDao {
+interface CharacterDao {
 
     /**
-     * Adds a list of items to the DB
+     * Adds all items to local Db
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(pageInfoList: List<PageInfoEntity>)
+    suspend fun insertAll(characters: List<CharacterEntity>)
 
     /**
-     * Searches for an item from the DB, returns null
+     *  Returns all items in DB via paging
+     */
+    @Query("SELECT * FROM character_entity_table ORDER by id")
+    fun getPagedCharacters(): PagingSource<Int, CharacterEntity>
+
+    /**
+     *  Returns all DB items as a list.
+     */
+    @Query("SELECT * FROM character_entity_table ORDER by id")
+    suspend fun getCharacters(): List<CharacterEntity>
+
+    /**
+     * Searches for an item via the id , returns null if item is not
+     * found
      *
-     * @param id Unique id for the item
+     * @param query id for item searched for
      */
-    @Query("SELECT * FROM page_info WHERE id = :id")
-    suspend fun getPageInfo(id: String): PageInfoEntity?
+    @Query("SELECT * FROM character_entity_table WHERE id = :query")
+    suspend fun getCharacter(query: String): CharacterEntity?
 
     /**
-     * Delete table/all items from DB
+     * Deletes the entire table from the DB.
      */
-    @Query("DELETE FROM page_info")
-    suspend fun clearAllPageInfo()
-
-    @Query("SELECT * FROM page_info ORDER by id")
-    fun getAllItems(): List<PageInfoEntity>
+    @Query("DELETE FROM character_entity_table")
+    suspend fun deleteAllItems()
 }
