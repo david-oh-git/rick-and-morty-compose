@@ -28,6 +28,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.rickandmorty.data.model.entities.CharacterEntity
 
 /**
  *  Data access object for [CharacterEntity]
@@ -60,7 +61,7 @@ interface CharacterDao {
      * @param query id for item searched for
      */
     @Query("SELECT * FROM character_entity_table WHERE id = :query")
-    suspend fun getCharacter(query: String): CharacterEntity?
+    suspend fun getCharacter(query: Int): CharacterEntity?
 
     /**
      * Deletes the entire table from the DB.

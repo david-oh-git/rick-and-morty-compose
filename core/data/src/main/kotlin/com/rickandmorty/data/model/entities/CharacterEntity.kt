@@ -21,18 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.rickandmorty.data.db
+package com.rickandmorty.data.model.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.rickandmorty.data.model.Character
+import com.rickandmorty.data.model.Episode
+import com.rickandmorty.data.model.Location
+import com.rickandmorty.data.model.Origin
 import kotlinx.serialization.Serializable
 
 @Entity(tableName = "character_entity_table")
 data class CharacterEntity(
     @PrimaryKey
-    val id: String,
+    val id: Int,
     val name: String,
     val status: String,
     val image: String,
@@ -68,4 +72,44 @@ data class CharacterResidentEntity(
 data class CharacterEpisodeEntity(
     @ColumnInfo(name = "episode_id") val id: String,
     @ColumnInfo(name = "episode_name") val name: String,
+)
+
+/**
+ *  Convert [CharacterEntity] object to [Character] object.
+ */
+fun CharacterEntity.toModel(): Character = Character(
+    id = this.id,
+    name = this.name,
+    status = this.status,
+    imageUrl = this.image,
+    species = this.species,
+    type = this.type,
+    gender = this.gender,
+    origin = Origin(
+        id = this.origin.id,
+        name = this.origin.name,
+        dimension = this.origin.dimension,
+    ),
+    location = Location(
+        id = this.location.id,
+        name = this.location.name,
+        dimension = this.location.dimension,
+        residents = this.location.residents.map(::characterResidentEntityToCharacter),
+    ),
+    episodes = this.episodes.map(::characterEpisodeEntityToEpisode),
+)
+
+private fun characterEpisodeEntityToEpisode(
+    characterEpisodeEntity: CharacterEpisodeEntity,
+): Episode = Episode(
+    id = characterEpisodeEntity.id,
+    name = characterEpisodeEntity.name,
+)
+
+private fun characterResidentEntityToCharacter(
+    characterResidentEntity: CharacterResidentEntity,
+): Character = Character(
+    id = characterResidentEntity.id.toInt(),
+    name = characterResidentEntity.name,
+    imageUrl = characterResidentEntity.image,
 )

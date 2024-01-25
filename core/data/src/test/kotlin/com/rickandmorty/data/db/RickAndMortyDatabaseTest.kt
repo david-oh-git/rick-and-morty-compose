@@ -29,6 +29,12 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import com.rickandmorty.data.generateCharacters
+import com.rickandmorty.data.model.entities.CharacterEntity
+import com.rickandmorty.data.model.entities.CharacterEpisodeEntity
+import com.rickandmorty.data.model.entities.CharacterLocationEntity
+import com.rickandmorty.data.model.entities.CharacterOriginEntity
+import com.rickandmorty.data.model.entities.CharacterResidentEntity
+import com.rickandmorty.data.model.entities.PageInfoEntity
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -159,7 +165,7 @@ internal class RickAndMortyDatabaseTest {
         characterDao.insertAll(generateCharacters())
 
         // When/Act search for id 100(non existent)
-        val result = characterDao.getCharacter("99")
+        val result = characterDao.getCharacter(99)
 
         // Then/Assert
         assertThat(result).isNull()
@@ -169,7 +175,7 @@ internal class RickAndMortyDatabaseTest {
     fun searchItem_verifyResponse() = runTest {
         // Given/Arrange
         characterDao.insertAll(generateCharacters())
-        val id = "46"
+        val id = 46
         val evilMorty = CharacterEntity(
             id = id,
             name = "Morty Smith",
@@ -232,7 +238,7 @@ internal class RickAndMortyDatabaseTest {
         // Given/Arrange
 
         val rick = CharacterEntity(
-            id = "1",
+            id = 1,
             name = "Rick Sanchez",
             status = "Alive",
             image = "http://image_url",
@@ -265,7 +271,7 @@ internal class RickAndMortyDatabaseTest {
         )
 
         val morty = CharacterEntity(
-            id = "2",
+            id = 2,
             name = "Morty Smith",
             status = "Alive",
             image = "http://image_url",

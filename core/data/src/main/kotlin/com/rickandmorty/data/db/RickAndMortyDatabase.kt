@@ -26,6 +26,8 @@ package com.rickandmorty.data.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.rickandmorty.data.model.entities.CharacterEntity
+import com.rickandmorty.data.model.entities.PageInfoEntity
 
 @Database(
     entities = [ PageInfoEntity::class, CharacterEntity::class],

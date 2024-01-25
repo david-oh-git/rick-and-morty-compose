@@ -23,11 +23,11 @@
  */
 package com.rickandmorty.data
 
-import com.rickandmorty.data.db.CharacterEntity
-import com.rickandmorty.data.db.CharacterEpisodeEntity
-import com.rickandmorty.data.db.CharacterLocationEntity
-import com.rickandmorty.data.db.CharacterOriginEntity
-import com.rickandmorty.data.db.CharacterResidentEntity
+import com.rickandmorty.data.model.entities.CharacterEntity
+import com.rickandmorty.data.model.entities.CharacterEpisodeEntity
+import com.rickandmorty.data.model.entities.CharacterLocationEntity
+import com.rickandmorty.data.model.entities.CharacterOriginEntity
+import com.rickandmorty.data.model.entities.CharacterResidentEntity
 
 private fun generateFirstName(): String = listOf(
     "Rick",
@@ -44,7 +44,7 @@ private fun generateLastName(): String = listOf(
 internal fun generateCharacters(): List<CharacterEntity> {
     return listOf(
         CharacterEntity(
-            id = "1",
+            id = 1,
             name = "Rick Sanchez",
             status = "Alive",
             image = "http://image_url",
@@ -76,7 +76,7 @@ internal fun generateCharacters(): List<CharacterEntity> {
             ),
         ),
         CharacterEntity(
-            id = "2",
+            id = 2,
             name = "Morty Smith",
             status = "Alive",
             image = "http://image_url",

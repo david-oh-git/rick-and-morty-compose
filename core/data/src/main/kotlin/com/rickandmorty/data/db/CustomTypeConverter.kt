@@ -24,6 +24,8 @@
 package com.rickandmorty.data.db
 
 import androidx.room.TypeConverter
+import com.rickandmorty.data.model.entities.CharacterEpisodeEntity
+import com.rickandmorty.data.model.entities.CharacterResidentEntity
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

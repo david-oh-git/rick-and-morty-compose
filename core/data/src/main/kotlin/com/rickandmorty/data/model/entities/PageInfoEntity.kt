@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.rickandmorty.data.db
+package com.rickandmorty.data.model.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
