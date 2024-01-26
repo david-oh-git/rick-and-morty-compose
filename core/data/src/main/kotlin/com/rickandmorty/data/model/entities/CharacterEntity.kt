@@ -77,7 +77,7 @@ data class CharacterEpisodeEntity(
 /**
  *  Convert [CharacterEntity] object to [Character] object.
  */
-fun CharacterEntity.toModel(): Character = Character(
+internal fun CharacterEntity.toModel(): Character = Character(
     id = this.id,
     name = this.name,
     status = this.status,

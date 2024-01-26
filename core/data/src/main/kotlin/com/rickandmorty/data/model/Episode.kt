@@ -21,24 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.rickandmorty.data.model.entities
+package com.rickandmorty.data.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.rickandmorty.data.model.PageInfo
-
-@Entity(tableName = "page_info")
-data class PageInfoEntity(
-    @PrimaryKey
+data class Episode(
     val id: String,
-    val pages: Int,
-    val next: Int?,
-    val prev: Int?,
-)
-
-fun PageInfoEntity.toModel(): PageInfo = PageInfo(
-    id = this.id.toInt(),
-    pages = this.pages,
-    next = this.next,
-    prev = this.prev,
+    val name: String = "",
 )

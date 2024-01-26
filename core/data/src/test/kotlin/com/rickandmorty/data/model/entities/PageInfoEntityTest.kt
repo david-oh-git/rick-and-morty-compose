@@ -23,22 +23,34 @@
  */
 package com.rickandmorty.data.model.entities
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.rickandmorty.data.model.PageInfo
+import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.test.runTest
+import org.junit.Test
 
-@Entity(tableName = "page_info")
-data class PageInfoEntity(
-    @PrimaryKey
-    val id: String,
-    val pages: Int,
-    val next: Int?,
-    val prev: Int?,
-)
+class PageInfoEntityTest {
 
-fun PageInfoEntity.toModel(): PageInfo = PageInfo(
-    id = this.id.toInt(),
-    pages = this.pages,
-    next = this.next,
-    prev = this.prev,
-)
+    @Test
+    fun pageInfoEntityToModelExtention_verifyResult() = runTest {
+        // Given/Arrange
+        val id: String = "3"
+        val pages: Int = 30
+        val next: Int = 4
+        val prev: Int = 3
+        val pageInfoEntity = PageInfoEntity(
+            id = id,
+            pages = pages,
+            next = next,
+            prev = prev,
+        )
+
+        // When/Act
+        val result = pageInfoEntity.toModel()
+
+        // Then/Assert
+        assertThat(result).isNotNull()
+        assertThat(result.id).isEqualTo(pageInfoEntity.id.toInt())
+        assertThat(result.pages).isEqualTo(pageInfoEntity.pages)
+        assertThat(result.next).isEqualTo(pageInfoEntity.next)
+        assertThat(result.prev).isEqualTo(pageInfoEntity.prev)
+    }
+}
