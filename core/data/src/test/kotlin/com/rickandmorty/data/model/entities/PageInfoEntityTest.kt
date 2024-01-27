@@ -32,7 +32,7 @@ class PageInfoEntityTest {
     @Test
     fun pageInfoEntityToModelExtention_verifyResult() = runTest {
         // Given/Arrange
-        val id: String = "3"
+        val id = 3
         val pages: Int = 30
         val next: Int = 4
         val prev: Int = 3
@@ -41,6 +41,7 @@ class PageInfoEntityTest {
             pages = pages,
             next = next,
             prev = prev,
+            count = 20,
         )
 
         // When/Act

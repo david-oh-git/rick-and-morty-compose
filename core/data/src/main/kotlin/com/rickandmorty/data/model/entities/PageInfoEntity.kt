@@ -26,12 +26,14 @@ package com.rickandmorty.data.model.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.rickandmorty.data.model.PageInfo
+import com.rickandmorty.network.NetworkInfo
 
 @Entity(tableName = "page_info")
 data class PageInfoEntity(
     @PrimaryKey
-    val id: String,
+    val id: Int,
     val pages: Int,
+    val count: Int,
     val next: Int?,
     val prev: Int?,
 )
@@ -41,4 +43,12 @@ fun PageInfoEntity.toModel(): PageInfo = PageInfo(
     pages = this.pages,
     next = this.next,
     prev = this.prev,
+)
+
+internal fun NetworkInfo.toEntity(id: String): PageInfoEntity = PageInfoEntity(
+    id = id.toInt(),
+    pages = this.pages,
+    next = this.next,
+    prev = this.prev,
+    count = this.count,
 )

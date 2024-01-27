@@ -41,13 +41,16 @@ interface PageInfoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(pageInfoList: List<PageInfoEntity>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(pageInfo: PageInfoEntity)
+
     /**
      * Searches for an item from the DB, returns null
      *
      * @param id Unique id for the item
      */
     @Query("SELECT * FROM page_info WHERE id = :id")
-    suspend fun getPageInfo(id: String): PageInfoEntity?
+    suspend fun getPageInfo(id: Int): PageInfoEntity?
 
     /**
      * Delete table/all items from DB

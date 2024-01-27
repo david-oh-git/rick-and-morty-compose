@@ -31,6 +31,9 @@ import com.rickandmorty.data.model.Character
 import com.rickandmorty.data.model.Episode
 import com.rickandmorty.data.model.Location
 import com.rickandmorty.data.model.Origin
+import com.rickandmorty.network.NetworkCharacter
+import com.rickandmorty.network.NetworkEpisode
+import com.rickandmorty.network.NetworkResident
 import kotlinx.serialization.Serializable
 
 @Entity(tableName = "character_entity_table")
@@ -97,6 +100,43 @@ internal fun CharacterEntity.toModel(): Character = Character(
         residents = this.location.residents.map(::characterResidentEntityToCharacter),
     ),
     episodes = this.episodes.map(::characterEpisodeEntityToEpisode),
+)
+
+internal fun NetworkCharacter.toEntity(): CharacterEntity = CharacterEntity(
+    id = this.id.toInt(),
+    name = this.name,
+    image = this.image,
+    gender = this.gender,
+    type = this.type,
+    status = this.status,
+    species = this.status,
+    origin = CharacterOriginEntity(
+        id = this.origin?.id.orEmpty(),
+        name = this.origin?.name.orEmpty(),
+        dimension = this.origin?.dimension.orEmpty(),
+    ),
+    location = CharacterLocationEntity(
+        id = this.location?.id.orEmpty(),
+        name = this.location?.name.orEmpty(),
+        dimension = this.location?.dimension.orEmpty(),
+        residents = this.location?.residents?.map(::networkResidentToCharacterResidentEntity) ?: emptyList(),
+    ),
+    episodes = this.episode.map(::networkEpisodeToCharacterEpisodeEntity),
+)
+
+private fun networkEpisodeToCharacterEpisodeEntity(
+    networkEpisode: NetworkEpisode,
+): CharacterEpisodeEntity = CharacterEpisodeEntity(
+    id = networkEpisode.id,
+    name = networkEpisode.name,
+)
+
+private fun networkResidentToCharacterResidentEntity(
+    networkResident: NetworkResident,
+): CharacterResidentEntity = CharacterResidentEntity(
+    id = networkResident.id,
+    name = networkResident.name,
+    image = networkResident.image,
 )
 
 private fun characterEpisodeEntityToEpisode(

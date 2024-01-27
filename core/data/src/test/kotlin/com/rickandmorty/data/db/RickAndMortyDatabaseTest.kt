@@ -70,16 +70,18 @@ internal class RickAndMortyDatabaseTest {
     @Test
     fun getIndividualItems_VerifyResult() = runTest {
         val item1 = PageInfoEntity(
-            id = "2",
+            id = 2,
             prev = null,
             next = 2,
             pages = 50,
+            count = 20,
         )
         val item2 = PageInfoEntity(
-            id = "2",
+            id = 3,
             prev = null,
             next = 2,
             pages = 50,
+            count = 20,
         )
         val items: List<PageInfoEntity> = listOf(
             item1,
@@ -100,18 +102,39 @@ internal class RickAndMortyDatabaseTest {
     }
 
     @Test
+    fun insertItem_VerifyResult() = runTest {
+        val item = PageInfoEntity(
+            id = 2,
+            prev = null,
+            next = 2,
+            pages = 50,
+            count = 20,
+        )
+
+        pageInfoDao.insert(item)
+
+        val result = pageInfoDao.getAllItems()
+
+        assertThat(result).isNotNull()
+        assertThat(result).isNotEmpty()
+        assertThat(result).contains(item)
+    }
+
+    @Test
     fun insertAllItems_VerifyResult() = runTest {
         val item1 = PageInfoEntity(
-            id = "2",
+            id = 2,
             prev = null,
             next = 2,
             pages = 50,
+            count = 20,
         )
         val item2 = PageInfoEntity(
-            id = "2",
+            id = 3,
             prev = null,
             next = 2,
             pages = 50,
+            count = 20,
         )
         val items: List<PageInfoEntity> = listOf(
             item1,
@@ -131,16 +154,18 @@ internal class RickAndMortyDatabaseTest {
     @Test
     fun deleteAll_VerifyResult() = runTest {
         val item1 = PageInfoEntity(
-            id = "2",
+            id = 2,
             prev = null,
             next = 2,
             pages = 50,
+            count = 20,
         )
         val item2 = PageInfoEntity(
-            id = "2",
+            id = 3,
             prev = null,
             next = 2,
             pages = 50,
+            count = 20,
         )
         val items: List<PageInfoEntity> = listOf(
             item1,
