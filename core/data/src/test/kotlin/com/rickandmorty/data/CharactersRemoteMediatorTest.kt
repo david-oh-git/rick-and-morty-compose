@@ -32,7 +32,7 @@ import androidx.paging.RemoteMediator.MediatorResult
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.rickandmorty.data.db.RickAndMortyDatabase
-import com.rickandmorty.data.model.Character
+import com.rickandmorty.data.model.entities.CharacterEntity
 import com.rickandmorty.network.RickAndMortyApiService
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -68,7 +68,7 @@ internal class CharactersRemoteMediatorTest {
             database = rickAndMortyDatabase,
             rickAndMortyApiService = rickAndMortyApiService,
         )
-        val pagingState = PagingState<Int, Character>(
+        val pagingState = PagingState<Int, CharacterEntity>(
             listOf(),
             null,
             PagingConfig(10),
@@ -91,7 +91,7 @@ internal class CharactersRemoteMediatorTest {
             database = rickAndMortyDatabase,
             rickAndMortyApiService = rickAndMortyApiService,
         )
-        val pagingState = PagingState<Int, Character>(
+        val pagingState = PagingState<Int, CharacterEntity>(
             listOf(),
             null,
             PagingConfig(10),
@@ -114,7 +114,7 @@ internal class CharactersRemoteMediatorTest {
             database = rickAndMortyDatabase,
             rickAndMortyApiService = rickAndMortyApiService,
         )
-        val pagingState = PagingState<Int, Character>(
+        val pagingState = PagingState<Int, CharacterEntity>(
             listOf(),
             null,
             PagingConfig(10),

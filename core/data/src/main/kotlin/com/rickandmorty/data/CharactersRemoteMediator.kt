@@ -29,7 +29,7 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.rickandmorty.data.db.RickAndMortyDatabase
-import com.rickandmorty.data.model.Character
+import com.rickandmorty.data.model.entities.CharacterEntity
 import com.rickandmorty.data.model.entities.PageInfoEntity
 import com.rickandmorty.data.model.entities.toEntity
 import com.rickandmorty.network.RickAndMortyApiService
@@ -39,11 +39,11 @@ import java.io.IOException
 class CharactersRemoteMediator constructor(
     private val database: RickAndMortyDatabase,
     private val rickAndMortyApiService: RickAndMortyApiService,
-) : RemoteMediator<Int, Character>() {
+) : RemoteMediator<Int, CharacterEntity>() {
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, Character>,
+        state: PagingState<Int, CharacterEntity>,
     ): MediatorResult {
         return try {
             val page = when (loadType) {
@@ -101,7 +101,7 @@ class CharactersRemoteMediator constructor(
     }
 
     private suspend fun getPageInfoClosestToCurrentPosition(
-        state: PagingState<Int, Character>,
+        state: PagingState<Int, CharacterEntity>,
     ): PageInfoEntity? {
         return state.anchorPosition?.let { index ->
             database.pageInfoDao().getPageInfo(index)
@@ -109,7 +109,7 @@ class CharactersRemoteMediator constructor(
     }
 
     private suspend fun getPageInfoForFirstItem(
-        state: PagingState<Int, Character>,
+        state: PagingState<Int, CharacterEntity>,
     ): PageInfoEntity? {
         return state.pages.firstOrNull() { it.data.isNotEmpty() }?.data?.firstOrNull()
             ?.let { character ->
@@ -118,7 +118,7 @@ class CharactersRemoteMediator constructor(
     }
 
     private suspend fun getPageInfoEntityForLastItem(
-        state: PagingState<Int, Character>,
+        state: PagingState<Int, CharacterEntity>,
     ): PageInfoEntity? {
         return state.pages.lastOrNull() { it.data.isNotEmpty() }?.data?.lastOrNull()
             ?.let { character ->
