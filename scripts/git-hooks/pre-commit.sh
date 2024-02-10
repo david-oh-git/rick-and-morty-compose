@@ -8,7 +8,7 @@ export JAVA_HOME
 staged_files=$(git diff --staged --name-only)
 
 OUTPUT="/tmp/res"
-./gradlew lint ktlintFormat ktlintCheck spotlessApply --daemon > ${OUTPUT}
+./gradlew lint ktlintFormat spotlessApply --daemon > ${OUTPUT}
 EXIT_CODE=$?
 if [ ${EXIT_CODE} -ne 0 ]; then
     cat ${OUTPUT}
