@@ -24,6 +24,12 @@
 package com.rickandmorty.data.model.entities
 
 import com.google.common.truth.Truth.assertThat
+import com.rickandmorty.data.db.entities.CharacterEntity
+import com.rickandmorty.data.db.entities.CharacterEpisodeEntity
+import com.rickandmorty.data.db.entities.CharacterLocationEntity
+import com.rickandmorty.data.db.entities.CharacterOriginEntity
+import com.rickandmorty.data.db.entities.CharacterResidentEntity
+import com.rickandmorty.data.db.entities.toModel
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 

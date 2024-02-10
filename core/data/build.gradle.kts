@@ -39,6 +39,8 @@ android {
 
 dependencies {
     implementation(projects.core.network)
+    implementation(projects.core.models)
+
     implementation(libs.room)
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)

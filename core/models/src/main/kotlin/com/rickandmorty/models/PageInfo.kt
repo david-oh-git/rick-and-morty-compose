@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2023   David Osemwota.
+ * Copyright (c) 2024   David Osemwota.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,9 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.core.network
+package com.rickandmorty.models
 
-/**
- * Interface representing backend calls to Rick and Morty API.
- */
-interface RickAndMortyNetworkSource
+data class PageInfo(
+    val id: Int,
+    val pages: Int,
+    val next: Int?,
+    val prev: Int?,
+)

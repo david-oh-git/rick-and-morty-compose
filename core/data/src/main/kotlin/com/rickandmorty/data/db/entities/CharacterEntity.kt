@@ -21,16 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.rickandmorty.data.model.entities
+package com.rickandmorty.data.db.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.rickandmorty.data.model.Character
-import com.rickandmorty.data.model.Episode
-import com.rickandmorty.data.model.Location
-import com.rickandmorty.data.model.Origin
+import com.rickandmorty.models.Character
+import com.rickandmorty.models.Episode
+import com.rickandmorty.models.Location
+import com.rickandmorty.models.Origin
 import com.rickandmorty.network.NetworkCharacter
 import com.rickandmorty.network.NetworkEpisode
 import com.rickandmorty.network.NetworkResident

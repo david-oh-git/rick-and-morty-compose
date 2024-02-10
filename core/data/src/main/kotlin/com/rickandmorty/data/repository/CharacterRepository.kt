@@ -21,34 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.rickandmorty.data.model.entities
+package com.rickandmorty.data.repository
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.rickandmorty.data.model.PageInfo
-import com.rickandmorty.network.NetworkInfo
+import androidx.paging.PagingData
+import com.rickandmorty.models.Character
+import kotlinx.coroutines.flow.Flow
 
-@Entity(tableName = "page_info")
-data class PageInfoEntity(
-    @PrimaryKey
-    val id: Int,
-    val pages: Int,
-    val count: Int,
-    val next: Int?,
-    val prev: Int?,
-)
+interface CharacterRepository {
 
-fun PageInfoEntity.toModel(): PageInfo = PageInfo(
-    id = this.id.toInt(),
-    pages = this.pages,
-    next = this.next,
-    prev = this.prev,
-)
-
-internal fun NetworkInfo.toEntity(id: String): PageInfoEntity = PageInfoEntity(
-    id = id.toInt(),
-    pages = this.pages,
-    next = this.next,
-    prev = this.prev,
-    count = this.count,
-)
+    /**
+     *  Get a paged list of [Character]s via paging3 library
+     */
+    fun getPagedCharacters(): Flow<PagingData<Character>>
+}

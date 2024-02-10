@@ -24,6 +24,8 @@
 package com.rickandmorty.data.model.entities
 
 import com.google.common.truth.Truth.assertThat
+import com.rickandmorty.data.db.entities.PageInfoEntity
+import com.rickandmorty.data.db.entities.toModel
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 

@@ -21,10 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.rickandmorty.data.model
+package com.rickandmorty.models
 
-data class Origin(
+data class Location(
     val id: String,
-    val name: String,
-    val dimension: String,
+    val name: String = "",
+    val dimension: String = "",
+    val residents: List<Character> = emptyList(),
 )

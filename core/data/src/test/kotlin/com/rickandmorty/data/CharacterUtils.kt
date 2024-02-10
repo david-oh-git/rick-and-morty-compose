@@ -23,11 +23,11 @@
  */
 package com.rickandmorty.data
 
-import com.rickandmorty.data.model.entities.CharacterEntity
-import com.rickandmorty.data.model.entities.CharacterEpisodeEntity
-import com.rickandmorty.data.model.entities.CharacterLocationEntity
-import com.rickandmorty.data.model.entities.CharacterOriginEntity
-import com.rickandmorty.data.model.entities.CharacterResidentEntity
+import com.rickandmorty.data.db.entities.CharacterEntity
+import com.rickandmorty.data.db.entities.CharacterEpisodeEntity
+import com.rickandmorty.data.db.entities.CharacterLocationEntity
+import com.rickandmorty.data.db.entities.CharacterOriginEntity
+import com.rickandmorty.data.db.entities.CharacterResidentEntity
 
 private fun generateFirstName(): String = listOf(
     "Rick",

@@ -28,13 +28,13 @@ import androidx.paging.PagingSource
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
+import com.rickandmorty.data.db.entities.CharacterEntity
+import com.rickandmorty.data.db.entities.CharacterEpisodeEntity
+import com.rickandmorty.data.db.entities.CharacterLocationEntity
+import com.rickandmorty.data.db.entities.CharacterOriginEntity
+import com.rickandmorty.data.db.entities.CharacterResidentEntity
+import com.rickandmorty.data.db.entities.PageInfoEntity
 import com.rickandmorty.data.generateCharacters
-import com.rickandmorty.data.model.entities.CharacterEntity
-import com.rickandmorty.data.model.entities.CharacterEpisodeEntity
-import com.rickandmorty.data.model.entities.CharacterLocationEntity
-import com.rickandmorty.data.model.entities.CharacterOriginEntity
-import com.rickandmorty.data.model.entities.CharacterResidentEntity
-import com.rickandmorty.data.model.entities.PageInfoEntity
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -331,9 +331,10 @@ internal class RickAndMortyDatabaseTest {
                 ),
             ),
         )
+        val characters = listOf(rick, morty)
 
         // When/Act
-        characterDao.insertAll(listOf(rick, morty))
+        characterDao.insertAll(characters)
 
         // Then/Assert
 
@@ -349,7 +350,7 @@ internal class RickAndMortyDatabaseTest {
 
         assertThat(charactersResult).isNotNull()
         assertThat(charactersResult).isNotEmpty()
-        assertThat(charactersResult.size).isEqualTo(2)
+        assertThat(charactersResult.size).isEqualTo(characters.size)
     }
 
     @Test

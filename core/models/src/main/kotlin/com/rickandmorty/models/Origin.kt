@@ -21,9 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.rickandmorty.data.model
+package com.rickandmorty.models
 
-data class Episode(
+data class Origin(
     val id: String,
-    val name: String = "",
+    val name: String,
+    val dimension: String,
 )

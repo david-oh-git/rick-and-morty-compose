@@ -28,7 +28,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.rickandmorty.data.model.entities.CharacterEntity
+import com.rickandmorty.data.db.entities.CharacterEntity
 
 /**
  *  Data access object for [CharacterEntity]

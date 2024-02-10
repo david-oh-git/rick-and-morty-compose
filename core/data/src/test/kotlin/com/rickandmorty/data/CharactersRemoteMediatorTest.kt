@@ -32,7 +32,7 @@ import androidx.paging.RemoteMediator.MediatorResult
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.rickandmorty.data.db.RickAndMortyDatabase
-import com.rickandmorty.data.model.entities.CharacterEntity
+import com.rickandmorty.data.db.entities.CharacterEntity
 import com.rickandmorty.network.RickAndMortyApiService
 import kotlinx.coroutines.test.runTest
 import org.junit.Before

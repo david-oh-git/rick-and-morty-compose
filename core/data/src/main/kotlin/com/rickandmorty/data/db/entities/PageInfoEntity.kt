@@ -21,17 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.rickandmorty.data.model
+package com.rickandmorty.data.db.entities
 
-data class Character(
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.rickandmorty.models.PageInfo
+import com.rickandmorty.network.NetworkInfo
+
+@Entity(tableName = "page_info")
+data class PageInfoEntity(
+    @PrimaryKey
     val id: Int,
-    val name: String,
-    val status: String = "",
-    val imageUrl: String,
-    val species: String = "",
-    val type: String = "",
-    val gender: String = "",
-    val origin: Origin? = null,
-    val location: Location? = null,
-    val episodes: List<Episode> = emptyList(),
+    val pages: Int,
+    val count: Int,
+    val next: Int?,
+    val prev: Int?,
+)
+
+fun PageInfoEntity.toModel(): PageInfo = PageInfo(
+    id = this.id.toInt(),
+    pages = this.pages,
+    next = this.next,
+    prev = this.prev,
+)
+
+internal fun NetworkInfo.toEntity(id: String): PageInfoEntity = PageInfoEntity(
+    id = id.toInt(),
+    pages = this.pages,
+    next = this.next,
+    prev = this.prev,
+    count = this.count,
 )

@@ -29,9 +29,9 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.rickandmorty.data.db.RickAndMortyDatabase
-import com.rickandmorty.data.model.entities.CharacterEntity
-import com.rickandmorty.data.model.entities.PageInfoEntity
-import com.rickandmorty.data.model.entities.toEntity
+import com.rickandmorty.data.db.entities.CharacterEntity
+import com.rickandmorty.data.db.entities.PageInfoEntity
+import com.rickandmorty.data.db.entities.toEntity
 import com.rickandmorty.network.RickAndMortyApiService
 import java.io.IOException
 

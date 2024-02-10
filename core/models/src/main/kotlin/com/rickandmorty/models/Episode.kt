@@ -21,11 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.rickandmorty.data.model
+package com.rickandmorty.models
 
-data class PageInfo(
-    val id: Int,
-    val pages: Int,
-    val next: Int?,
-    val prev: Int?,
+data class Episode(
+    val id: String,
+    val name: String = "",
 )
