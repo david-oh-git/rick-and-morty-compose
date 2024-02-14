@@ -1,8 +1,19 @@
 #!/bin/sh
 echo "Running pre -commit checks..."
 
-JAVA_HOME="/usr/lib/jvm/java-17-openjdk-17.0.9.0.9-3.fc39.x86_64"
-export JAVA_HOME
+osname=$(uname -s)
+#check if mac os
+if [[ "$osname" == *"Darwin"* ]];
+  then
+  # use android studio's embedded java
+  export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" >> ~/.zshenv
+  #  source ~/.zshrc
+  source ~/.zshenv
+  echo $JAVA_HOME
+else
+  JAVA_HOME="/usr/lib/jvm/java-17-openjdk-17.0.9.0.9-3.fc39.x86_64"
+  export JAVA_HOME
+fi
 
 # add all staged files to an array
 staged_files=$(git diff --staged --name-only)
