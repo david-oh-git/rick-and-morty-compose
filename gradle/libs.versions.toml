@@ -29,6 +29,7 @@ kspVersion = "1.9.22-1.0.16"
 robolectricVersion = "4.11.1"
 testCoreVersion = "1.5.0"
 archCoreVersion = "2.2.0"
+navigation_version = "2.7.7"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -48,6 +49,9 @@ rickandmorty-android-application = { id = "rickandmorty.android.application", ve
 rickandmorty-android-application-compose = { id = "rickandmorty.android.application.compose", version = "unspecified" }
 
 [libraries]
+
+#Naivigation
+androidx-navigation-compose = { group = "androidx.navigation" , name = "navigation-compose", version.ref = "navigation_version" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
