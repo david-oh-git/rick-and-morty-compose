@@ -21,29 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package io.davidosemwota.rickandmorty
 
-pluginManagement {
-    includeBuild("plugin-build")
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+
+class MainActivityViewModel : ViewModel() {
+    private val _uiState = MutableStateFlow(MainActivityUiState())
+    val uiState: StateFlow<MainActivityUiState> = _uiState
 }
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-rootProject.name = "rickandmorty"
-
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-include(":app")
-include(":core:network")
-include(":core:testing")
-include(":core:data")
-include(":core:models")
-include(":features:characters")

@@ -21,29 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package io.davidosemwota.rickandmorty
 
-pluginManagement {
-    includeBuild("plugin-build")
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-rootProject.name = "rickandmorty"
-
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-include(":app")
-include(":core:network")
-include(":core:testing")
-include(":core:data")
-include(":core:models")
-include(":features:characters")
+data class MainActivityUiState(
+    val isFirstLaunch: Boolean = false,
+    val showBottomBar: Boolean = true,
+)

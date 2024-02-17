@@ -24,4 +24,7 @@
 <!-- -->
 <resources>
     <string name="app_name">RAM</string>
+    <string name="main_screen_bottom_nav_unselected_icon_desc">Bottom navigation bar unselected item icon</string>
+    <string name="main_screen_bottom_nav_selected_icon_desc">Bottom navigation bar selected item icon</string>
+    <string name="episodes">Episodes</string>
 </resources>

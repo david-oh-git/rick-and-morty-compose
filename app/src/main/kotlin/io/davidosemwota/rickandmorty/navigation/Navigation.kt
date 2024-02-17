@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2023   David Osemwota.
+ * Copyright (c) 2024   David Osemwota.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,43 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty
+package io.davidosemwota.rickandmorty.navigation
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import io.davidosemwota.rickandmorty.ui.RickAndMortyApp
-import io.davidosemwota.rickandmorty.ui.theme.RickAndMortyTheme
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 
-class MainActivity : ComponentActivity() {
-
-    val viewModel: MainActivityViewModel by viewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            RickAndMortyTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background,
-                ) {
-                    RickAndMortyApp()
-                }
-            }
-        }
-    }
-}
-
-@Preview(showBackground = true)
 @Composable
-fun AppPreview() {
-    RickAndMortyTheme {
-        RickAndMortyApp()
+fun RickAndMortyNavHost(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    startDestination: String = MainScreenDestinations.CHARACTERS.name,
+) {
+    NavHost(
+        modifier = modifier,
+        navController = navController,
+        startDestination = startDestination,
+    ) {
+        composable(MainScreenDestinations.CHARACTERS.name) {
+            Text("Characters screen")
+        }
+
+        composable(MainScreenDestinations.EPISODES.name) {
+            Text("Episodes screen")
+        }
     }
 }

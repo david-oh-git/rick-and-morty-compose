@@ -21,29 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package io.davidosemwota.rickandmorty.navigation
 
-pluginManagement {
-    includeBuild("plugin-build")
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
+import androidx.annotation.StringRes
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.outlined.Face
+import androidx.compose.material.icons.outlined.List
+import androidx.compose.ui.graphics.vector.ImageVector
+import io.davidosemwota.rickandmorty.R
+import io.davidosemwota.characters.R as characters
+
+enum class MainScreenDestinations(
+    @StringRes val iconTitleId: Int,
+    val selectedIcon: ImageVector,
+    val unSelectedIcon: ImageVector,
+) {
+    CHARACTERS(
+        iconTitleId = characters.string.feature_characters_title,
+        selectedIcon = Icons.Filled.Face,
+        unSelectedIcon = Icons.Outlined.Face,
+    ),
+    EPISODES(
+        iconTitleId = R.string.episodes,
+        selectedIcon = Icons.Filled.List,
+        unSelectedIcon = Icons.Outlined.List,
+    ),
 }
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-rootProject.name = "rickandmorty"
-
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-include(":app")
-include(":core:network")
-include(":core:testing")
-include(":core:data")
-include(":core:models")
-include(":features:characters")
