@@ -29,7 +29,7 @@ plugins {
 }
 
 android {
-    namespace = "com.rickandmorty.data"
+    namespace = "io.rickandmorty.data"
 
     testOptions.unitTests {
         isIncludeAndroidResources = true

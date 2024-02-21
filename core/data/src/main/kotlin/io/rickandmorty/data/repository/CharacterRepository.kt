@@ -21,34 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-    id("com.apollographql.apollo3")
-}
+package io.rickandmorty.data.repository
 
-android {
-    namespace = "com.rickandmorty.network"
+import androidx.paging.PagingData
+import com.rickandmorty.models.Character
+import kotlinx.coroutines.flow.Flow
 
-    buildFeatures {
-        buildConfig = true
-    }
-}
+interface CharacterRepository {
 
-dependencies {
-
-    implementation(libs.apollo3.lib)
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.okhttp.logging)
-
-    testImplementation(projects.core.testing)
-    testImplementation(libs.apollo3.mockserver)
-    testImplementation(libs.apollo3.test.support)
-}
-
-apollo {
-    service("rick-and-morty-service") {
-        packageName.set("io.davidosemwota.network.graphql")
-        generateDataBuilders.set(true)
-    }
+    /**
+     *  Get a paged list of [Character]s via paging3 library
+     */
+    fun getPagedCharacters(): Flow<PagingData<Character>>
 }

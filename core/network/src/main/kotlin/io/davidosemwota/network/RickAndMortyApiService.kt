@@ -21,34 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-    id("com.apollographql.apollo3")
-}
+package io.davidosemwota.network
 
-android {
-    namespace = "com.rickandmorty.network"
+interface RickAndMortyApiService {
 
-    buildFeatures {
-        buildConfig = true
-    }
-}
-
-dependencies {
-
-    implementation(libs.apollo3.lib)
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.okhttp.logging)
-
-    testImplementation(projects.core.testing)
-    testImplementation(libs.apollo3.mockserver)
-    testImplementation(libs.apollo3.test.support)
-}
-
-apollo {
-    service("rick-and-morty-service") {
-        packageName.set("io.davidosemwota.network.graphql")
-        generateDataBuilders.set(true)
-    }
+    suspend fun getCharacters(
+        page: Int? = null,
+        name: String? = null,
+        status: String? = null,
+        species: String? = null,
+        type: String? = null,
+        gender: String? = null,
+    ): NetworkCharacterListResponse
 }

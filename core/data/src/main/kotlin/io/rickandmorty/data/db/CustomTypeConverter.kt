@@ -21,34 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-    id("com.apollographql.apollo3")
-}
+package io.rickandmorty.data.db
 
-android {
-    namespace = "com.rickandmorty.network"
+import androidx.room.TypeConverter
+import io.rickandmorty.data.db.entities.CharacterEpisodeEntity
+import io.rickandmorty.data.db.entities.CharacterResidentEntity
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
-    buildFeatures {
-        buildConfig = true
-    }
-}
+class CustomTypeConverter {
 
-dependencies {
+    @TypeConverter
+    fun residentListToString(value: List<CharacterResidentEntity>): String =
+        Json.encodeToString(value)
 
-    implementation(libs.apollo3.lib)
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.okhttp.logging)
+    @TypeConverter
+    fun stringToListOfCharacterResident(value: String): List<CharacterResidentEntity> =
+        Json.decodeFromString(value)
 
-    testImplementation(projects.core.testing)
-    testImplementation(libs.apollo3.mockserver)
-    testImplementation(libs.apollo3.test.support)
-}
+    @TypeConverter
+    fun episodeListToString(value: List<CharacterEpisodeEntity>): String =
+        Json.encodeToString(value)
 
-apollo {
-    service("rick-and-morty-service") {
-        packageName.set("io.davidosemwota.network.graphql")
-        generateDataBuilders.set(true)
-    }
+    @TypeConverter
+    fun stringToListOfCharacterEpisode(value: String): List<CharacterEpisodeEntity> =
+        Json.decodeFromString(value)
 }

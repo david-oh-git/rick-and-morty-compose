@@ -21,34 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-    id("com.apollographql.apollo3")
-}
+package io.rickandmorty.data.db
 
-android {
-    namespace = "com.rickandmorty.network"
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import io.rickandmorty.data.db.entities.CharacterEntity
+import io.rickandmorty.data.db.entities.PageInfoEntity
 
-    buildFeatures {
-        buildConfig = true
-    }
-}
+@Database(
+    entities = [ PageInfoEntity::class, CharacterEntity::class],
+    version = 1,
+    exportSchema = false,
+)
+@TypeConverters(CustomTypeConverter::class)
+abstract class RickAndMortyDatabase : RoomDatabase() {
 
-dependencies {
+    abstract fun pageInfoDao(): PageInfoDao
 
-    implementation(libs.apollo3.lib)
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.okhttp.logging)
-
-    testImplementation(projects.core.testing)
-    testImplementation(libs.apollo3.mockserver)
-    testImplementation(libs.apollo3.test.support)
-}
-
-apollo {
-    service("rick-and-morty-service") {
-        packageName.set("io.davidosemwota.network.graphql")
-        generateDataBuilders.set(true)
-    }
+    abstract fun characterDao(): CharacterDao
 }

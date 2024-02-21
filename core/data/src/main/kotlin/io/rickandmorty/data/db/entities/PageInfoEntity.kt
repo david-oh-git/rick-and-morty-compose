@@ -21,34 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-    id("com.apollographql.apollo3")
-}
+package io.rickandmorty.data.db.entities
 
-android {
-    namespace = "com.rickandmorty.network"
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.rickandmorty.models.PageInfo
+import io.davidosemwota.network.NetworkInfo
 
-    buildFeatures {
-        buildConfig = true
-    }
-}
+@Entity(tableName = "page_info")
+data class PageInfoEntity(
+    @PrimaryKey
+    val id: Int,
+    val pages: Int,
+    val count: Int,
+    val next: Int?,
+    val prev: Int?,
+)
 
-dependencies {
+fun PageInfoEntity.toModel(): PageInfo = PageInfo(
+    id = this.id.toInt(),
+    pages = this.pages,
+    next = this.next,
+    prev = this.prev,
+)
 
-    implementation(libs.apollo3.lib)
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.okhttp.logging)
-
-    testImplementation(projects.core.testing)
-    testImplementation(libs.apollo3.mockserver)
-    testImplementation(libs.apollo3.test.support)
-}
-
-apollo {
-    service("rick-and-morty-service") {
-        packageName.set("io.davidosemwota.network.graphql")
-        generateDataBuilders.set(true)
-    }
-}
+internal fun NetworkInfo.toEntity(id: String): PageInfoEntity = PageInfoEntity(
+    id = id.toInt(),
+    pages = this.pages,
+    next = this.next,
+    prev = this.prev,
+    count = this.count,
+)

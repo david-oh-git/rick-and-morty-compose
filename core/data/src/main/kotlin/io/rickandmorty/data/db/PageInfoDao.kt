@@ -21,34 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-    id("com.apollographql.apollo3")
-}
+package io.rickandmorty.data.db
 
-android {
-    namespace = "com.rickandmorty.network"
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import io.rickandmorty.data.db.entities.PageInfoEntity
 
-    buildFeatures {
-        buildConfig = true
-    }
-}
+/**
+ * DAO for [PageInfoEntity]
+ */
+@Dao
+interface PageInfoDao {
 
-dependencies {
+    /**
+     * Adds a list of items to the DB
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(pageInfoList: List<PageInfoEntity>)
 
-    implementation(libs.apollo3.lib)
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.okhttp.logging)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(pageInfo: PageInfoEntity)
 
-    testImplementation(projects.core.testing)
-    testImplementation(libs.apollo3.mockserver)
-    testImplementation(libs.apollo3.test.support)
-}
+    /**
+     * Searches for an item from the DB, returns null
+     *
+     * @param id Unique id for the item
+     */
+    @Query("SELECT * FROM page_info WHERE id = :id")
+    suspend fun getPageInfo(id: Int): PageInfoEntity?
 
-apollo {
-    service("rick-and-morty-service") {
-        packageName.set("io.davidosemwota.network.graphql")
-        generateDataBuilders.set(true)
-    }
+    /**
+     * Delete table/all items from DB
+     */
+    @Query("DELETE FROM page_info")
+    suspend fun clearAllPageInfo()
+
+    @Query("SELECT * FROM page_info ORDER by id")
+    fun getAllItems(): List<PageInfoEntity>
 }
