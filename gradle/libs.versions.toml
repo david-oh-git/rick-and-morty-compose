@@ -47,6 +47,8 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
 rickandmorty-android-library = { id = "rickandmorty.android.library", version = "unspecified" }
 rickandmorty-android-application = { id = "rickandmorty.android.application", version = "unspecified" }
 rickandmorty-android-application-compose = { id = "rickandmorty.android.application.compose", version = "unspecified" }
+rickandmorty-feature-library = { id = "rickandmorty.android.feature.library", version = "unspecified" }
+rickandmorty-compose-library = { id = "rickandmorty.android.compose.library", version = "unspecified" }
 
 [libraries]
 
