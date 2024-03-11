@@ -25,12 +25,14 @@ package io.davidosemwota.rickandmorty.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import io.davidosemwota.rickandmorty.R
 
 // Set of Material typography styles to start with
-val Typography = Typography(
+private val defaultTypography = Typography(
     bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
@@ -54,4 +56,31 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
+)
+
+private val poppins = FontFamily(
+    Font(R.font.poppins_regular),
+    Font(R.font.poppins_light),
+    Font(R.font.poppins_medium),
+    Font(R.font.poppins_bold),
+    Font(R.font.poppins_italic),
+    Font(R.font.poppins_semi_bold),
+)
+
+val poppinsTypography = Typography(
+    displayLarge = defaultTypography.displayLarge.copy(fontFamily = poppins),
+    displayMedium = defaultTypography.displayMedium.copy(fontFamily = poppins),
+    displaySmall = defaultTypography.displaySmall.copy(fontFamily = poppins),
+    headlineLarge = defaultTypography.headlineLarge.copy(fontFamily = poppins),
+    bodyLarge = defaultTypography.bodyLarge.copy(fontFamily = poppins),
+    bodyMedium = defaultTypography.bodyMedium.copy(fontFamily = poppins),
+    bodySmall = defaultTypography.bodySmall.copy(fontFamily = poppins),
+    headlineMedium = defaultTypography.headlineMedium.copy(fontFamily = poppins),
+    headlineSmall = defaultTypography.headlineSmall.copy(fontFamily = poppins),
+    labelLarge = defaultTypography.labelLarge.copy(fontFamily = poppins),
+    labelMedium = defaultTypography.labelMedium.copy(fontFamily = poppins),
+    labelSmall = defaultTypography.labelSmall.copy(fontFamily = poppins),
+    titleLarge = defaultTypography.titleLarge.copy(fontFamily = poppins),
+    titleMedium = defaultTypography.titleMedium.copy(fontFamily = poppins),
+    titleSmall = defaultTypography.titleSmall.copy(fontFamily = poppins),
 )
