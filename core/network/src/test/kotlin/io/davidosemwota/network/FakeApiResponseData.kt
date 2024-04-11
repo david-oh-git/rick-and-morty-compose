@@ -23,12 +23,12 @@
  */
 package io.davidosemwota.network
 
-import io.davidosemwota.rickandmorty.network.graphql.CharacterListQuery
-import io.davidosemwota.rickandmorty.network.graphql.type.buildCharacter
-import io.davidosemwota.rickandmorty.network.graphql.type.buildCharacters
-import io.davidosemwota.rickandmorty.network.graphql.type.buildEpisode
-import io.davidosemwota.rickandmorty.network.graphql.type.buildInfo
-import io.davidosemwota.rickandmorty.network.graphql.type.buildLocation
+import io.davidosemwota.network.graphql.CharacterListQuery
+import io.davidosemwota.network.graphql.type.buildCharacter
+import io.davidosemwota.network.graphql.type.buildCharacters
+import io.davidosemwota.network.graphql.type.buildEpisode
+import io.davidosemwota.network.graphql.type.buildInfo
+import io.davidosemwota.network.graphql.type.buildLocation
 
 object FakeApiResponseData {
 

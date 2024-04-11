@@ -38,11 +38,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
+import io.davidosemwota.characters.navigation.CHARACTERS_ROUTE
+import io.davidosemwota.characters.navigation.navigateToCharacters
 import io.davidosemwota.rickandmorty.R
 import io.davidosemwota.rickandmorty.navigation.MainScreenDestinations
 import io.davidosemwota.rickandmorty.navigation.RickAndMortyNavHost
@@ -79,21 +83,23 @@ private fun RickAndMortyBottomNavigation(
             .clip(shape = RoundedCornerShape(8.dp)),
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination
+
+        val currentDestination: NavDestination? = navController
+            .currentBackStackEntryAsState().value?.destination
+
+        val currentTopLevelDestination: MainScreenDestinations? = when (currentDestination?.route) {
+            CHARACTERS_ROUTE -> MainScreenDestinations.CHARACTERS
+            MainScreenDestinations.EPISODES.name -> MainScreenDestinations.EPISODES
+            else -> null
+        }
 
         destinations.forEach { destination ->
             val selected = currentDestination?.hierarchy?.any { it.route?.contains(destination.name, true) ?: false } ?: false
             val icon = if (selected) destination.selectedIcon else destination.unSelectedIcon
             NavigationBarItem(
-                selected = currentDestination?.hierarchy?.any { it.route?.contains(destination.name, true) ?: false } ?: false,
+                selected = selected,
                 onClick = {
-                    navController.navigate(destination.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navigateToTopLevelDestination(navController, destination)
                 },
                 icon = {
                     Icon(
@@ -105,5 +111,23 @@ private fun RickAndMortyBottomNavigation(
 
             )
         }
+    }
+}
+
+fun navigateToTopLevelDestination(
+    navController: NavHostController,
+    bottomBarDestination: MainScreenDestinations,
+) {
+    val bottomBarNavOptions = navOptions {
+        popUpTo(navController.graph.findStartDestination().id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
+
+    when (bottomBarDestination) {
+        MainScreenDestinations.CHARACTERS -> navController.navigateToCharacters(bottomBarNavOptions)
+        else -> navController.navigate(bottomBarDestination.name, bottomBarNavOptions)
     }
 }

@@ -21,31 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.navigation
+package io.davidosemwota.characters.navigation
 
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import io.davidosemwota.characters.navigation.CHARACTERS_ROUTE
-import io.davidosemwota.characters.navigation.charactersScreen
+import io.davidosemwota.characters.CharactersRoute
 
-@Composable
-fun RickAndMortyNavHost(
-    modifier: Modifier = Modifier,
-    navController: NavHostController,
-    startDestination: String = CHARACTERS_ROUTE,
-) {
-    NavHost(
-        modifier = modifier,
-        navController = navController,
-        startDestination = startDestination,
+const val CHARACTERS_ROUTE = "characters"
+
+fun NavController.navigateToCharacters(navOptions: NavOptions) = navigate(CHARACTERS_ROUTE, navOptions)
+
+fun NavGraphBuilder.charactersScreen() {
+    composable(
+        route = CHARACTERS_ROUTE,
     ) {
-        charactersScreen()
-        composable(MainScreenDestinations.EPISODES.name) {
-            Text("Episodes screen")
-        }
+        CharactersRoute()
     }
 }

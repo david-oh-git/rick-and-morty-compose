@@ -30,6 +30,7 @@ robolectricVersion = "4.11.1"
 testCoreVersion = "1.5.0"
 archCoreVersion = "2.2.0"
 navigation_version = "2.7.7"
+datastore = "1.0.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -80,6 +81,7 @@ androidx-paging = { group = "androidx.paging", name = "paging-runtime", version.
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "pagingVersionCompose"}
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlinAndroidPlugin" }
 kotlin-coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 
 kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin_serialization_version" }
 room = { group = "androidx.room", name = "room-runtime", version.ref = "roomVersion" }

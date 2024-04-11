@@ -21,31 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.navigation
+package io.davidosemwota.characters
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import io.davidosemwota.characters.navigation.CHARACTERS_ROUTE
-import io.davidosemwota.characters.navigation.charactersScreen
 
 @Composable
-fun RickAndMortyNavHost(
-    modifier: Modifier = Modifier,
-    navController: NavHostController,
-    startDestination: String = CHARACTERS_ROUTE,
-) {
-    NavHost(
-        modifier = modifier,
-        navController = navController,
-        startDestination = startDestination,
-    ) {
-        charactersScreen()
-        composable(MainScreenDestinations.EPISODES.name) {
-            Text("Episodes screen")
-        }
-    }
+fun CharactersRoute() {
+    Text(
+        text = "Characters screen",
+        style = MaterialTheme.typography.titleLarge,
+    )
 }

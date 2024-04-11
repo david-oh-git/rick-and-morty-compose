@@ -29,7 +29,7 @@ import com.apollographql.apollo3.api.Error
 import com.apollographql.apollo3.testing.QueueTestNetworkTransport
 import com.apollographql.apollo3.testing.enqueueTestResponse
 import com.google.common.truth.Truth.assertThat
-import io.davidosemwota.rickandmorty.network.graphql.CharacterListQuery
+import io.davidosemwota.network.graphql.CharacterListQuery
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
