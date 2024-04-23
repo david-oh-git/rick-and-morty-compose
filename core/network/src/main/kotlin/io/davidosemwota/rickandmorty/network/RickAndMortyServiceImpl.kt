@@ -21,14 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.network
+package io.davidosemwota.rickandmorty.network
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import io.davidosemwota.network.graphql.CharacterListQuery
 import io.davidosemwota.network.graphql.type.FilterCharacter
+import javax.inject.Inject
 
-class RickAndMortyServiceImpl constructor(
+class RickAndMortyServiceImpl @Inject constructor(
     private val apolloClient: ApolloClient = ApolloFactory.provideApolloClient(),
 ) : RickAndMortyApiService {
 
