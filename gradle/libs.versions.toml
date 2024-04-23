@@ -31,11 +31,13 @@ testCoreVersion = "1.5.0"
 archCoreVersion = "2.2.0"
 navigation_version = "2.7.7"
 datastore = "1.0.0"
+hilt = "2.50"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinAndroidPlugin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinAndroidPlugin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
 spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint" ,version.ref = "jlleitschuh-ktlint" }
@@ -50,6 +52,7 @@ rickandmorty-android-application = { id = "rickandmorty.android.application", ve
 rickandmorty-android-application-compose = { id = "rickandmorty.android.application.compose", version = "unspecified" }
 rickandmorty-feature-library = { id = "rickandmorty.android.feature.library", version = "unspecified" }
 rickandmorty-compose-library = { id = "rickandmorty.android.compose.library", version = "unspecified" }
+rickandmorty-dagger-hilt = { id = "rickandmorty.android.dagger.hilt", version = "unspecified" }
 
 [libraries]
 
@@ -82,6 +85,10 @@ androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", 
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlinAndroidPlugin" }
 kotlin-coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 
 kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin_serialization_version" }
 room = { group = "androidx.room", name = "room-runtime", version.ref = "roomVersion" }
