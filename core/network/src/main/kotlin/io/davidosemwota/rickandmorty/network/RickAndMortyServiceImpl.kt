@@ -25,8 +25,8 @@ package io.davidosemwota.rickandmorty.network
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
-import io.davidosemwota.network.graphql.CharacterListQuery
-import io.davidosemwota.network.graphql.type.FilterCharacter
+import io.davidosemwota.rickandmorty.network.graphql.CharacterListQuery
+import io.davidosemwota.rickandmorty.network.graphql.type.FilterCharacter
 import javax.inject.Inject
 
 class RickAndMortyServiceImpl @Inject constructor(

@@ -23,7 +23,7 @@
  */
 package io.davidosemwota.rickandmorty.network
 
-import io.davidosemwota.network.graphql.CharacterListQuery
+import io.davidosemwota.rickandmorty.network.graphql.CharacterListQuery
 
 data class NetworkCharacterListResponse(
     val info: NetworkInfo? = null,

@@ -21,16 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-}
+package io.davidosemwota.rickandmorty.characters
 
-android {
-    namespace = "io.davidosemwota.rickandmorty.testing"
-}
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
+import io.davidosemwota.rickandmorty.domain.GetCharactersUseCase
 
-dependencies {
+class CharactersViewModel constructor(
+    private val getCharactersUseCase: GetCharactersUseCase,
+) : ViewModel() {
 
-    api(libs.bundles.test.impl)
+    val characterPager = getCharactersUseCase()
+        .cachedIn(viewModelScope)
 }

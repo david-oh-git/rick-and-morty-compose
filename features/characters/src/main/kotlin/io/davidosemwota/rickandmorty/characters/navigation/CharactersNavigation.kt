@@ -21,16 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-}
+package io.davidosemwota.rickandmorty.characters.navigation
 
-android {
-    namespace = "io.davidosemwota.rickandmorty.testing"
-}
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
+import androidx.navigation.compose.composable
+import io.davidosemwota.rickandmorty.characters.CharactersRoute
 
-dependencies {
+const val CHARACTERS_ROUTE = "characters"
 
-    api(libs.bundles.test.impl)
+fun NavController.navigateToCharacters(navOptions: NavOptions) = navigate(CHARACTERS_ROUTE, navOptions)
+
+fun NavGraphBuilder.charactersScreen() {
+    composable(
+        route = CHARACTERS_ROUTE,
+    ) {
+        CharactersRoute()
+    }
 }

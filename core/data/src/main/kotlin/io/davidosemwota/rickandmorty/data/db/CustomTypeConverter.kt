@@ -21,16 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-}
+package io.davidosemwota.rickandmorty.data.db
 
-android {
-    namespace = "io.davidosemwota.rickandmorty.testing"
-}
+import androidx.room.TypeConverter
+import io.davidosemwota.rickandmorty.data.db.entities.CharacterEpisodeEntity
+import io.davidosemwota.rickandmorty.data.db.entities.CharacterResidentEntity
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
-dependencies {
+class CustomTypeConverter {
 
-    api(libs.bundles.test.impl)
+    @TypeConverter
+    fun residentListToString(value: List<CharacterResidentEntity>): String =
+        Json.encodeToString(value)
+
+    @TypeConverter
+    fun stringToListOfCharacterResident(value: String): List<CharacterResidentEntity> =
+        Json.decodeFromString(value)
+
+    @TypeConverter
+    fun episodeListToString(value: List<CharacterEpisodeEntity>): String =
+        Json.encodeToString(value)
+
+    @TypeConverter
+    fun stringToListOfCharacterEpisode(value: String): List<CharacterEpisodeEntity> =
+        Json.decodeFromString(value)
 }

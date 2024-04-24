@@ -29,7 +29,7 @@ plugins {
 }
 
 android {
-    namespace = "io.rickandmorty.data"
+    namespace = "io.davidosemwota.rickandmorty.data"
 
     testOptions.unitTests {
         isIncludeAndroidResources = true
@@ -39,7 +39,7 @@ android {
 
 dependencies {
     implementation(projects.core.network)
-    implementation(projects.core.models)
+    api(projects.core.models)
 
     implementation(libs.room)
     ksp(libs.room.compiler)

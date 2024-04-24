@@ -21,16 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-}
+package io.davidosemwota.rickandmorty.data.repository
 
-android {
-    namespace = "io.davidosemwota.rickandmorty.testing"
-}
+import androidx.paging.PagingData
+import io.davidosemwota.rickandmorty.models.Character
+import kotlinx.coroutines.flow.Flow
 
-dependencies {
+interface CharacterRepository {
 
-    api(libs.bundles.test.impl)
+    /**
+     *  Get a paged list of [Character]s via paging3 library
+     */
+    fun getPagedCharacters(): Flow<PagingData<Character>>
 }

@@ -21,16 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-}
+package io.davidosemwota.rickandmorty.data.db.entities
 
-android {
-    namespace = "io.davidosemwota.rickandmorty.testing"
-}
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import io.davidosemwota.rickandmorty.models.PageInfo
+import io.davidosemwota.rickandmorty.network.NetworkInfo
 
-dependencies {
+@Entity(tableName = "page_info")
+data class PageInfoEntity(
+    @PrimaryKey
+    val id: Int,
+    val pages: Int,
+    val count: Int,
+    val next: Int?,
+    val prev: Int?,
+)
 
-    api(libs.bundles.test.impl)
-}
+fun PageInfoEntity.toModel(): PageInfo = PageInfo(
+    id = this.id.toInt(),
+    pages = this.pages,
+    next = this.next,
+    prev = this.prev,
+)
+
+internal fun NetworkInfo.toEntity(id: String): PageInfoEntity = PageInfoEntity(
+    id = id.toInt(),
+    pages = this.pages,
+    next = this.next,
+    prev = this.prev,
+    count = this.count,
+)

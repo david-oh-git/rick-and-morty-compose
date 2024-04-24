@@ -21,16 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-}
+package io.davidosemwota.rickandmorty.data.repository
 
-android {
-    namespace = "io.davidosemwota.rickandmorty.testing"
-}
+import android.content.Context
+import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
+import io.davidosemwota.rickandmorty.data.db.RickAndMortyDatabase
+import io.davidosemwota.rickandmorty.network.RickAndMortyApiService
+import org.junit.Before
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
-dependencies {
+@RunWith(RobolectricTestRunner::class)
+internal class CharacterRepositoryTest {
 
-    api(libs.bundles.test.impl)
+    private lateinit var rickAndMortyDatabase: RickAndMortyDatabase
+    private lateinit var rickAndMortyApiService: RickAndMortyApiService
+
+    @Before
+    fun setUp() {
+        val applicationContext = ApplicationProvider.getApplicationContext<Context>()
+
+        rickAndMortyDatabase = Room.inMemoryDatabaseBuilder(
+            applicationContext,
+            RickAndMortyDatabase::class.java,
+        ).allowMainThreadQueries().build()
+    }
 }

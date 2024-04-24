@@ -21,16 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-}
+package io.davidosemwota.rickandmorty.models
 
-android {
-    namespace = "io.davidosemwota.rickandmorty.testing"
-}
-
-dependencies {
-
-    api(libs.bundles.test.impl)
-}
+data class Character(
+    val id: Int,
+    val name: String,
+    val status: String = "",
+    val imageUrl: String,
+    val species: String = "",
+    val type: String = "",
+    val gender: String = "",
+    val origin: Origin? = null,
+    val location: Location? = null,
+    val episodes: List<Episode> = emptyList(),
+)

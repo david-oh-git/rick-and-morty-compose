@@ -21,16 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-}
+package io.davidosemwota.rickandmorty.data.model.entities
 
-android {
-    namespace = "io.davidosemwota.rickandmorty.testing"
-}
+import com.google.common.truth.Truth.assertThat
+import io.davidosemwota.rickandmorty.data.db.entities.PageInfoEntity
+import io.davidosemwota.rickandmorty.data.db.entities.toModel
+import kotlinx.coroutines.test.runTest
+import org.junit.Test
 
-dependencies {
+class PageInfoEntityTest {
 
-    api(libs.bundles.test.impl)
+    @Test
+    fun pageInfoEntityToModelExtention_verifyResult() = runTest {
+        // Given/Arrange
+        val id = 3
+        val pages: Int = 30
+        val next: Int = 4
+        val prev: Int = 3
+        val pageInfoEntity = PageInfoEntity(
+            id = id,
+            pages = pages,
+            next = next,
+            prev = prev,
+            count = 20,
+        )
+
+        // When/Act
+        val result = pageInfoEntity.toModel()
+
+        // Then/Assert
+        assertThat(result).isNotNull()
+        assertThat(result.id).isEqualTo(pageInfoEntity.id.toInt())
+        assertThat(result.pages).isEqualTo(pageInfoEntity.pages)
+        assertThat(result.next).isEqualTo(pageInfoEntity.next)
+        assertThat(result.prev).isEqualTo(pageInfoEntity.prev)
+    }
 }

@@ -21,16 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-}
+package io.davidosemwota.rickandmorty.characters
 
-android {
-    namespace = "io.davidosemwota.rickandmorty.testing"
-}
+import androidx.compose.runtime.Composable
 
-dependencies {
-
-    api(libs.bundles.test.impl)
+@Composable
+fun CharactersRoute() {
+//    val characters = viewModel.characterPager.collectAsLazyPagingItems()
+//    Text(
+//        text = "Characters screen",
+//        style = MaterialTheme.typography.titleLarge,
+//    )
+//    when (characters.loadState.refresh) {
+//        LoadState.Loading -> {
+//        }
+//        is LoadState.Error -> {
+//        }
+//        else -> {
+//            LazyColumn {
+//                items(characters.itemCount) { index ->
+//
+//                    characters[index]?.name?.let {
+//                        Text(
+//                            text = it,
+//                            style = MaterialTheme.typography.titleLarge,
+//                        )
+//                    }
+//                }
+//            }
+//        }
+//    }
 }

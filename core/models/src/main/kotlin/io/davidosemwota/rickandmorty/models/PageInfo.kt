@@ -21,16 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-}
+package io.davidosemwota.rickandmorty.models
 
-android {
-    namespace = "io.davidosemwota.rickandmorty.testing"
-}
-
-dependencies {
-
-    api(libs.bundles.test.impl)
-}
+data class PageInfo(
+    val id: Int,
+    val pages: Int,
+    val next: Int?,
+    val prev: Int?,
+)

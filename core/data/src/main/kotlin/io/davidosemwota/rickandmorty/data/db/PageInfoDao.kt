@@ -21,16 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-}
+package io.davidosemwota.rickandmorty.data.db
 
-android {
-    namespace = "io.davidosemwota.rickandmorty.testing"
-}
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import io.davidosemwota.rickandmorty.data.db.entities.PageInfoEntity
 
-dependencies {
+/**
+ * DAO for [PageInfoEntity]
+ */
+@Dao
+interface PageInfoDao {
 
-    api(libs.bundles.test.impl)
+    /**
+     * Adds a list of items to the DB
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(pageInfoList: List<PageInfoEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(pageInfo: PageInfoEntity)
+
+    /**
+     * Searches for an item from the DB, returns null
+     *
+     * @param id Unique id for the item
+     */
+    @Query("SELECT * FROM page_info WHERE id = :id")
+    suspend fun getPageInfo(id: Int): PageInfoEntity?
+
+    /**
+     * Delete table/all items from DB
+     */
+    @Query("DELETE FROM page_info")
+    suspend fun clearAllPageInfo()
+
+    @Query("SELECT * FROM page_info ORDER by id")
+    fun getAllItems(): List<PageInfoEntity>
 }
