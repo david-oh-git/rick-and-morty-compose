@@ -23,32 +23,117 @@
  */
 package io.davidosemwota.rickandmorty.characters
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
 
 @Composable
-fun CharactersRoute() {
-//    val characters = viewModel.characterPager.collectAsLazyPagingItems()
-//    Text(
-//        text = "Characters screen",
-//        style = MaterialTheme.typography.titleLarge,
-//    )
-//    when (characters.loadState.refresh) {
-//        LoadState.Loading -> {
-//        }
-//        is LoadState.Error -> {
-//        }
-//        else -> {
-//            LazyColumn {
-//                items(characters.itemCount) { index ->
-//
-//                    characters[index]?.name?.let {
-//                        Text(
-//                            text = it,
-//                            style = MaterialTheme.typography.titleLarge,
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//    }
+fun CharactersRoute(
+    viewModel: CharactersViewModel = hiltViewModel(),
+) {
+    val characters = viewModel.charactersPagingDataState.collectAsLazyPagingItems()
+
+    LazyColumn {
+        items(characters.itemCount) { index ->
+            val character = characters[index]
+            character?.let {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = it.name,
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                    Text(
+                        text = it.status,
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                }
+            }
+        }
+
+        characters.apply {
+            val pagingItems = this
+
+            when {
+                loadState.refresh is LoadState.Loading -> {
+                    item {
+                        Column(
+                            modifier = Modifier
+                                .fillParentMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.width(64.dp),
+                                color = MaterialTheme.colorScheme.secondary,
+                            )
+                        }
+                    }
+                }
+
+                loadState.refresh is LoadState.Error -> {
+                    val error = characters.loadState.refresh as LoadState.Error
+                    item {
+                        Column(
+                            modifier = Modifier
+                                .fillParentMaxHeight()
+                                .fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            Text(text = error.error.message ?: "Default error meg HERE")
+                            Spacer(modifier = Modifier)
+                            Button(
+                                onClick = {
+                                    pagingItems.retry()
+                                },
+                            ) {
+                                Text(text = "Error loading extra items")
+                            }
+                        }
+                    }
+                }
+
+                loadState.append is LoadState.Loading -> {
+                    item {
+                        Text("Loading extra items")
+                    }
+                }
+
+                loadState.append is LoadState.Error -> {
+                    val error = characters.loadState.refresh as LoadState.Error
+                    item {
+                        Column {
+                            Text(text = error.error.message ?: "Default error meg HERE")
+                            Spacer(modifier = Modifier)
+                            Button(
+                                onClick = {
+                                    pagingItems.retry()
+                                },
+                            ) {
+                                Text(text = "Error loading extra items")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

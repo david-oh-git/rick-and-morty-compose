@@ -30,7 +30,7 @@ import io.davidosemwota.rickandmorty.network.graphql.type.FilterCharacter
 import javax.inject.Inject
 
 class RickAndMortyServiceImpl @Inject constructor(
-    private val apolloClient: ApolloClient = ApolloFactory.provideApolloClient(),
+    private val apolloClient: ApolloClient,
 ) : RickAndMortyApiService {
 
     override suspend fun getCharacters(

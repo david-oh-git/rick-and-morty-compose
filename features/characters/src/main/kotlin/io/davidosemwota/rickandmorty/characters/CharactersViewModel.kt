@@ -26,12 +26,17 @@ package io.davidosemwota.rickandmorty.characters
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.davidosemwota.rickandmorty.domain.GetCharactersUseCase
+import kotlinx.coroutines.flow.distinctUntilChanged
+import javax.inject.Inject
 
-class CharactersViewModel constructor(
-    private val getCharactersUseCase: GetCharactersUseCase,
+@HiltViewModel
+class CharactersViewModel @Inject constructor(
+    getCharactersUseCase: GetCharactersUseCase,
 ) : ViewModel() {
 
-    val characterPager = getCharactersUseCase()
+    val charactersPagingDataState = getCharactersUseCase()
+        .distinctUntilChanged()
         .cachedIn(viewModelScope)
 }

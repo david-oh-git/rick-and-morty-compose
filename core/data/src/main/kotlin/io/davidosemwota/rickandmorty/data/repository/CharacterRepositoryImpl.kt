@@ -35,14 +35,12 @@ import io.davidosemwota.rickandmorty.models.Character
 import io.davidosemwota.rickandmorty.network.RickAndMortyApiService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class CharacterRepositoryImpl constructor(
+class CharacterRepositoryImpl @Inject constructor(
     private val database: RickAndMortyDatabase,
     private val service: RickAndMortyApiService,
-    private val pagingConfig: PagingConfig = PagingConfig(
-        pageSize = PAGE_SIZE,
-        enablePlaceholders = false,
-    ),
+    private val pagingConfig: PagingConfig,
 ) : CharacterRepository {
 
     @OptIn(ExperimentalPagingApi::class)
@@ -60,9 +58,5 @@ class CharacterRepositoryImpl constructor(
                 it.toUiModel()
             }
         }
-    }
-
-    companion object {
-        const val PAGE_SIZE = 25
     }
 }
