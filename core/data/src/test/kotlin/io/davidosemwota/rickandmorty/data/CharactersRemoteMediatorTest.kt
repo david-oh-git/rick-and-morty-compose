@@ -35,6 +35,7 @@ import io.davidosemwota.rickandmorty.data.db.RickAndMortyDatabase
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
 import io.davidosemwota.rickandmorty.network.RickAndMortyApiService
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -58,6 +59,11 @@ internal class CharactersRemoteMediatorTest {
             applicationContext,
             RickAndMortyDatabase::class.java,
         ).allowMainThreadQueries().build()
+    }
+
+    @After
+    fun reset() {
+        rickAndMortyDatabase.close()
     }
 
     @Test

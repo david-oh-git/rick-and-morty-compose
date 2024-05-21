@@ -24,19 +24,30 @@
 package io.davidosemwota.rickandmorty.data.repository
 
 import android.content.Context
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.testing.asSnapshot
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import io.davidosemwota.rickandmorty.data.FakeApiService
 import io.davidosemwota.rickandmorty.data.db.RickAndMortyDatabase
+import io.davidosemwota.rickandmorty.models.Character
 import io.davidosemwota.rickandmorty.network.RickAndMortyApiService
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 internal class CharacterRepositoryTest {
 
     private lateinit var rickAndMortyDatabase: RickAndMortyDatabase
     private lateinit var rickAndMortyApiService: RickAndMortyApiService
+    private lateinit var characterRepository: CharacterRepository
 
     @Before
     fun setUp() {
@@ -46,5 +57,41 @@ internal class CharacterRepositoryTest {
             applicationContext,
             RickAndMortyDatabase::class.java,
         ).allowMainThreadQueries().build()
+    }
+
+    @After
+    fun reset() {
+        rickAndMortyDatabase.close()
+    }
+
+    @Test
+    fun test() = runTest {
+        // TODO unsure how to test this properly
+        // Given/Arrange
+        rickAndMortyApiService = FakeApiService.getNetworkResponseSuccess(
+            numberOfCharacters = 10,
+        )
+        val pagingConfig = PagingConfig(
+            pageSize = 5,
+            enablePlaceholders = false,
+        )
+        characterRepository = CharacterRepositoryImpl(
+            rickAndMortyDatabase,
+            rickAndMortyApiService,
+            pagingConfig,
+        )
+
+        val characters: Flow<PagingData<Character>> = characterRepository.getPagedCharacters()
+
+        val snapshot: List<Character> = characters.asSnapshot {
+            scrollTo(index = 0)
+        }
+        // When/Act
+
+        // Then/Assert
+        assertEquals(
+            expected = 9,
+            actual = snapshot.size,
+        )
     }
 }

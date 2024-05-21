@@ -36,6 +36,28 @@ import java.io.IOException
 
 object FakeApiService {
 
+    private val names: List<String> = listOf(
+        "Rick",
+        "Andrea",
+        "Shola",
+        "Bukky",
+        "Elo",
+        "Oma",
+        "Nedu",
+        "Akpan",
+        "Morty",
+    )
+
+    private val lastNames: List<String> = listOf(
+        "Davenport",
+        "Smith",
+        "Osemwota",
+        "Juniper",
+        "Cisco",
+    )
+
+    private val ids: List<String> = (1..100).map { it.toString() }
+
     private val info = NetworkInfo(
         count = 826,
         pages = 40,
@@ -68,6 +90,44 @@ object FakeApiService {
         ),
     )
 
+    private fun generateRandomCharacter(
+        id: String,
+        name: String = "${names.random()} ${lastNames.random()}",
+    ): NetworkCharacter {
+        if (id == "1") {
+            return rickSanchez
+        }
+        if (id == "2") {
+            return morty
+        }
+
+        return NetworkCharacter(
+            id = "1",
+            image = "https:LINK_TO_IMAGE",
+            name = "Rick Sanchez",
+            status = "Alive",
+            species = "Human",
+            gender = "Male",
+            origin = NetworkOrigin(
+                id = "1",
+                name = "Earth (c-137)",
+                dimension = "Dimension c-137",
+            ),
+            location = NetworkLocation(
+                id = "3",
+                name = "Citadel of ricks",
+                dimension = "unknown",
+                residents = listOf(
+                    NetworkResident(
+                        id = "2",
+                        name = "Morty Smith",
+                        image = "http IMAGE URL",
+                    ),
+                ),
+            ),
+        )
+    }
+
     private val morty = rickSanchez.copy(
         id = "2",
         name = "Morty Smith",
@@ -99,11 +159,42 @@ object FakeApiService {
             type: String?,
             gender: String?,
         ): NetworkCharacterListResponse {
+            val characters = mutableListOf<NetworkCharacter>()
+            for (num in 1..50) {
+                characters.add(generateRandomCharacter(num.toString()))
+            }
             return NetworkCharacterListResponse(
                 errorResponse = null,
                 info = info.copy(next = null, prev = 5),
                 results = listOf(rickSanchez, morty),
             )
+        }
+    }
+
+    fun getNetworkResponseSuccess(
+        numberOfCharacters: Int = 10,
+    ): RickAndMortyApiService {
+        return object : RickAndMortyApiService {
+
+            override suspend fun getCharacters(
+                page: Int?,
+                name: String?,
+                status: String?,
+                species: String?,
+                type: String?,
+                gender: String?,
+            ): NetworkCharacterListResponse {
+                val characters = mutableListOf<NetworkCharacter>()
+                for (num in 1..numberOfCharacters) {
+                    System.out.println("Character No: $num")
+                    characters.add(generateRandomCharacter(num.toString()))
+                }
+                return NetworkCharacterListResponse(
+                    errorResponse = null,
+                    info = info,
+                    results = characters,
+                )
+            }
         }
     }
 
