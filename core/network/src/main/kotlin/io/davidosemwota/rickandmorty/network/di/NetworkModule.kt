@@ -21,35 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-    alias(libs.plugins.rickandmorty.dagger.hilt)
-    id("com.apollographql.apollo3")
-}
+package io.davidosemwota.rickandmorty.network.di
 
-android {
-    namespace = "io.davidosemwota.rickandmorty.network"
+import com.apollographql.apollo3.ApolloClient
+import dagger.Binds
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import io.davidosemwota.rickandmorty.network.ApolloFactory
+import io.davidosemwota.rickandmorty.network.RickAndMortyApiService
+import io.davidosemwota.rickandmorty.network.RickAndMortyServiceImpl
+import javax.inject.Singleton
 
-    buildFeatures {
-        buildConfig = true
-    }
-}
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class NetworkModule {
 
-dependencies {
+    @Binds
+    abstract fun bindRickAndMortyApiService(
+        service: RickAndMortyServiceImpl,
+    ): RickAndMortyApiService
 
-    implementation(libs.apollo3.lib)
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.okhttp.logging)
+    companion object {
 
-    testImplementation(projects.core.testing)
-    testImplementation(libs.apollo3.mockserver)
-    testImplementation(libs.apollo3.test.support)
-}
-
-apollo {
-    service("rick-and-morty-service") {
-        packageName.set("io.davidosemwota.rickandmorty.network.graphql")
-        generateDataBuilders.set(true)
+        @Provides
+        @Singleton
+        fun provideApolloClient(): ApolloClient = ApolloFactory.provideApolloClient()
     }
 }

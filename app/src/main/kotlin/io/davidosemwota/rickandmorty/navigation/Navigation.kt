@@ -29,8 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import io.davidosemwota.characters.navigation.CHARACTERS_ROUTE
-import io.davidosemwota.characters.navigation.charactersScreen
+import io.davidosemwota.rickandmorty.characters.navigation.CHARACTERS_ROUTE
+import io.davidosemwota.rickandmorty.characters.navigation.charactersScreen
 
 @Composable
 fun RickAndMortyNavHost(

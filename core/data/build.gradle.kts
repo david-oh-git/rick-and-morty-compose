@@ -26,6 +26,7 @@ plugins {
     alias(libs.plugins.rickandmorty.android.library)
     id(libs.plugins.ksp.get().pluginId)
     id(libs.plugins.kotlin.serialization.get().pluginId)
+    alias(libs.plugins.rickandmorty.dagger.hilt)
 }
 
 android {
@@ -52,4 +53,5 @@ dependencies {
     testImplementation(libs.room.testing)
     testImplementation(libs.robolectric)
     testImplementation(libs.test.core)
+    testImplementation(libs.androidx.paging.test)
 }

@@ -21,35 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
-plugins {
-    alias(libs.plugins.rickandmorty.android.library)
-    alias(libs.plugins.rickandmorty.dagger.hilt)
-    id("com.apollographql.apollo3")
-}
+package io.davidosemwota.rickandmorty.domain
 
-android {
-    namespace = "io.davidosemwota.rickandmorty.network"
+import androidx.paging.PagingData
+import io.davidosemwota.rickandmorty.data.repository.CharacterRepository
+import io.davidosemwota.rickandmorty.models.Character
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-    buildFeatures {
-        buildConfig = true
-    }
-}
+class GetCharactersUseCase @Inject constructor(
+    private val repository: CharacterRepository,
+) {
 
-dependencies {
-
-    implementation(libs.apollo3.lib)
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.okhttp.logging)
-
-    testImplementation(projects.core.testing)
-    testImplementation(libs.apollo3.mockserver)
-    testImplementation(libs.apollo3.test.support)
-}
-
-apollo {
-    service("rick-and-morty-service") {
-        packageName.set("io.davidosemwota.rickandmorty.network.graphql")
-        generateDataBuilders.set(true)
-    }
+    operator fun invoke(): Flow<PagingData<Character>> =
+        repository.getPagedCharacters()
 }

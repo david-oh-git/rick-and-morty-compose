@@ -45,9 +45,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import io.davidosemwota.characters.navigation.CHARACTERS_ROUTE
-import io.davidosemwota.characters.navigation.navigateToCharacters
 import io.davidosemwota.rickandmorty.R
+import io.davidosemwota.rickandmorty.characters.navigation.CHARACTERS_ROUTE
+import io.davidosemwota.rickandmorty.characters.navigation.navigateToCharacters
 import io.davidosemwota.rickandmorty.navigation.MainScreenDestinations
 import io.davidosemwota.rickandmorty.navigation.RickAndMortyNavHost
 

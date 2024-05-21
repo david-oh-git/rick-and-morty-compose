@@ -68,7 +68,6 @@ class CharactersRemoteMediator constructor(
                     closestItem?.prev
                 }
             }
-
             val response = rickAndMortyApiService.getCharacters(page = page)
             if (response.errorResponse != null) {
                 val errorResponse = response.errorResponse
@@ -91,6 +90,9 @@ class CharactersRemoteMediator constructor(
                 if (characters != null) {
                     database.characterDao().insertAll(characters)
                 }
+                if (pageInfoList.isNotEmpty()) {
+                    database.pageInfoDao().insertAll(pageInfoList)
+                }
             }
             return MediatorResult.Success(endOfPaginationReached = pageInfo?.next == null)
         } catch (e: IOException) {
@@ -98,6 +100,10 @@ class CharactersRemoteMediator constructor(
         } catch (e: Exception) {
             MediatorResult.Error(e)
         }
+    }
+
+    override suspend fun initialize(): InitializeAction {
+        return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
     private suspend fun getPageInfoClosestToCurrentPosition(

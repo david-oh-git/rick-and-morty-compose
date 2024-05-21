@@ -31,7 +31,7 @@ import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.List
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.davidosemwota.rickandmorty.R
-import io.davidosemwota.characters.R as characters
+import io.davidosemwota.rickandmorty.characters.R as characters
 
 enum class MainScreenDestinations(
     @StringRes val iconTitleId: Int,

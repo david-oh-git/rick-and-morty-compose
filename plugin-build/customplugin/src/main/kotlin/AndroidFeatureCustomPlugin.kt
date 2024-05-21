@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 import com.android.build.gradle.LibraryExtension
+import io.davidosemwota.rickandmorty.plugins.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -33,6 +34,7 @@ class AndroidFeatureCustomPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply {
                 apply("rickandmorty.android.library")
+                apply("rickandmorty.android.dagger.hilt")
             }
 
             extensions.configure<LibraryExtension> {
@@ -42,6 +44,7 @@ class AndroidFeatureCustomPlugin : Plugin<Project> {
             }
 
             dependencies {
+                add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
             }
         }
     }

@@ -26,6 +26,7 @@ import io.davidosemwota.rickandmorty.plugins.RickAndMortyBuildType
 plugins {
     alias(libs.plugins.rickandmorty.android.application)
     alias(libs.plugins.rickandmorty.android.application.compose)
+    alias(libs.plugins.rickandmorty.dagger.hilt)
 }
 
 android {

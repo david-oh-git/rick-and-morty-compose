@@ -33,9 +33,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dagger.hilt.android.AndroidEntryPoint
 import io.davidosemwota.rickandmorty.ui.RickAndMortyApp
 import io.davidosemwota.rickandmorty.ui.theme.RickAndMortyTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     val viewModel: MainActivityViewModel by viewModels()
