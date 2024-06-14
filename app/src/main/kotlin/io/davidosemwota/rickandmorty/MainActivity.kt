@@ -35,7 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
 import io.davidosemwota.rickandmorty.ui.RickAndMortyApp
-import io.davidosemwota.rickandmorty.ui.theme.RickAndMortyTheme
+import io.davidosemwota.ui.theme.RickAndMortyTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

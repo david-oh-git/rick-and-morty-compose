@@ -22,30 +22,28 @@
  * SOFTWARE.
  */
 
-pluginManagement {
-    includeBuild("plugin-build")
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
+@Suppress("DSL_SCOPE_VIOLATION")
+plugins {
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.rickandmorty.compose.library)
+    alias(libs.plugins.rickandmorty.android.library)
 }
 
-rootProject.name = "rickandmorty"
+android {
+    namespace = "io.davidosemwota.ui"
+}
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-include(":app")
-include(":core:network")
-include(":core:testing")
-include(":core:data")
-include(":core:models")
-include(":features:characters")
-include(":core:domain")
-include(":core:ui")
+dependencies {
+
+    api(libs.androidx.ktx)
+    api(libs.androidx.lifecycle.runtime.ktx)
+    api(libs.androidx.lifecycle.runtime.compose)
+
+    implementation(platform(libs.androidx.compose.bom))
+    api(libs.androidx.compose.ui)
+    api(libs.androidx.compose.ui.graphics)
+    api(libs.androidx.compose.ui.tooling.preview)
+    api(libs.androidx.compose.material3)
+
+    debugApi(libs.androidx.ui.tooling)
+}

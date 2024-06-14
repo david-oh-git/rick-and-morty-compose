@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.ui.theme
+package io.davidosemwota.ui.theme
 
 import android.app.Activity
 import android.os.Build

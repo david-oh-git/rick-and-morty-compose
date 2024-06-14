@@ -26,7 +26,6 @@ package io.davidosemwota.rickandmorty.ui
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -51,7 +50,6 @@ import io.davidosemwota.rickandmorty.characters.navigation.navigateToCharacters
 import io.davidosemwota.rickandmorty.navigation.MainScreenDestinations
 import io.davidosemwota.rickandmorty.navigation.RickAndMortyNavHost
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RickAndMortyApp(
     navController: NavHostController = rememberNavController(),
