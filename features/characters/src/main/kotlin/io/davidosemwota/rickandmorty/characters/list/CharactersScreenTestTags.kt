@@ -21,22 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.characters.navigation
+package io.davidosemwota.rickandmorty.characters.list
 
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
-import androidx.navigation.compose.composable
-import io.davidosemwota.rickandmorty.characters.CharactersRoute
+/**
+ *  Test tags for Characters screen.
+ */
+object CharactersScreenTestTags {
 
-const val CHARACTERS_ROUTE = "characters"
+    const val LOADING_SCREEN = "loading_screen"
+    const val LOADING_SCREEN_APPEND = "loading_screen_append"
 
-fun NavController.navigateToCharacters(navOptions: NavOptions) = navigate(CHARACTERS_ROUTE, navOptions)
+    const val ERROR_SCREEN = "error_screen"
+    const val ERROR_SCREEN_TEXT = "error_screen_text"
+    const val ERROR_SCREEN_BUTTON = "error_screen_btn"
+    const val ERROR_SCREEN_BUTTON_TEXT = "error_screen_btn_text"
+    const val ERROR_SCREEN_APPEND = "error_screen_append"
 
-fun NavGraphBuilder.charactersScreen() {
-    composable(
-        route = CHARACTERS_ROUTE,
-    ) {
-        CharactersRoute()
-    }
+    const val CHARACTER_SCREEN_ERROR_BUTTON = "character_screen_error_btn"
+    const val CHARACTER_SCREEN_VERTICAL_GRID = "character_screen_vertical_grid"
+    const val CHARACTER_SCREEN_VERTICAL_GRID_ITEM = "character_screen_vertical_grid_item"
 }

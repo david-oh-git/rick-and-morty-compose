@@ -23,7 +23,6 @@
  */
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.rickandmorty.android.library)
     alias(libs.plugins.rickandmorty.feature.library)
     alias(libs.plugins.rickandmorty.compose.library)
 }
@@ -36,18 +35,25 @@ dependencies {
 
     implementation(projects.core.domain)
     implementation(projects.core.models)
+    implementation(projects.core.ui)
 
-    implementation(libs.androidx.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.paging.compose)
-
-    implementation(libs.androidx.navigation.compose)
+    implementation(libs.coil)
 
     testImplementation(libs.junit4)
     testImplementation(libs.truth)
+    testImplementation(projects.core.testing)
+    testImplementation(libs.test.core)
+    testImplementation(projects.core.data)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.mockk.agent)
+
+    androidTestImplementation(libs.androidx.text.ext)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.jnit4)
+    androidTestImplementation(libs.truth)
+    androidTestImplementation(projects.core.testing)
+
+    debugImplementation(libs.androidx.ui.test.manifest)
 }

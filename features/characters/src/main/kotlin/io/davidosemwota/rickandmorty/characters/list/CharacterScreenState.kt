@@ -21,22 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.characters
+package io.davidosemwota.rickandmorty.characters.list
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.paging.cachedIn
-import dagger.hilt.android.lifecycle.HiltViewModel
-import io.davidosemwota.rickandmorty.domain.GetCharactersUseCase
-import kotlinx.coroutines.flow.distinctUntilChanged
-import javax.inject.Inject
+import io.davidosemwota.rickandmorty.characters.list.PagingState.Error
+import io.davidosemwota.rickandmorty.characters.list.PagingState.Loading
+import io.davidosemwota.rickandmorty.characters.list.PagingState.NotLoading
 
-@HiltViewModel
-class CharactersViewModel @Inject constructor(
-    getCharactersUseCase: GetCharactersUseCase,
-) : ViewModel() {
+data class CharacterScreenState(
+    val isCharacterDatabaseEmpty: Boolean = true,
+    val fullScreenState: PagingState = NotLoading,
+    val appendState: PagingState = NotLoading,
+) {
+    val hasFullScreenError: Boolean
+        get() = fullScreenState == Error && isCharacterDatabaseEmpty
 
-    val charactersPagingDataState = getCharactersUseCase()
-        .distinctUntilChanged()
-        .cachedIn(viewModelScope)
+    val hasFullScreenLoading: Boolean
+        get() = fullScreenState == Loading && isCharacterDatabaseEmpty
+
+    val hasAppendScreenError: Boolean
+        get() = appendState == Error && !isCharacterDatabaseEmpty
+
+    val hasAppendScreenLoading: Boolean
+        get() = appendState == Loading && !isCharacterDatabaseEmpty
+}
+
+sealed interface PagingState {
+
+    data object NotLoading : PagingState
+    data object Loading : PagingState
+    data object Error : PagingState
 }

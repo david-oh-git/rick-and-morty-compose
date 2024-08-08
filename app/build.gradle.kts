@@ -27,6 +27,7 @@ plugins {
     alias(libs.plugins.rickandmorty.android.application)
     alias(libs.plugins.rickandmorty.android.application.compose)
     alias(libs.plugins.rickandmorty.dagger.hilt)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -76,6 +77,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
 
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.profileinstaller)
 
     testImplementation(libs.junit4)
     testImplementation(libs.truth)
@@ -85,6 +87,7 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.jnit4)
     androidTestImplementation(libs.truth)
+    baselineProfile(project(":baseline-profile"))
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)

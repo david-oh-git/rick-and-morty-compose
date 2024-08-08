@@ -21,31 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.navigation
+package io.davidosemwota.ui
 
-import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import io.davidosemwota.rickandmorty.characters.list.CHARACTERS_ROUTE
-import io.davidosemwota.rickandmorty.characters.list.charactersScreen
+import io.davidosemwota.ui.theme.RickAndMortyTheme
+
+/**
+ *  To easily preview [Composable] with the app theme.
+ */
 
 @Composable
-fun RickAndMortyNavHost(
-    modifier: Modifier = Modifier,
-    navController: NavHostController,
-    startDestination: String = CHARACTERS_ROUTE,
+fun PreviewComposable(
+    content: @Composable () -> Unit,
 ) {
-    NavHost(
-        modifier = modifier,
-        navController = navController,
-        startDestination = startDestination,
-    ) {
-        charactersScreen()
-        composable(MainScreenDestinations.EPISODES.name) {
-            Text("Episodes screen")
-        }
+    RickAndMortyTheme() {
+        Surface(
+            color = MaterialTheme.colorScheme.background,
+            content = content,
+        )
     }
 }

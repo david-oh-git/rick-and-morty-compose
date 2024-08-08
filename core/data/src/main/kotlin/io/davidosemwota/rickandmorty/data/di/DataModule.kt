@@ -62,8 +62,8 @@ abstract class DataModule {
         @Provides
         fun providePagingConfig(): PagingConfig =
             PagingConfig(
-                pageSize = 40,
-                prefetchDistance = 15,
+                pageSize = 15,
+                prefetchDistance = 5,
                 enablePlaceholders = false,
             )
     }
