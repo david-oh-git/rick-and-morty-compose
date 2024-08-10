@@ -44,6 +44,10 @@ android {
         }
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
 
         debug {
@@ -78,6 +82,7 @@ dependencies {
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.profileinstaller)
+    implementation(libs.timber)
 
     testImplementation(libs.junit4)
     testImplementation(libs.truth)
