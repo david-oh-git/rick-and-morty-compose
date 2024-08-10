@@ -33,4 +33,10 @@ interface RickAndMortyApiService {
         type: String? = null,
         gender: String? = null,
     ): NetworkCharacterListResponse
+
+    suspend fun getEpisodes(
+        page: Int? = null,
+        name: String? = null,
+        episode: String? = null,
+    ): NetworkEpisodeListResponse
 }

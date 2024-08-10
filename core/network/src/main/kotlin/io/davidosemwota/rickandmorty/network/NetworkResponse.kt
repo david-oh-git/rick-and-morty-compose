@@ -24,10 +24,17 @@
 package io.davidosemwota.rickandmorty.network
 
 import io.davidosemwota.rickandmorty.network.graphql.CharacterListQuery
+import io.davidosemwota.rickandmorty.network.graphql.EpisodesQuery
 
 data class NetworkCharacterListResponse(
     val info: NetworkInfo? = null,
     val results: List<NetworkCharacter>? = null,
+    val errorResponse: NetworkErrorResponse? = null,
+)
+
+data class NetworkEpisodeListResponse(
+    val info: NetworkInfo? = null,
+    val results: List<NetworkEpisode>? = null,
     val errorResponse: NetworkErrorResponse? = null,
 )
 
@@ -82,12 +89,20 @@ data class NetworkLocation(
 
 data class NetworkEpisode(
     val id: String = "",
+    val airDate: String = "",
     val episode: String,
     val name: String,
     val characters: List<NetworkCharacter> = emptyList(),
 )
 
 fun CharacterListQuery.Info.networkInfo(): NetworkInfo = NetworkInfo(
+    count = this.count ?: 0,
+    pages = this.pages ?: 0,
+    next = this.next,
+    prev = this.prev,
+)
+
+fun EpisodesQuery.Info.networkInfo(): NetworkInfo = NetworkInfo(
     count = this.count ?: 0,
     pages = this.pages ?: 0,
     next = this.next,
@@ -140,6 +155,33 @@ fun CharacterListQuery.Episode.toNetworkEpisode(): NetworkEpisode = NetworkEpiso
         )
     },
 )
+
+fun EpisodesQuery.Episodes?.toNetworkEpisodeListResponse(): NetworkEpisodeListResponse {
+    val info = this?.info?.networkInfo()
+    val episodes = this?.results?.filterNotNull()?.map {
+        it.let {
+            NetworkEpisode(
+                id = it.id.orEmpty(),
+                airDate = it.air_date.orEmpty(),
+                name = it.name.orEmpty(),
+                episode = it.episode.orEmpty(),
+                characters = it.characters.map { queryCharacter ->
+                    NetworkCharacter(
+                        id = queryCharacter?.id.orEmpty(),
+                        image = queryCharacter?.image.orEmpty(),
+                        name = queryCharacter?.name.orEmpty(),
+                    )
+                },
+            )
+        }
+    }
+
+    return NetworkEpisodeListResponse(
+        info = info,
+        results = episodes,
+        errorResponse = null,
+    )
+}
 
 fun CharacterListQuery.Characters?.toNetworkCharacterListResponse(): NetworkCharacterListResponse {
     val info = this?.info?.networkInfo()

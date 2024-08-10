@@ -30,9 +30,14 @@ import com.apollographql.apollo3.testing.QueueTestNetworkTransport
 import com.apollographql.apollo3.testing.enqueueTestResponse
 import com.google.common.truth.Truth.assertThat
 import io.davidosemwota.rickandmorty.network.graphql.CharacterListQuery
+import io.davidosemwota.rickandmorty.network.graphql.EpisodesQuery
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+
+/**
+ *  Test for [RickAndMortyApiService]
+ */
 
 @OptIn(ApolloExperimental::class)
 class RickAndMortyApiServiceTest {
@@ -49,6 +54,7 @@ class RickAndMortyApiServiceTest {
         rickAndMortyApiService = RickAndMortyServiceImpl(apolloClient)
     }
 
+    // Character tests
     @Test
     fun getCharacters_NoQuery_NoFilter_Success() = runTest {
         val testQuery = CharacterListQuery()
@@ -107,7 +113,7 @@ class RickAndMortyApiServiceTest {
     @Test
     fun getCharacters_NoQuery_NoFilter_Error_Response() = runTest {
         val testQuery = CharacterListQuery()
-        val errorMessage = "Expected type Int, found 99999999999999999999999999999999999999999999999999."
+        val errorMessage = "Expected type Int, found 99999999999999999999999999999999999999999999."
 
         apolloClient.enqueueTestResponse(
             operation = testQuery,
@@ -120,6 +126,77 @@ class RickAndMortyApiServiceTest {
         )
 
         val response = rickAndMortyApiService.getCharacters()
+        assertThat(response.errorResponse?.errors).isNotNull()
+        val responseErrorMessage = response.errorResponse?.errors?.get(0)?.serverErrorMessage
+        assertThat(responseErrorMessage).isNotNull()
+        assertThat(responseErrorMessage).isNotEmpty()
+        assertThat(responseErrorMessage).isEqualTo(errorMessage)
+    }
+
+    // Episode
+    @Test
+    fun getEpisodes_NoQuery_NoFilter_Success() = runTest {
+        val testQuery = EpisodesQuery()
+        val info = NetworkInfo(
+            count = 826,
+            pages = 40,
+            next = 2,
+            prev = null,
+        )
+        val episodes = mutableListOf<NetworkEpisode>()
+        val s01e01 = NetworkEpisode(
+            id = "1",
+            episode = "S01E01",
+            name = "the bla bla",
+        )
+        val s01e02 = NetworkEpisode(
+            id = "2",
+            episode = "S01E02",
+            name = "the bla bla II",
+        )
+        val s01e03 = NetworkEpisode(
+            id = "3",
+            episode = "S01E03",
+            name = "The rise of balablu",
+        )
+        episodes.addAll(listOf(s01e01, s01e02, s01e03))
+        apolloClient.enqueueTestResponse(
+            testQuery,
+            FakeApiResponseData.generateApiResponseData(info, episodes),
+        )
+
+        val response = rickAndMortyApiService.getEpisodes()
+
+        assertThat(response.info).isNotNull()
+        assertThat(response.info?.count).isEqualTo(info.count)
+        assertThat(response.info?.pages).isEqualTo(info.pages)
+        assertThat(response.info?.next).isEqualTo(info.next)
+
+        assertThat(response.results?.size).isEqualTo(episodes.size)
+        assertThat(response.results).contains(s01e01)
+        assertThat(response.results).contains(s01e02)
+        assertThat(response.results).contains(s01e03)
+    }
+
+    @Test
+    fun getEpisodes_NoQuery_NoFilter_Error_Response() = runTest {
+        // Given
+        val testQuery = EpisodesQuery()
+        val errorMessage = "Expected type Int, found 99999999999999999999999999999999999999999999."
+
+        // When
+        apolloClient.enqueueTestResponse(
+            operation = testQuery,
+            errors = listOf(
+                Error.Builder(errorMessage)
+                    .locations(listOf(Error.Location(1, 34)))
+                    .putExtension("code", "GRAPHQL_VALIDATION_FAILED")
+                    .build(),
+            ),
+        )
+        val response = rickAndMortyApiService.getEpisodes()
+
+        // Then
         assertThat(response.errorResponse?.errors).isNotNull()
         val responseErrorMessage = response.errorResponse?.errors?.get(0)?.serverErrorMessage
         assertThat(responseErrorMessage).isNotNull()

@@ -24,13 +24,50 @@
 package io.davidosemwota.rickandmorty.network
 
 import io.davidosemwota.rickandmorty.network.graphql.CharacterListQuery
+import io.davidosemwota.rickandmorty.network.graphql.EpisodesQuery
 import io.davidosemwota.rickandmorty.network.graphql.type.buildCharacter
 import io.davidosemwota.rickandmorty.network.graphql.type.buildCharacters
 import io.davidosemwota.rickandmorty.network.graphql.type.buildEpisode
+import io.davidosemwota.rickandmorty.network.graphql.type.buildEpisodes
 import io.davidosemwota.rickandmorty.network.graphql.type.buildInfo
 import io.davidosemwota.rickandmorty.network.graphql.type.buildLocation
 
+/**
+ *  Fake response graph QL data for testing [RickAndMortyApiService] .
+ */
 object FakeApiResponseData {
+
+    fun generateApiResponseData(
+        testInfo: NetworkInfo,
+        testResults: List<NetworkEpisode>,
+    ): EpisodesQuery.Data {
+        return EpisodesQuery.Data {
+            episodes = buildEpisodes {
+                info = buildInfo {
+                    count = testInfo.count
+                    pages = testInfo.pages
+                    next = testInfo.next
+                    prev = testInfo.prev
+                }
+
+                results = testResults.map { resultEpisode ->
+                    buildEpisode {
+                        id = resultEpisode.id
+                        name = resultEpisode.name
+                        air_date = resultEpisode.airDate
+                        episode = resultEpisode.episode
+                        characters = resultEpisode.characters.map {
+                            buildCharacter {
+                                id = it.id
+                                name = it.name
+                                image = it.image
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     fun generateApiResponseData(
         testInfo: NetworkInfo,

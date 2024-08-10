@@ -26,7 +26,9 @@ package io.davidosemwota.rickandmorty.network
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import io.davidosemwota.rickandmorty.network.graphql.CharacterListQuery
+import io.davidosemwota.rickandmorty.network.graphql.EpisodesQuery
 import io.davidosemwota.rickandmorty.network.graphql.type.FilterCharacter
+import io.davidosemwota.rickandmorty.network.graphql.type.FilterEpisode
 import javax.inject.Inject
 
 class RickAndMortyServiceImpl @Inject constructor(
@@ -41,14 +43,14 @@ class RickAndMortyServiceImpl @Inject constructor(
         type: String?,
         gender: String?,
     ): NetworkCharacterListResponse {
-        val filterCharacter = FilterCharacter(
-            Optional.presentIfNotNull(name),
-            Optional.presentIfNotNull(status),
-            Optional.presentIfNotNull(species),
-            Optional.presentIfNotNull(type),
-            Optional.presentIfNotNull(gender),
-        )
         try {
+            val filterCharacter = FilterCharacter(
+                Optional.presentIfNotNull(name),
+                Optional.presentIfNotNull(status),
+                Optional.presentIfNotNull(species),
+                Optional.presentIfNotNull(type),
+                Optional.presentIfNotNull(gender),
+            )
             val response = apolloClient.query(
                 CharacterListQuery(
                     Optional.presentIfNotNull(page),
@@ -70,6 +72,41 @@ class RickAndMortyServiceImpl @Inject constructor(
             )
         } catch (ex: Exception) {
             return NetworkCharacterListResponse(
+                errorResponse = NetworkErrorResponse(ex),
+            )
+        }
+    }
+
+    override suspend fun getEpisodes(
+        page: Int?,
+        name: String?,
+        episode: String?,
+    ): NetworkEpisodeListResponse {
+        try {
+            val filterEpisode = FilterEpisode(
+                Optional.presentIfNotNull(name),
+                Optional.presentIfNotNull(episode),
+            )
+
+            val response = apolloClient.query(
+                EpisodesQuery(
+                    Optional.presentIfNotNull(page),
+                    Optional.presentIfNotNull(filterEpisode),
+                ),
+            ).execute()
+            if (response.hasErrors()) {
+                return NetworkEpisodeListResponse(
+                    errorResponse = response.exception?.let {
+                        NetworkErrorResponse(it, response.errors?.toListOfNetworkError())
+                    },
+                )
+            }
+
+            return response.data?.episodes.toNetworkEpisodeListResponse().copy(
+                errorResponse = response.exception?.let { NetworkErrorResponse(it) },
+            )
+        } catch (ex: Exception) {
+            return NetworkEpisodeListResponse(
                 errorResponse = NetworkErrorResponse(ex),
             )
         }
