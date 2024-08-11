@@ -34,6 +34,7 @@ import io.davidosemwota.rickandmorty.data.db.entities.CharacterLocationEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterOriginEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterResidentEntity
 import io.davidosemwota.rickandmorty.data.db.entities.PageInfoEntity
+import io.davidosemwota.rickandmorty.data.db.entities.getCharacterIdentifier
 import io.davidosemwota.rickandmorty.data.generateCharacters
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -75,6 +76,7 @@ internal class RickAndMortyDatabaseTest {
             next = 2,
             pages = 50,
             count = 20,
+            identifier = getCharacterIdentifier(2),
         )
         val item2 = PageInfoEntity(
             id = 3,
@@ -82,6 +84,7 @@ internal class RickAndMortyDatabaseTest {
             next = 2,
             pages = 50,
             count = 20,
+            identifier = getCharacterIdentifier(1),
         )
         val items: List<PageInfoEntity> = listOf(
             item1,
@@ -109,6 +112,7 @@ internal class RickAndMortyDatabaseTest {
             next = 2,
             pages = 50,
             count = 20,
+            identifier = getCharacterIdentifier(1),
         )
 
         pageInfoDao.insert(item)
@@ -128,6 +132,7 @@ internal class RickAndMortyDatabaseTest {
             next = 2,
             pages = 50,
             count = 20,
+            identifier = getCharacterIdentifier(1),
         )
         val item2 = PageInfoEntity(
             id = 3,
@@ -135,6 +140,7 @@ internal class RickAndMortyDatabaseTest {
             next = 2,
             pages = 50,
             count = 20,
+            identifier = getCharacterIdentifier(1),
         )
         val items: List<PageInfoEntity> = listOf(
             item1,
@@ -159,6 +165,7 @@ internal class RickAndMortyDatabaseTest {
             next = 2,
             pages = 50,
             count = 20,
+            identifier = getCharacterIdentifier(1),
         )
         val item2 = PageInfoEntity(
             id = 3,
@@ -166,6 +173,7 @@ internal class RickAndMortyDatabaseTest {
             next = 2,
             pages = 50,
             count = 20,
+            identifier = getCharacterIdentifier(1),
         )
         val items: List<PageInfoEntity> = listOf(
             item1,
@@ -236,6 +244,7 @@ internal class RickAndMortyDatabaseTest {
                     name = "S01E09",
                 ),
             ),
+            pageIdentity = getCharacterIdentifier(1),
         )
         characterDao.insertAll(listOf(evilMorty))
         // When/Act
@@ -293,6 +302,7 @@ internal class RickAndMortyDatabaseTest {
                     name = "S03E09",
                 ),
             ),
+            pageIdentity = getCharacterIdentifier(1),
         )
 
         val morty = CharacterEntity(
@@ -330,6 +340,7 @@ internal class RickAndMortyDatabaseTest {
                     name = "S01E09",
                 ),
             ),
+            pageIdentity = getCharacterIdentifier(1),
         )
         val characters = listOf(rick, morty)
 

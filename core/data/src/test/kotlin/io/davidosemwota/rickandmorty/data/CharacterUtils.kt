@@ -23,11 +23,13 @@
  */
 package io.davidosemwota.rickandmorty.data
 
+import io.davidosemwota.rickandmorty.data.db.entities.CHARACTER_ENTITY_PAGE_PREFIX
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterEpisodeEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterLocationEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterOriginEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterResidentEntity
+import io.davidosemwota.rickandmorty.data.db.entities.getCharacterIdentifier
 
 private fun generateFirstName(): String = listOf(
     "Rick",
@@ -74,6 +76,7 @@ internal fun generateCharacters(): List<CharacterEntity> {
                     name = "S03E09",
                 ),
             ),
+            pageIdentity = "${CHARACTER_ENTITY_PAGE_PREFIX}9",
         ),
         CharacterEntity(
             id = 2,
@@ -110,6 +113,7 @@ internal fun generateCharacters(): List<CharacterEntity> {
                     name = "S01E09",
                 ),
             ),
+            pageIdentity = getCharacterIdentifier(1),
         ),
     )
 }

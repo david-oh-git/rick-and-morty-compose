@@ -52,6 +52,9 @@ interface PageInfoDao {
     @Query("SELECT * FROM page_info WHERE id = :id")
     suspend fun getPageInfo(id: Int): PageInfoEntity?
 
+    @Query("SELECT * FROM page_info WHERE identifier = :pageIdentity")
+    suspend fun getPageInfo(pageIdentity: String): PageInfoEntity?
+
     /**
      * Delete table/all items from DB
      */

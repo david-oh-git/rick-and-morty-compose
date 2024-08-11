@@ -46,6 +46,7 @@ data class CharacterEntity(
     val species: String,
     val type: String,
     val gender: String,
+    val pageIdentity: String,
     @Embedded(prefix = "origin_") val origin: CharacterOriginEntity,
     @Embedded(prefix = "location_") val location: CharacterLocationEntity,
     @ColumnInfo(name = "character_episodes") val episodes: List<CharacterEpisodeEntity>,
@@ -122,6 +123,7 @@ internal fun NetworkCharacter.toEntity(): CharacterEntity = CharacterEntity(
         residents = this.location?.residents?.map(::networkResidentToCharacterResidentEntity) ?: emptyList(),
     ),
     episodes = this.episode.map(::networkEpisodeToCharacterEpisodeEntity),
+    pageIdentity = "",
 )
 
 private fun networkEpisodeToCharacterEpisodeEntity(

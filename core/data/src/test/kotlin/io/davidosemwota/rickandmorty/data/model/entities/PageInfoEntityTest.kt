@@ -25,6 +25,7 @@ package io.davidosemwota.rickandmorty.data.model.entities
 
 import com.google.common.truth.Truth.assertThat
 import io.davidosemwota.rickandmorty.data.db.entities.PageInfoEntity
+import io.davidosemwota.rickandmorty.data.db.entities.getCharacterIdentifier
 import io.davidosemwota.rickandmorty.data.db.entities.toModel
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -32,7 +33,7 @@ import org.junit.Test
 class PageInfoEntityTest {
 
     @Test
-    fun pageInfoEntityToModelExtention_verifyResult() = runTest {
+    fun pageInfoEntityToModelExtension_verifyResult() = runTest {
         // Given/Arrange
         val id = 3
         val pages: Int = 30
@@ -44,6 +45,7 @@ class PageInfoEntityTest {
             next = next,
             prev = prev,
             count = 20,
+            identifier = getCharacterIdentifier(1),
         )
 
         // When/Act

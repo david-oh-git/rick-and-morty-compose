@@ -84,7 +84,7 @@ internal class CharacterRepositoryTest {
         val characters: Flow<PagingData<Character>> = characterRepository.getPagedCharacters()
 
         val snapshot: List<Character> = characters.asSnapshot {
-            scrollTo(index = 0)
+            scrollTo(index = 9)
         }
         // When/Act
 

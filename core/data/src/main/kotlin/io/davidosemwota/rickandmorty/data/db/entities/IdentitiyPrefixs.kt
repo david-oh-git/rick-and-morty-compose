@@ -23,34 +23,10 @@
  */
 package io.davidosemwota.rickandmorty.data.db.entities
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import io.davidosemwota.rickandmorty.models.PageInfo
-import io.davidosemwota.rickandmorty.network.NetworkInfo
+const val CHARACTER_ENTITY_PAGE_PREFIX = "ch-"
 
-@Entity(tableName = "page_info")
-data class PageInfoEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    val pages: Int,
-    val count: Int,
-    val next: Int?,
-    val prev: Int?,
-    val identifier: String,
-)
+const val EPISODE_ENTITY_PAGE_PREFIX = "ep-"
 
-fun PageInfoEntity.toModel(): PageInfo = PageInfo(
-    id = this.id.toInt(),
-    pages = this.pages,
-    next = this.next,
-    prev = this.prev,
-)
+fun getCharacterIdentifier(page: Int): String = "${CHARACTER_ENTITY_PAGE_PREFIX}$page"
 
-internal fun NetworkInfo.toEntity(): PageInfoEntity = PageInfoEntity(
-    id = 0,
-    pages = this.pages,
-    next = this.next,
-    prev = this.prev,
-    count = this.count,
-    identifier = "",
-)
+fun getEpisodeIdentifier(page: Int): String = "${EPISODE_ENTITY_PAGE_PREFIX}$page"

@@ -31,6 +31,7 @@ import androidx.room.withTransaction
 import io.davidosemwota.rickandmorty.data.db.RickAndMortyDatabase
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
 import io.davidosemwota.rickandmorty.data.db.entities.PageInfoEntity
+import io.davidosemwota.rickandmorty.data.db.entities.getCharacterIdentifier
 import io.davidosemwota.rickandmorty.data.db.entities.toEntity
 import io.davidosemwota.rickandmorty.network.RickAndMortyApiService
 import java.io.IOException
@@ -64,16 +65,18 @@ class CharactersRemoteMediator constructor(
                     previousKey
                 }
                 LoadType.REFRESH -> {
-                    val closestItem = getPageInfoClosestToCurrentPosition(state)
-                    closestItem?.prev
+                    1
                 }
             }
+
             val response = rickAndMortyApiService.getCharacters(page = page)
             if (response.errorResponse != null) {
                 val errorResponse = response.errorResponse
                 return MediatorResult.Error(errorResponse?.exception ?: Exception())
             }
-            val pageInfo = response.info
+
+            val pageIdentity = getCharacterIdentifier(page)
+            val pageInfo = response.info?.toEntity()?.copy(identifier = pageIdentity)
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
@@ -81,17 +84,15 @@ class CharactersRemoteMediator constructor(
                     database.characterDao().deleteAllItems()
                     database.pageInfoDao().getAllItems()
                 }
+                // save pageInfo
+                pageInfo?.let { database.pageInfoDao().insert(it) }
 
-                val pageInfoList = mutableListOf<PageInfoEntity>()
+                // Save characters
                 val characters = response.results?.map {
-                    pageInfo?.toEntity(it.id)?.let { info -> pageInfoList.add(info) }
-                    it.toEntity()
+                    it.toEntity().copy(pageIdentity = pageIdentity)
                 }
                 if (characters != null) {
                     database.characterDao().insertAll(characters)
-                }
-                if (pageInfoList.isNotEmpty()) {
-                    database.pageInfoDao().insertAll(pageInfoList)
                 }
             }
             return MediatorResult.Success(endOfPaginationReached = pageInfo?.next == null)
@@ -106,20 +107,12 @@ class CharactersRemoteMediator constructor(
         return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
-    private suspend fun getPageInfoClosestToCurrentPosition(
-        state: PagingState<Int, CharacterEntity>,
-    ): PageInfoEntity? {
-        return state.anchorPosition?.let { index ->
-            database.pageInfoDao().getPageInfo(index)
-        }
-    }
-
     private suspend fun getPageInfoForFirstItem(
         state: PagingState<Int, CharacterEntity>,
     ): PageInfoEntity? {
         return state.pages.firstOrNull() { it.data.isNotEmpty() }?.data?.firstOrNull()
             ?.let { character ->
-                database.pageInfoDao().getPageInfo(character.id)
+                database.pageInfoDao().getPageInfo(character.pageIdentity)
             }
     }
 
@@ -128,7 +121,7 @@ class CharactersRemoteMediator constructor(
     ): PageInfoEntity? {
         return state.pages.lastOrNull() { it.data.isNotEmpty() }?.data?.lastOrNull()
             ?.let { character ->
-                database.pageInfoDao().getPageInfo(character.id)
+                database.pageInfoDao().getPageInfo(character.pageIdentity)
             }
     }
 }

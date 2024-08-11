@@ -25,6 +25,7 @@ package io.davidosemwota.rickandmorty.data
 
 import io.davidosemwota.rickandmorty.network.NetworkCharacter
 import io.davidosemwota.rickandmorty.network.NetworkCharacterListResponse
+import io.davidosemwota.rickandmorty.network.NetworkEpisodeListResponse
 import io.davidosemwota.rickandmorty.network.NetworkError
 import io.davidosemwota.rickandmorty.network.NetworkErrorResponse
 import io.davidosemwota.rickandmorty.network.NetworkInfo
@@ -148,6 +149,14 @@ object FakeApiService {
                 results = listOf(rickSanchez, morty),
             )
         }
+
+        override suspend fun getEpisodes(
+            page: Int?,
+            name: String?,
+            episode: String?,
+        ): NetworkEpisodeListResponse {
+            TODO("Not yet implemented")
+        }
     }
 
     val successWithNoMoreData = object : RickAndMortyApiService {
@@ -169,6 +178,14 @@ object FakeApiService {
                 results = listOf(rickSanchez, morty),
             )
         }
+
+        override suspend fun getEpisodes(
+            page: Int?,
+            name: String?,
+            episode: String?,
+        ): NetworkEpisodeListResponse {
+            TODO("Not yet implemented")
+        }
     }
 
     fun getNetworkResponseSuccess(
@@ -186,7 +203,6 @@ object FakeApiService {
             ): NetworkCharacterListResponse {
                 val characters = mutableListOf<NetworkCharacter>()
                 for (num in 1..numberOfCharacters) {
-                    System.out.println("Character No: $num")
                     characters.add(generateRandomCharacter(num.toString()))
                 }
                 return NetworkCharacterListResponse(
@@ -194,6 +210,14 @@ object FakeApiService {
                     info = info,
                     results = characters,
                 )
+            }
+
+            override suspend fun getEpisodes(
+                page: Int?,
+                name: String?,
+                episode: String?,
+            ): NetworkEpisodeListResponse {
+                TODO("Not yet implemented")
             }
         }
     }
@@ -220,6 +244,14 @@ object FakeApiService {
                 info = null,
                 results = null,
             )
+        }
+
+        override suspend fun getEpisodes(
+            page: Int?,
+            name: String?,
+            episode: String?,
+        ): NetworkEpisodeListResponse {
+            TODO("Not yet implemented")
         }
     }
 }

@@ -29,6 +29,7 @@ import io.davidosemwota.rickandmorty.data.db.entities.CharacterEpisodeEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterLocationEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterOriginEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterResidentEntity
+import io.davidosemwota.rickandmorty.data.db.entities.getCharacterIdentifier
 import io.davidosemwota.rickandmorty.data.db.entities.toUiModel
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -85,6 +86,7 @@ class CharacterEntityTest {
             origin = characterOriginEntity,
             location = locationEntity,
             episodes = episodes,
+            pageIdentity = getCharacterIdentifier(1),
         )
 
         // When/Act
