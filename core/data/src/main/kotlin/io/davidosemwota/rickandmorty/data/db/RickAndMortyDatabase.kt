@@ -26,6 +26,8 @@ package io.davidosemwota.rickandmorty.data.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import io.davidosemwota.rickandmorty.data.db.dao.CharacterDao
+import io.davidosemwota.rickandmorty.data.db.dao.PageInfoDao
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
 import io.davidosemwota.rickandmorty.data.db.entities.PageInfoEntity
 

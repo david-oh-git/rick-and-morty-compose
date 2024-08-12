@@ -63,7 +63,7 @@ abstract class DataModule {
         fun providePagingConfig(): PagingConfig =
             PagingConfig(
                 pageSize = 15,
-                prefetchDistance = 5,
+                prefetchDistance = 1,
                 enablePlaceholders = false,
             )
     }

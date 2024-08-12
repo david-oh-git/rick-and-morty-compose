@@ -21,46 +21,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.data.db
+package io.davidosemwota.rickandmorty.data.db.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import io.davidosemwota.rickandmorty.data.db.entities.PageInfoEntity
+import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
 
 /**
- * DAO for [PageInfoEntity]
+ *  Data access object for [CharacterEntity]
  */
 @Dao
-interface PageInfoDao {
+interface CharacterDao {
 
     /**
-     * Adds a list of items to the DB
+     * Adds all items to local Db
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(pageInfoList: List<PageInfoEntity>)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(pageInfo: PageInfoEntity)
+    suspend fun insertAll(characters: List<CharacterEntity>)
 
     /**
-     * Searches for an item from the DB, returns null
+     *  Returns all items in DB via paging
+     */
+    @Query("SELECT * FROM character_entity_table ORDER by id")
+    fun getPagedCharacters(): PagingSource<Int, CharacterEntity>
+
+    /**
+     *  Returns all DB items as a list.
+     */
+    @Query("SELECT * FROM character_entity_table ORDER by id")
+    suspend fun getCharacters(): List<CharacterEntity>
+
+    /**
+     * Searches for an item via the id , returns null if item is not
+     * found
      *
-     * @param id Unique id for the item
+     * @param query id for item searched for
      */
-    @Query("SELECT * FROM page_info WHERE id = :id")
-    suspend fun getPageInfo(id: Int): PageInfoEntity?
-
-    @Query("SELECT * FROM page_info WHERE identifier = :pageIdentity")
-    suspend fun getPageInfo(pageIdentity: String): PageInfoEntity?
+    @Query("SELECT * FROM character_entity_table WHERE id = :query")
+    suspend fun getCharacter(query: Int): CharacterEntity?
 
     /**
-     * Delete table/all items from DB
+     * Deletes the entire table from the DB.
      */
-    @Query("DELETE FROM page_info")
-    suspend fun clearAllPageInfo()
-
-    @Query("SELECT * FROM page_info ORDER by id")
-    fun getAllItems(): List<PageInfoEntity>
+    @Query("DELETE FROM character_entity_table")
+    suspend fun deleteAllItems()
 }
