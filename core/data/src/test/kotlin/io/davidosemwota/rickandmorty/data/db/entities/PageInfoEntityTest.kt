@@ -21,12 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.data.model.entities
+package io.davidosemwota.rickandmorty.data.db.entities
 
 import com.google.common.truth.Truth.assertThat
-import io.davidosemwota.rickandmorty.data.db.entities.PageInfoEntity
-import io.davidosemwota.rickandmorty.data.db.entities.getCharacterIdentifier
-import io.davidosemwota.rickandmorty.data.db.entities.toModel
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 

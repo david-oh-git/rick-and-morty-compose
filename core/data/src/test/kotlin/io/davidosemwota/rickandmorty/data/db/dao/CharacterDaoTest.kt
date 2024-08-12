@@ -21,21 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.data.db
+package io.davidosemwota.rickandmorty.data.db.dao
 
 import android.content.Context
 import androidx.paging.PagingSource
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
-import io.davidosemwota.rickandmorty.data.db.dao.CharacterDao
-import io.davidosemwota.rickandmorty.data.db.dao.PageInfoDao
+import io.davidosemwota.rickandmorty.data.db.RickAndMortyDatabase
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterEpisodeEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterLocationEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterOriginEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterResidentEntity
-import io.davidosemwota.rickandmorty.data.db.entities.PageInfoEntity
 import io.davidosemwota.rickandmorty.data.db.entities.getCharacterIdentifier
 import io.davidosemwota.rickandmorty.data.generateCharacters
 import kotlinx.coroutines.test.runTest
@@ -46,10 +44,9 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-internal class RickAndMortyDatabaseTest {
+internal class CharacterDaoTest {
 
     private lateinit var rickAndMortyDatabase: RickAndMortyDatabase
-    private lateinit var pageInfoDao: PageInfoDao
     private lateinit var characterDao: CharacterDao
 
     @Before
@@ -61,7 +58,6 @@ internal class RickAndMortyDatabaseTest {
             RickAndMortyDatabase::class.java,
         ).allowMainThreadQueries().build()
 
-        pageInfoDao = rickAndMortyDatabase.pageInfoDao()
         characterDao = rickAndMortyDatabase.characterDao()
     }
 
@@ -69,130 +65,6 @@ internal class RickAndMortyDatabaseTest {
     fun close() {
         rickAndMortyDatabase.close()
     }
-
-    @Test
-    fun getIndividualItems_VerifyResult() = runTest {
-        val item1 = PageInfoEntity(
-            id = 2,
-            prev = null,
-            next = 2,
-            pages = 50,
-            count = 20,
-            identifier = getCharacterIdentifier(2),
-        )
-        val item2 = PageInfoEntity(
-            id = 3,
-            prev = null,
-            next = 2,
-            pages = 50,
-            count = 20,
-            identifier = getCharacterIdentifier(1),
-        )
-        val items: List<PageInfoEntity> = listOf(
-            item1,
-            item2,
-        )
-
-        pageInfoDao.insertAll(items)
-
-        val result = pageInfoDao.getAllItems()
-        val itemOneResult = pageInfoDao.getPageInfo(item1.id)
-
-        assertThat(itemOneResult).isNotNull()
-        assertThat(item1.id).isEqualTo(itemOneResult?.id)
-        assertThat(item1.next).isEqualTo(itemOneResult?.next)
-        assertThat(item1.pages).isEqualTo(itemOneResult?.pages)
-
-        assertThat(result).contains(item2)
-    }
-
-    @Test
-    fun insertItem_VerifyResult() = runTest {
-        val item = PageInfoEntity(
-            id = 2,
-            prev = null,
-            next = 2,
-            pages = 50,
-            count = 20,
-            identifier = getCharacterIdentifier(1),
-        )
-
-        pageInfoDao.insert(item)
-
-        val result = pageInfoDao.getAllItems()
-
-        assertThat(result).isNotNull()
-        assertThat(result).isNotEmpty()
-        assertThat(result).contains(item)
-    }
-
-    @Test
-    fun insertAllItems_VerifyResult() = runTest {
-        val item1 = PageInfoEntity(
-            id = 2,
-            prev = null,
-            next = 2,
-            pages = 50,
-            count = 20,
-            identifier = getCharacterIdentifier(1),
-        )
-        val item2 = PageInfoEntity(
-            id = 3,
-            prev = null,
-            next = 2,
-            pages = 50,
-            count = 20,
-            identifier = getCharacterIdentifier(1),
-        )
-        val items: List<PageInfoEntity> = listOf(
-            item1,
-            item2,
-        )
-
-        pageInfoDao.insertAll(items)
-
-        val result = pageInfoDao.getAllItems()
-
-        assertThat(result).isNotNull()
-        assertThat(result).isNotEmpty()
-        assertThat(result).contains(item1)
-        assertThat(result).contains(item2)
-    }
-
-    @Test
-    fun deleteAll_VerifyResult() = runTest {
-        val item1 = PageInfoEntity(
-            id = 2,
-            prev = null,
-            next = 2,
-            pages = 50,
-            count = 20,
-            identifier = getCharacterIdentifier(1),
-        )
-        val item2 = PageInfoEntity(
-            id = 3,
-            prev = null,
-            next = 2,
-            pages = 50,
-            count = 20,
-            identifier = getCharacterIdentifier(1),
-        )
-        val items: List<PageInfoEntity> = listOf(
-            item1,
-            item2,
-        )
-        pageInfoDao.insertAll(items)
-
-        pageInfoDao.clearAllPageInfo()
-
-        val result = pageInfoDao.getAllItems()
-
-        assertThat(result).isEmpty()
-        assertThat(result).doesNotContain(item1)
-        assertThat(result).doesNotContain(item2)
-    }
-
-    // CharacterDao Tests
 
     @Test
     fun searchUnknownCharacter_verifyNullResponse() = runTest {
