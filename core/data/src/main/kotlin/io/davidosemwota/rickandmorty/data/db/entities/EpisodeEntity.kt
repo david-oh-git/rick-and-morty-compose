@@ -21,29 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.data.db
+package io.davidosemwota.rickandmorty.data.db.entities
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import io.davidosemwota.rickandmorty.data.db.dao.CharacterDao
-import io.davidosemwota.rickandmorty.data.db.dao.EpisodeDao
-import io.davidosemwota.rickandmorty.data.db.dao.PageInfoDao
-import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
-import io.davidosemwota.rickandmorty.data.db.entities.EpisodeEntity
-import io.davidosemwota.rickandmorty.data.db.entities.PageInfoEntity
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 
-@Database(
-    entities = [PageInfoEntity::class, CharacterEntity::class, EpisodeEntity::class],
-    version = 1,
-    exportSchema = false,
+/**
+ *  @param id unique id for entity, also serves as primary key
+ *  @param airDate Episode first aired date.
+ *  @param episode Episode code eg S01E01
+ *  @param name Episode name
+ *  @param pageIdentity Unique identifier for associated [PageInfoEntity].
+ *  @param characters Episode characters.
+ */
+@Entity(tableName = "episode_entity_table")
+data class EpisodeEntity(
+    @PrimaryKey
+    val id: Int,
+    val airDate: String,
+    val episode: String,
+    val name: String,
+    val pageIdentity: String,
+    @ColumnInfo(name = "episode_characters") val characters: List<EpisodeCharacter>,
 )
-@TypeConverters(CustomTypeConverter::class)
-abstract class RickAndMortyDatabase : RoomDatabase() {
 
-    abstract fun pageInfoDao(): PageInfoDao
-
-    abstract fun characterDao(): CharacterDao
-
-    abstract fun episodeDao(): EpisodeDao
-}
+@Serializable
+data class EpisodeCharacter(
+    @ColumnInfo(name = "character_id") val id: Int,
+    @ColumnInfo(name = "character_name") val name: String,
+    @ColumnInfo(name = "character_image") val image: String,
+)
