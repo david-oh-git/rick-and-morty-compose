@@ -237,4 +237,126 @@ internal class PageInfoDaoTest {
         assertThat(result).doesNotContain(item1)
         assertThat(result).doesNotContain(item2)
     }
+
+    @Test
+    fun saveItems_verifyCharacterPageInfoItemsDeleted() = runTest {
+        // Given
+        val characterId = 2
+        val characterIdII = 3
+        val characterInfo = PageInfoEntity(
+            id = characterId,
+            prev = null,
+            next = 2,
+            pages = 50,
+            count = 20,
+            identifier = getCharacterIdentifier(1),
+        )
+        val characterInfo2 = PageInfoEntity(
+            id = characterIdII,
+            prev = null,
+            next = 2,
+            pages = 50,
+            count = 20,
+            identifier = getCharacterIdentifier(1),
+        )
+        val episodeInfo = PageInfoEntity(
+            id = 4,
+            prev = null,
+            next = 2,
+            pages = 50,
+            count = 20,
+            identifier = getEpisodeIdentifier(1),
+        )
+        val episodeInfo2 = PageInfoEntity(
+            id = 7,
+            prev = null,
+            next = 2,
+            pages = 50,
+            count = 20,
+            identifier = getEpisodeIdentifier(1),
+        )
+        val characterItems: List<PageInfoEntity> = listOf(
+            characterInfo,
+            characterInfo2,
+        )
+        val episodeItems = listOf(
+            episodeInfo,
+            episodeInfo2,
+        )
+        pageInfoDao.insertAll(characterItems)
+        pageInfoDao.insertAll(episodeItems)
+
+        // When
+        pageInfoDao.clearAllCharacterPageInfo()
+        val result = pageInfoDao.getAllItems()
+        val characterResult = pageInfoDao.getPageInfo(characterId)
+        val characterResultII = pageInfoDao.getPageInfo(characterIdII)
+
+        // Then
+        assertThat(result).isNotEmpty()
+        assertThat(result.size).isEqualTo(episodeItems.size)
+        assertThat(characterResult).isNull()
+        assertThat(characterResultII).isNull()
+    }
+
+    @Test
+    fun saveItems_verifyEpisodePageInfoItemsDeleted() = runTest {
+        // Given
+        val episodeId = 7
+        val episodeIdII = 8
+        val characterInfo = PageInfoEntity(
+            id = 1,
+            prev = null,
+            next = 2,
+            pages = 50,
+            count = 20,
+            identifier = getCharacterIdentifier(1),
+        )
+        val characterInfo2 = PageInfoEntity(
+            id = 2,
+            prev = null,
+            next = 2,
+            pages = 50,
+            count = 20,
+            identifier = getCharacterIdentifier(1),
+        )
+        val episodeInfo = PageInfoEntity(
+            id = episodeId,
+            prev = null,
+            next = 2,
+            pages = 50,
+            count = 20,
+            identifier = getEpisodeIdentifier(1),
+        )
+        val episodeInfo2 = PageInfoEntity(
+            id = episodeIdII,
+            prev = null,
+            next = 2,
+            pages = 50,
+            count = 20,
+            identifier = getEpisodeIdentifier(1),
+        )
+        val characterItems: List<PageInfoEntity> = listOf(
+            characterInfo,
+            characterInfo2,
+        )
+        val episodeItems = listOf(
+            episodeInfo,
+            episodeInfo2,
+        )
+        pageInfoDao.insertAll(characterItems)
+        pageInfoDao.insertAll(episodeItems)
+
+        // When
+        pageInfoDao.clearAllEpisodePageInfo()
+        val result = pageInfoDao.getAllItems()
+        val episodeResult = pageInfoDao.getPageInfo(episodeId)
+        val episodeResultII = pageInfoDao.getPageInfo(episodeIdII)
+
+        // Then
+        assertThat(result).isNotEmpty()
+        assertThat(result.size).isEqualTo(characterItems.size)
+        assertThat(episodeResult).isNull()
+        assertThat(episodeResultII).isNull()
+    }
 }

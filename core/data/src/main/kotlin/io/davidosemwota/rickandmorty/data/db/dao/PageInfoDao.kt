@@ -27,6 +27,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import io.davidosemwota.rickandmorty.data.db.entities.CHARACTER_ENTITY_PAGE_PREFIX
+import io.davidosemwota.rickandmorty.data.db.entities.EPISODE_ENTITY_PAGE_PREFIX
 import io.davidosemwota.rickandmorty.data.db.entities.PageInfoEntity
 
 /**
@@ -60,6 +62,12 @@ interface PageInfoDao {
      */
     @Query("DELETE FROM page_info")
     suspend fun clearAllPageInfo()
+
+    @Query("DELETE FROM page_info WHERE identifier LIKE :prefix|| '%'")
+    suspend fun clearAllCharacterPageInfo(prefix: String = CHARACTER_ENTITY_PAGE_PREFIX)
+
+    @Query("DELETE FROM page_info WHERE identifier LIKE :prefix|| '%'")
+    suspend fun clearAllEpisodePageInfo(prefix: String = EPISODE_ENTITY_PAGE_PREFIX)
 
     @Query("SELECT * FROM page_info ORDER by id")
     fun getAllItems(): List<PageInfoEntity>

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.data
+package io.davidosemwota.rickandmorty.data.paging
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -80,9 +80,9 @@ class CharactersRemoteMediator constructor(
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-//                    empty both DB tables
+//                    empty character DB table & clear character pageInfo from table
                     database.characterDao().deleteAllItems()
-                    database.pageInfoDao().getAllItems()
+                    database.pageInfoDao().clearAllCharacterPageInfo()
                 }
                 // save pageInfo
                 pageInfo?.let { database.pageInfoDao().insert(it) }

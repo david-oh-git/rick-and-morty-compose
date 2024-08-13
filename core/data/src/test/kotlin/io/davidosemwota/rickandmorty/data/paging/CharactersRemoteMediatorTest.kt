@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.data
+package io.davidosemwota.rickandmorty.data.paging
 
 import android.content.Context
 import androidx.paging.ExperimentalPagingApi
@@ -31,6 +31,7 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator.MediatorResult
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import io.davidosemwota.rickandmorty.data.FakeApiService
 import io.davidosemwota.rickandmorty.data.db.RickAndMortyDatabase
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
 import io.davidosemwota.rickandmorty.network.RickAndMortyApiService
