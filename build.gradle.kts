@@ -23,12 +23,17 @@
  */
 
 import Build_gradle.BuildTaskGroups.gitHooks
+import Build_gradle.RickAndMortyBuildTasks.COPY_GIT_HOOKS
+import Build_gradle.RickAndMortyBuildTasks.DELETE_GIT_HOOKS
+import Build_gradle.RickAndMortyBuildTasks.INSTALL_GIT_HOOKS
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.diffplug.gradle.spotless.SpotlessPlugin
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 import org.jlleitschuh.gradle.ktlint.KtlintPlugin
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType.HTML
+
+
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -120,9 +125,9 @@ allprojects {
 
     tasks {
 
-        register<Copy>("copyGitHooks") {
-            description = "Copies the git hooks from scripts/git-hooks to the .git folder."
-            group = gitHooks
+        register<Copy>(COPY_GIT_HOOKS.taskName) {
+            description = COPY_GIT_HOOKS.taskDescription
+            group = COPY_GIT_HOOKS.taskGroup
             from("$rootDir/scripts/git-hooks/") {
                 include("**/*.sh")
                 rename("(.*).sh", "$1")
@@ -130,9 +135,9 @@ allprojects {
             into("$rootDir/.git/hooks")
         }
 
-        register<Exec>("installGitHooks") {
-            description = "Installs the pre-commit git hooks from scripts/git-hooks."
-            group = gitHooks
+        register<Exec>(INSTALL_GIT_HOOKS.taskName) {
+            description = INSTALL_GIT_HOOKS.taskGroup
+            group = INSTALL_GIT_HOOKS.taskGroup
             workingDir(rootDir)
             commandLine("chmod")
             args("-R", "+x", ".git/hooks/")
@@ -145,9 +150,9 @@ allprojects {
             }
         }
 
-        register<Delete>("deleteGitHooks") {
-            description = "Delete the pre-commit git hooks."
-            group = gitHooks
+        register<Delete>(DELETE_GIT_HOOKS.taskName) {
+            description = DELETE_GIT_HOOKS.taskDescription
+            group = DELETE_GIT_HOOKS.taskGroup
             delete(fileTree(".git/hooks/"))
         }
 
@@ -159,6 +164,28 @@ allprojects {
 
 object BuildTaskGroups {
     const val gitHooks = "git hooks"
+}
+
+enum class RickAndMortyBuildTasks(
+    val taskName: String,
+    val taskDescription: String,
+    val taskGroup: String,
+) {
+    COPY_GIT_HOOKS(
+        "copyGitHooks",
+        "Installs the pre-commit git hooks from scripts/git-hooks.",
+        gitHooks,
+    ),
+    INSTALL_GIT_HOOKS(
+        "installGitHooks",
+        "Installs the pre-commit git hooks from scripts/git-hooks.",
+        gitHooks,
+    ),
+    DELETE_GIT_HOOKS(
+        "deleteGitHooks",
+        "Delete the pre-commit git hooks.",
+        gitHooks,
+    ),
 }
 
 fun isLinuxOrMacOs(): Boolean = listOf("linux", "mac os", "macos").contains(
