@@ -24,9 +24,7 @@
 package io.davidosemwota.rickandmorty.data.db
 
 import androidx.room.TypeConverter
-import io.davidosemwota.rickandmorty.data.db.entities.CharacterEpisodeEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterResidentEntity
-import io.davidosemwota.rickandmorty.data.db.entities.EpisodeCharacter
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -38,21 +36,5 @@ class CustomTypeConverter {
 
     @TypeConverter
     fun stringToListOfCharacterResident(value: String): List<CharacterResidentEntity> =
-        Json.decodeFromString(value)
-
-    @TypeConverter
-    fun episodeListToString(value: List<CharacterEpisodeEntity>): String =
-        Json.encodeToString(value)
-
-    @TypeConverter
-    fun stringToListOfCharacterEpisode(value: String): List<CharacterEpisodeEntity> =
-        Json.decodeFromString(value)
-
-    @TypeConverter
-    fun episodeCharacterListToString(value: List<EpisodeCharacter>): String =
-        Json.encodeToString(value)
-
-    @TypeConverter
-    fun stringToListOfEpisodeCharacter(value: String): List<EpisodeCharacter> =
         Json.decodeFromString(value)
 }

@@ -28,9 +28,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import io.davidosemwota.rickandmorty.data.CharactersRemoteMediator
 import io.davidosemwota.rickandmorty.data.db.RickAndMortyDatabase
-import io.davidosemwota.rickandmorty.data.db.entities.toUiModel
+import io.davidosemwota.rickandmorty.data.db.mappers.toCharacterUiModel
+import io.davidosemwota.rickandmorty.data.paging.CharactersRemoteMediator
 import io.davidosemwota.rickandmorty.models.Character
 import io.davidosemwota.rickandmorty.network.RickAndMortyApiService
 import kotlinx.coroutines.flow.Flow
@@ -55,7 +55,7 @@ class CharacterRepositoryImpl @Inject constructor(
             database.characterDao().getPagedCharacters()
         }.flow.map { pagingData ->
             pagingData.map {
-                it.toUiModel()
+                it.toCharacterUiModel()
             }
         }
     }

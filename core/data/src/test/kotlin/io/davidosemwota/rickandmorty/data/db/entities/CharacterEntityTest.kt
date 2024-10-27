@@ -24,10 +24,11 @@
 package io.davidosemwota.rickandmorty.data.db.entities
 
 import com.google.common.truth.Truth.assertThat
+import io.davidosemwota.rickandmorty.data.db.mappers.toCharacterUiModel
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class CharacterEntityTest {
+internal class CharacterEntityTest {
 
     @Test
     fun testEntityToModelExtension() = runTest {
@@ -61,15 +62,9 @@ class CharacterEntityTest {
                 ),
             ),
         )
-        val episodes = listOf(
-            CharacterEpisodeEntity(
-                id = episodeOneId,
-                name = episodeOneName,
-            ),
-        )
 
         val entity = CharacterEntity(
-            id = id,
+            characterId = id,
             name = name,
             status = status,
             image = image,
@@ -78,12 +73,11 @@ class CharacterEntityTest {
             gender = gender,
             origin = characterOriginEntity,
             location = locationEntity,
-            episodes = episodes,
             pageIdentity = getCharacterIdentifier(1),
         )
 
         // When/Act
-        val result = entity.toUiModel()
+        val result = entity.toCharacterUiModel()
 
         // Then/Assert
         assertThat(result).isNotNull()

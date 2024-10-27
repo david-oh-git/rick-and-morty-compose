@@ -25,7 +25,6 @@ package io.davidosemwota.rickandmorty.data
 
 import io.davidosemwota.rickandmorty.data.db.entities.CHARACTER_ENTITY_PAGE_PREFIX
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
-import io.davidosemwota.rickandmorty.data.db.entities.CharacterEpisodeEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterLocationEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterOriginEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterResidentEntity
@@ -46,7 +45,7 @@ private fun generateLastName(): String = listOf(
 internal fun generateCharacters(): List<CharacterEntity> {
     return listOf(
         CharacterEntity(
-            id = 1,
+            characterId = 1,
             name = "Rick Sanchez",
             status = "Alive",
             image = "http://image_url",
@@ -70,16 +69,10 @@ internal fun generateCharacters(): List<CharacterEntity> {
                     ),
                 ),
             ),
-            episodes = listOf(
-                CharacterEpisodeEntity(
-                    id = "56",
-                    name = "S03E09",
-                ),
-            ),
             pageIdentity = "${CHARACTER_ENTITY_PAGE_PREFIX}9",
         ),
         CharacterEntity(
-            id = 2,
+            characterId = 2,
             name = "Morty Smith",
             status = "Alive",
             image = "http://image_url",
@@ -101,16 +94,6 @@ internal fun generateCharacters(): List<CharacterEntity> {
                         name = "Evil morty",
                         image = "image url",
                     ),
-                ),
-            ),
-            episodes = listOf(
-                CharacterEpisodeEntity(
-                    id = "56",
-                    name = "S03E09",
-                ),
-                CharacterEpisodeEntity(
-                    id = "16",
-                    name = "S01E09",
                 ),
             ),
             pageIdentity = getCharacterIdentifier(1),

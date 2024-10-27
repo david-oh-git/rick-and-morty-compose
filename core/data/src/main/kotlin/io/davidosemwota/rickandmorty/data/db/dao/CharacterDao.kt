@@ -43,15 +43,21 @@ interface CharacterDao {
     suspend fun insertAll(characters: List<CharacterEntity>)
 
     /**
+     * Adds all items to local Db
+     */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(character: CharacterEntity)
+
+    /**
      *  Returns all items in DB via paging
      */
-    @Query("SELECT * FROM character_entity_table ORDER by id")
+    @Query("SELECT * FROM character_entity_table ORDER by characterId")
     fun getPagedCharacters(): PagingSource<Int, CharacterEntity>
 
     /**
      *  Returns all DB items as a list.
      */
-    @Query("SELECT * FROM character_entity_table ORDER by id")
+    @Query("SELECT * FROM character_entity_table ORDER by characterId")
     suspend fun getCharacters(): List<CharacterEntity>
 
     /**
@@ -60,7 +66,7 @@ interface CharacterDao {
      *
      * @param query id for item searched for
      */
-    @Query("SELECT * FROM character_entity_table WHERE id = :query")
+    @Query("SELECT * FROM character_entity_table WHERE characterId = :query")
     suspend fun getCharacter(query: Int): CharacterEntity?
 
     /**

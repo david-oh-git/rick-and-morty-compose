@@ -84,7 +84,7 @@ internal class CharacterDaoTest {
         characterDao.insertAll(generateCharacters())
         val id = 46
         val evilMorty = CharacterEntity(
-            id = id,
+            characterId = id,
             name = "Morty Smith",
             status = "Alive",
             image = "http://image_url",
@@ -146,7 +146,7 @@ internal class CharacterDaoTest {
         // Given/Arrange
 
         val rick = CharacterEntity(
-            id = 1,
+            characterId = 1,
             name = "Rick Sanchez",
             status = "Alive",
             image = "http://image_url",
@@ -180,7 +180,7 @@ internal class CharacterDaoTest {
         )
 
         val morty = CharacterEntity(
-            id = 2,
+            characterId = 2,
             name = "Morty Smith",
             status = "Alive",
             image = "http://image_url",
