@@ -30,7 +30,6 @@ import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import io.davidosemwota.rickandmorty.data.db.RickAndMortyDatabase
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
-import io.davidosemwota.rickandmorty.data.db.entities.CharacterEpisodeEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterLocationEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterOriginEntity
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterResidentEntity
@@ -108,16 +107,6 @@ internal class CharacterDaoTest {
                     ),
                 ),
             ),
-            episodes = listOf(
-                CharacterEpisodeEntity(
-                    id = "56",
-                    name = "S03E09",
-                ),
-                CharacterEpisodeEntity(
-                    id = "16",
-                    name = "S01E09",
-                ),
-            ),
             pageIdentity = getCharacterIdentifier(1),
         )
         characterDao.insertAll(listOf(evilMorty))
@@ -170,12 +159,6 @@ internal class CharacterDaoTest {
                     ),
                 ),
             ),
-            episodes = listOf(
-                CharacterEpisodeEntity(
-                    id = "56",
-                    name = "S03E09",
-                ),
-            ),
             pageIdentity = getCharacterIdentifier(1),
         )
 
@@ -202,16 +185,6 @@ internal class CharacterDaoTest {
                         name = "Evil morty",
                         image = "image url",
                     ),
-                ),
-            ),
-            episodes = listOf(
-                CharacterEpisodeEntity(
-                    id = "56",
-                    name = "S03E09",
-                ),
-                CharacterEpisodeEntity(
-                    id = "16",
-                    name = "S01E09",
                 ),
             ),
             pageIdentity = getCharacterIdentifier(1),
