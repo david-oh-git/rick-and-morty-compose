@@ -21,13 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.models
+package io.davidosemwota.rickandmorty.data.db.mappers
 
-data class Episode(
-    val id: Int,
-    val name: String = "",
-    val airDate: String = "",
-    val episode: String = "",
-    val pageIdentity: String = "",
-    val characters: List<Character> = emptyList(),
+import io.davidosemwota.rickandmorty.data.db.entities.EpisodeEntity
+import io.davidosemwota.rickandmorty.models.Episode
+import io.davidosemwota.rickandmorty.network.NetworkEpisode
+
+internal fun EpisodeEntity.toEpisodeUiModel(): Episode = Episode(
+    id = this.episodeId,
+    name = this.name,
+    airDate = this.airDate,
+    episode = this.episode,
+    pageIdentity = this.pageIdentity,
+    characters = emptyList(),
 )
+
+internal fun NetworkEpisode.toEpisodeEntity(): EpisodeEntity = EpisodeEntity(
+    episodeId = this.id.toInt(),
+    airDate = this.airDate,
+    episode = this.episode,
+    name = this.name,
+    pageIdentity = "",
+)
+
+internal fun List<NetworkEpisode>.toListOfEntity(): List<EpisodeEntity> =
+    this.map { it.toEpisodeEntity() }

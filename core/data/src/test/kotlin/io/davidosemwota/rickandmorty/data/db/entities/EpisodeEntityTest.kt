@@ -21,13 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.models
+package io.davidosemwota.rickandmorty.data.db.entities
 
-data class Episode(
-    val id: Int,
-    val name: String = "",
-    val airDate: String = "",
-    val episode: String = "",
-    val pageIdentity: String = "",
-    val characters: List<Character> = emptyList(),
-)
+import com.google.common.truth.Truth.assertThat
+import io.davidosemwota.rickandmorty.data.db.mappers.toEpisodeUiModel
+import kotlinx.coroutines.test.runTest
+import org.junit.Test
+
+internal class EpisodeEntityTest {
+
+    @Test
+    fun verifyEntityToModelExtension() = runTest {
+        val entity = EpisodeEntity(
+            episodeId = 3,
+            episode = "S02E04",
+            pageIdentity = "0401",
+            name = "The mask of norro",
+            airDate = "24-05-22",
+        )
+
+        val result = entity.toEpisodeUiModel()
+
+        assertThat(entity.episodeId).isEqualTo(result.id)
+        assertThat(entity.name).isEqualTo(result.name)
+        assertThat(entity.episode).isEqualTo(result.episode)
+        assertThat(entity.airDate).isEqualTo(result.airDate)
+        assertThat(entity.pageIdentity).isEqualTo(result.pageIdentity)
+    }
+}
