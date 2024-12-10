@@ -65,7 +65,7 @@ internal class CharacterEpisodeCrossRefDaoTest {
         characterDao = rickAndMortyDatabase.characterDao()
         episodeDao = rickAndMortyDatabase.episodeDao()
         locationDao = rickAndMortyDatabase.locationDao()
-        characterEntitiesRefDao = rickAndMortyDatabase.characterEpisodeCrossRef()
+        characterEntitiesRefDao = rickAndMortyDatabase.characterEntitiesRefDao()
     }
 
     @After
