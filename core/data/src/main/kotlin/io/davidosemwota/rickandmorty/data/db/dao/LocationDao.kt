@@ -21,27 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.data.db.entities
+package io.davidosemwota.rickandmorty.data.db.dao
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.paging.PagingSource
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import io.davidosemwota.rickandmorty.data.db.entities.LOCATION_ENTITY_TABLE_NAME
+import io.davidosemwota.rickandmorty.data.db.entities.LocationEntity
 
-private const val EPISODE_ENTITY_TABLE_NAME = "episode_entity_table"
+@Dao
+interface LocationDao {
 
-/**
- *  @param episodeId unique id for entity, also serves as primary key
- *  @param airDate Episode first aired date.
- *  @param episode Episode code eg S01E01
- *  @param name Episode name
- *  @param pageIdentity Unique identifier for associated [PageInfoEntity].
- *
- */
-@Entity(tableName = EPISODE_ENTITY_TABLE_NAME)
-data class EpisodeEntity(
-    @PrimaryKey
-    val episodeId: Int,
-    val airDate: String,
-    val episode: String,
-    val name: String,
-    val pageIdentity: String,
-)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(vararg location: LocationEntity)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertIgnore(vararg location: LocationEntity)
+
+    @Query("SELECT * FROM $LOCATION_ENTITY_TABLE_NAME ORDER by locationId")
+    fun getPagedLocations(): PagingSource<Int, LocationEntity>
+
+    @Query("SELECT * FROM $LOCATION_ENTITY_TABLE_NAME ORDER by locationId")
+    suspend fun getLocations(): List<LocationEntity>
+
+    @Query("SELECT * FROM $LOCATION_ENTITY_TABLE_NAME WHERE locationId = :query")
+    suspend fun getLocation(query: Int): LocationEntity?
+
+    @Query("DELETE FROM $LOCATION_ENTITY_TABLE_NAME")
+    suspend fun deleteAllItems()
+}

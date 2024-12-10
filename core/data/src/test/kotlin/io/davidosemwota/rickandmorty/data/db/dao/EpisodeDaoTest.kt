@@ -28,7 +28,6 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import io.davidosemwota.rickandmorty.data.db.RickAndMortyDatabase
-import io.davidosemwota.rickandmorty.data.db.entities.EpisodeCharacter
 import io.davidosemwota.rickandmorty.data.db.entities.EpisodeEntity
 import io.davidosemwota.rickandmorty.data.db.entities.getEpisodeIdentifier
 import kotlinx.coroutines.test.runTest
@@ -65,52 +64,31 @@ internal class EpisodeDaoTest {
     fun saveItems_verifySavedToDb() = runTest {
         // Given
         val s01e01 = EpisodeEntity(
-            id = 1,
+            episodeId = 1,
             airDate = "03-02-19",
             episode = "The birth",
             name = "S01E01",
-            characters = emptyList(),
             pageIdentity = getEpisodeIdentifier(2),
         )
         val s01e02 = EpisodeEntity(
-            id = 2,
+            episodeId = 2,
             airDate = "03-02-19",
             episode = "The birth",
             name = "S01E01",
-            characters = listOf(
-                EpisodeCharacter(
-                    id = 25,
-                    image = "http://blavlvl.jpg",
-                    name = "Evil Morty",
-                ),
-                EpisodeCharacter(
-                    id = 5,
-                    image = "http://blavlvl.jpg",
-                    name = "Evil Rick",
-                ),
-            ),
             pageIdentity = getEpisodeIdentifier(1),
         )
         val s01e03 = EpisodeEntity(
-            id = 3,
+            episodeId = 3,
             airDate = "03-02-19",
             episode = "The birth",
             name = "S01E01",
-            characters = listOf(
-                EpisodeCharacter(
-                    id = 3,
-                    image = "http://blavlvl.jpg",
-                    name = "Summer Smith",
-                ),
-            ),
             pageIdentity = getEpisodeIdentifier(2),
         )
         val s01e04 = EpisodeEntity(
-            id = 4,
+            episodeId = 4,
             airDate = "03-02-19",
             episode = "The birth",
             name = "S01E01",
-            characters = emptyList(),
             pageIdentity = getEpisodeIdentifier(2),
         )
 
@@ -129,22 +107,10 @@ internal class EpisodeDaoTest {
     fun saveItem_verifySaved() = runTest {
         // Given
         val s01e01 = EpisodeEntity(
-            id = 1,
+            episodeId = 1,
             airDate = "03-02-19",
             episode = "The birth",
             name = "S01E01",
-            characters = listOf(
-                EpisodeCharacter(
-                    id = 25,
-                    image = "http://blavlvl.jpg",
-                    name = "Evil Morty",
-                ),
-                EpisodeCharacter(
-                    id = 5,
-                    image = "http://blavlvl.jpg",
-                    name = "Evil Rick",
-                ),
-            ),
             pageIdentity = getEpisodeIdentifier(2),
         )
         episodeDao.insert(s01e01)
@@ -158,65 +124,41 @@ internal class EpisodeDaoTest {
 
         val item = result[0]
 
-        assertThat(item.id).isEqualTo(s01e01.id)
+        assertThat(item.episodeId).isEqualTo(s01e01.episodeId)
         assertThat(item.airDate).isEqualTo(s01e01.airDate)
         assertThat(item.episode).isEqualTo(s01e01.episode)
         assertThat(item.name).isEqualTo(s01e01.name)
-
-        assertThat(item.characters).isNotEmpty()
-        assertThat(item.characters.size).isEqualTo(s01e01.characters.size)
     }
 
     @Test
     fun saveItems_verifyDeleted() = runTest {
         // Given
         val s01e01 = EpisodeEntity(
-            id = 1,
+            episodeId = 1,
             airDate = "03-02-19",
             episode = "The birth",
             name = "S01E01",
-            characters = emptyList(),
             pageIdentity = getEpisodeIdentifier(5),
         )
         val s01e02 = EpisodeEntity(
-            id = 2,
+            episodeId = 2,
             airDate = "03-02-19",
             episode = "The birth",
             name = "S01E01",
-            characters = listOf(
-                EpisodeCharacter(
-                    id = 25,
-                    image = "http://blavlvl.jpg",
-                    name = "Evil Morty",
-                ),
-                EpisodeCharacter(
-                    id = 5,
-                    image = "http://blavlvl.jpg",
-                    name = "Evil Rick",
-                ),
-            ),
             pageIdentity = getEpisodeIdentifier(2),
         )
         val s01e03 = EpisodeEntity(
-            id = 3,
+            episodeId = 3,
             airDate = "03-02-19",
             episode = "The birth",
             name = "S01E01",
-            characters = listOf(
-                EpisodeCharacter(
-                    id = 3,
-                    image = "http://blavlvl.jpg",
-                    name = "Summer Smith",
-                ),
-            ),
             pageIdentity = getEpisodeIdentifier(2),
         )
         val s01e04 = EpisodeEntity(
-            id = 4,
+            episodeId = 4,
             airDate = "03-02-19",
             episode = "The birth",
             name = "S01E01",
-            characters = emptyList(),
             pageIdentity = getEpisodeIdentifier(2),
         )
 
@@ -236,52 +178,31 @@ internal class EpisodeDaoTest {
         // Given
         val expectedId = 9
         val s01e01 = EpisodeEntity(
-            id = 1,
+            episodeId = 1,
             airDate = "03-02-19",
             episode = "The birth",
             name = "S01E01",
-            characters = emptyList(),
             pageIdentity = getEpisodeIdentifier(5),
         )
         val s01e02 = EpisodeEntity(
-            id = 2,
+            episodeId = 2,
             airDate = "03-02-19",
             episode = "The birth",
             name = "S01E01",
-            characters = listOf(
-                EpisodeCharacter(
-                    id = 25,
-                    image = "http://blavlvl.jpg",
-                    name = "Evil Morty",
-                ),
-                EpisodeCharacter(
-                    id = 5,
-                    image = "http://blavlvl.jpg",
-                    name = "Evil Rick",
-                ),
-            ),
             pageIdentity = getEpisodeIdentifier(2),
         )
         val expectedItem = EpisodeEntity(
-            id = expectedId,
+            episodeId = expectedId,
             airDate = "03-02-19",
             episode = "The birth",
             name = "S01E01",
-            characters = listOf(
-                EpisodeCharacter(
-                    id = 3,
-                    image = "http://blavlvl.jpg",
-                    name = "Summer Smith",
-                ),
-            ),
             pageIdentity = getEpisodeIdentifier(2),
         )
         val s01e04 = EpisodeEntity(
-            id = 4,
+            episodeId = 4,
             airDate = "03-02-19",
             episode = "The birth",
             name = "S01E01",
-            characters = emptyList(),
             pageIdentity = getEpisodeIdentifier(2),
         )
 
@@ -293,11 +214,10 @@ internal class EpisodeDaoTest {
 
         // Then
         assertThat(result).isNotNull()
-        assertThat(expectedItem.id).isEqualTo(result?.id)
+        assertThat(expectedItem.episodeId).isEqualTo(result?.episodeId)
         assertThat(expectedItem.name).isEqualTo(result?.name)
         assertThat(expectedItem.airDate).isEqualTo(result?.airDate)
         assertThat(expectedItem.episode).isEqualTo(result?.episode)
         assertThat(expectedItem.pageIdentity).isEqualTo(result?.pageIdentity)
-        assertThat(expectedItem.characters.size).isEqualTo(result?.characters?.size)
     }
 }

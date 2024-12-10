@@ -27,6 +27,10 @@ const val CHARACTER_ENTITY_PAGE_PREFIX = "ch-"
 
 const val EPISODE_ENTITY_PAGE_PREFIX = "ep-"
 
+const val LOCATION_ENTITY_PAGE_PREFIX = "loc-"
+
 fun getCharacterIdentifier(page: Int): String = "${CHARACTER_ENTITY_PAGE_PREFIX}$page"
 
 fun getEpisodeIdentifier(page: Int): String = "${EPISODE_ENTITY_PAGE_PREFIX}$page"
+
+fun getLocationIdentifier(page: Int): String = "${LOCATION_ENTITY_PAGE_PREFIX}$page"

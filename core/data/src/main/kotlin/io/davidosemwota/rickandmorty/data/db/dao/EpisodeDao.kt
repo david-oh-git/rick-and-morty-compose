@@ -43,18 +43,21 @@ interface EpisodeDao {
      * Add item to local Db
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(episode: EpisodeEntity)
+    suspend fun insert(vararg episode: EpisodeEntity)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertIgnore(vararg episode: EpisodeEntity)
 
     /**
      *  Returns all items in DB via paging
      */
-    @Query("SELECT * FROM episode_entity_table ORDER by id")
+    @Query("SELECT * FROM episode_entity_table ORDER by episodeId")
     fun getPagedEpisodes(): PagingSource<Int, EpisodeEntity>
 
     /**
      *  Returns all DB items as a list.
      */
-    @Query("SELECT * FROM episode_entity_table ORDER by id")
+    @Query("SELECT * FROM episode_entity_table ORDER by episodeId")
     suspend fun getEpisodes(): List<EpisodeEntity>
 
     /**
@@ -63,7 +66,7 @@ interface EpisodeDao {
      *
      * @param query id for item searched for
      */
-    @Query("SELECT * FROM episode_entity_table WHERE id = :query")
+    @Query("SELECT * FROM episode_entity_table WHERE episodeId = :query")
     suspend fun getEpisode(query: Int): EpisodeEntity?
 
     /**

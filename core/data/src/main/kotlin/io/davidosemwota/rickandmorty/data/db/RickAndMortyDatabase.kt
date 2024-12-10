@@ -25,20 +25,30 @@ package io.davidosemwota.rickandmorty.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import io.davidosemwota.rickandmorty.data.db.dao.CharacterDao
+import io.davidosemwota.rickandmorty.data.db.dao.CharacterEpisodeCrossRefDao
 import io.davidosemwota.rickandmorty.data.db.dao.EpisodeDao
+import io.davidosemwota.rickandmorty.data.db.dao.LocationDao
 import io.davidosemwota.rickandmorty.data.db.dao.PageInfoDao
+import io.davidosemwota.rickandmorty.data.db.entities.CharacterAndEpisodeEntityRef
+import io.davidosemwota.rickandmorty.data.db.entities.CharacterAndLocationEntityRef
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
 import io.davidosemwota.rickandmorty.data.db.entities.EpisodeEntity
+import io.davidosemwota.rickandmorty.data.db.entities.LocationEntity
 import io.davidosemwota.rickandmorty.data.db.entities.PageInfoEntity
 
 @Database(
-    entities = [PageInfoEntity::class, CharacterEntity::class, EpisodeEntity::class],
+    entities = [
+        PageInfoEntity::class,
+        CharacterEntity::class,
+        EpisodeEntity::class,
+        LocationEntity::class,
+        CharacterAndLocationEntityRef::class,
+        CharacterAndEpisodeEntityRef::class,
+    ],
     version = 1,
     exportSchema = false,
 )
-@TypeConverters(CustomTypeConverter::class)
 abstract class RickAndMortyDatabase : RoomDatabase() {
 
     abstract fun pageInfoDao(): PageInfoDao
@@ -46,4 +56,8 @@ abstract class RickAndMortyDatabase : RoomDatabase() {
     abstract fun characterDao(): CharacterDao
 
     abstract fun episodeDao(): EpisodeDao
+
+    abstract fun locationDao(): LocationDao
+
+    abstract fun characterEpisodeCrossRef(): CharacterEpisodeCrossRefDao
 }

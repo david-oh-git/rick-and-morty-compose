@@ -21,20 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.data.db
+package io.davidosemwota.rickandmorty.data.db.entities
 
-import androidx.room.TypeConverter
-import io.davidosemwota.rickandmorty.data.db.entities.CharacterResidentEntity
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-class CustomTypeConverter {
+const val LOCATION_ENTITY_TABLE_NAME = "location_entity_table"
 
-    @TypeConverter
-    fun residentListToString(value: List<CharacterResidentEntity>): String =
-        Json.encodeToString(value)
-
-    @TypeConverter
-    fun stringToListOfCharacterResident(value: String): List<CharacterResidentEntity> =
-        Json.decodeFromString(value)
-}
+@Entity(tableName = LOCATION_ENTITY_TABLE_NAME)
+data class LocationEntity(
+    @PrimaryKey
+    val locationId: Int,
+    val name: String,
+    val dimension: String,
+    val pageIdentity: String,
+)
