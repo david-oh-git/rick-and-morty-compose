@@ -23,6 +23,7 @@
  */
 package io.davidosemwota.rickandmorty.data.db.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -55,6 +56,10 @@ interface CharacterEntitiesRefDao {
     @Transaction
     @Query("SELECT * FROM $CHARACTER_ENTITY_TABLE_NAME ORDER by characterId")
     fun getCharacterWithEpisodesAndLocations(): Flow<List<CharacterWithEpisodesAndLocations>>
+
+    @Transaction
+    @Query("SELECT * FROM $CHARACTER_ENTITY_TABLE_NAME ORDER by characterId")
+    fun getPagedCharacterWithEpisodesAndLocations(): PagingSource<Int, CharacterWithEpisodesAndLocations>
 
     @Transaction
     @Query("SELECT * FROM $CHARACTER_ENTITY_TABLE_NAME WHERE characterId = :query")

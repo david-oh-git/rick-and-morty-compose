@@ -24,6 +24,7 @@
 package io.davidosemwota.rickandmorty.data.db.dao
 
 import android.content.Context
+import androidx.paging.PagingSource
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
@@ -45,7 +46,7 @@ import org.robolectric.RobolectricTestRunner
 import kotlin.test.Test
 
 @RunWith(RobolectricTestRunner::class)
-internal class CharacterEpisodeCrossRefDaoTest {
+internal class CharacterEntitiesRefDaoTest {
 
     private lateinit var rickAndMortyDatabase: RickAndMortyDatabase
     private lateinit var characterDao: CharacterDao
@@ -234,6 +235,166 @@ internal class CharacterEpisodeCrossRefDaoTest {
         assertThat(rickResult).isNotNull()
         assertThat(rickResult?.episodes).isNotEmpty()
         assertThat(rickResult?.locations).isNotEmpty()
+    }
+
+    @Test
+    fun addCrossRefData_verifyPagedData() = runTest {
+        // Arrange
+        // Characters
+        val expectedEvilMortyId = 46
+        val evilMorty = CharacterEntity(
+            characterId = expectedEvilMortyId,
+            name = "Morty Smith",
+            status = "Alive",
+            image = "http://image_url",
+            species = "Human",
+            type = "whatever type",
+            gender = "male",
+            originId = 2,
+            pageIdentity = getCharacterIdentifier(1),
+        )
+        // Episodes
+        val expectedRickId = 1
+        val rick = CharacterEntity(
+            characterId = expectedRickId,
+            name = "Rick Sanchez",
+            status = "Alive",
+            image = "http://image_url",
+            species = "Human",
+            type = "whatever type",
+            gender = "male",
+            pageIdentity = getCharacterIdentifier(1),
+            originId = 22,
+        )
+
+        val s01e01 = EpisodeEntity(
+            episodeId = 1,
+            airDate = "03-02-19",
+            episode = "The birth",
+            name = "S01E01",
+            pageIdentity = getEpisodeIdentifier(2),
+        )
+        val s01e02 = EpisodeEntity(
+            episodeId = 2,
+            airDate = "03-02-19",
+            episode = "The birth",
+            name = "S01E01",
+            pageIdentity = getEpisodeIdentifier(1),
+        )
+        val s01e03 = EpisodeEntity(
+            episodeId = 3,
+            airDate = "03-02-19",
+            episode = "The birth",
+            name = "S01E01",
+            pageIdentity = getEpisodeIdentifier(2),
+        )
+        val s01e04 = EpisodeEntity(
+            episodeId = 4,
+            airDate = "03-02-19",
+            episode = "The birth",
+            name = "S01E01",
+            pageIdentity = getEpisodeIdentifier(2),
+        )
+        // Location
+        val expectedIdentifier = getLocationIdentifier(1)
+        val citadelOfRicks = LocationEntity(
+            locationId = 25,
+            name = "Citadel of Ricks",
+            dimension = "Unknown",
+            pageIdentity = expectedIdentifier,
+        )
+        val earthReplacement = LocationEntity(
+            locationId = 26,
+            name = "Earth (Replacement dimension)",
+            dimension = "Replacement dimension",
+            pageIdentity = expectedIdentifier,
+        )
+        val abadango = LocationEntity(
+            locationId = 27,
+            name = "Abadango",
+            dimension = "Unknown",
+            pageIdentity = expectedIdentifier,
+        )
+
+        // Act: save all characters, episodes & references,
+        // retrieve all saved data from the database.
+        characterDao.insert(evilMorty, rick)
+        episodeDao.insert(s01e01, s01e02, s01e03, s01e04)
+        locationDao.insert(citadelOfRicks, earthReplacement, abadango)
+
+        // Evil Morty character referenced with 3 episodes & 2 locations.
+        characterEntitiesRefDao.insert(
+            CharacterAndEpisodeEntityRef(
+                characterId = evilMorty.characterId,
+                episodeId = s01e01.episodeId,
+            ),
+            CharacterAndEpisodeEntityRef(
+                characterId = evilMorty.characterId,
+                episodeId = s01e02.episodeId,
+            ),
+            CharacterAndEpisodeEntityRef(
+                characterId = evilMorty.characterId,
+                episodeId = s01e04.episodeId,
+            ),
+        )
+        characterEntitiesRefDao.insert(
+            CharacterAndLocationEntityRef(
+                characterId = evilMorty.characterId,
+                locationId = citadelOfRicks.locationId,
+            ),
+            CharacterAndLocationEntityRef(
+                characterId = evilMorty.characterId,
+                locationId = earthReplacement.locationId,
+            ),
+        )
+        // Rick character referenced with all 4 episodes & 3 locations.
+        characterEntitiesRefDao.insert(
+            CharacterAndEpisodeEntityRef(
+                characterId = rick.characterId,
+                episodeId = s01e01.episodeId,
+            ),
+            CharacterAndEpisodeEntityRef(
+                characterId = rick.characterId,
+                episodeId = s01e02.episodeId,
+            ),
+            CharacterAndEpisodeEntityRef(
+                characterId = rick.characterId,
+                episodeId = s01e03.episodeId,
+            ),
+            CharacterAndEpisodeEntityRef(
+                characterId = rick.characterId,
+                episodeId = s01e04.episodeId,
+            ),
+        )
+        characterEntitiesRefDao.insert(
+            CharacterAndLocationEntityRef(
+                characterId = rick.characterId,
+                locationId = citadelOfRicks.locationId,
+            ),
+            CharacterAndLocationEntityRef(
+                characterId = rick.characterId,
+                locationId = earthReplacement.locationId,
+            ),
+            CharacterAndLocationEntityRef(
+                characterId = rick.characterId,
+                locationId = abadango.locationId,
+            ),
+        )
+
+        val totalDataResult = (
+            characterEntitiesRefDao.getPagedCharacterWithEpisodesAndLocations()
+                .load(
+                    PagingSource.LoadParams.Refresh(
+                        key = null,
+                        loadSize = 50,
+                        placeholdersEnabled = false,
+                    ),
+                ) as PagingSource.LoadResult.Page
+            ).data
+
+        // Assert
+        assertThat(totalDataResult).isNotEmpty()
+        assertThat(totalDataResult.size).isEqualTo(2) // No of characters is 2.
     }
 
     @Test
