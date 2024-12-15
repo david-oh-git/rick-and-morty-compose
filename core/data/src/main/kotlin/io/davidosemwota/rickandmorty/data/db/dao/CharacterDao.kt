@@ -45,8 +45,11 @@ interface CharacterDao {
     /**
      * Adds all items to local Db
      */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(vararg character: CharacterEntity)
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(character: CharacterEntity)
+    suspend fun insertIgnore(vararg character: CharacterEntity)
 
     /**
      *  Returns all items in DB via paging

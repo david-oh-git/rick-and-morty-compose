@@ -23,7 +23,6 @@
  */
 package io.davidosemwota.rickandmorty.characters.list
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -40,7 +39,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
-import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -86,6 +84,7 @@ import io.davidosemwota.rickandmorty.models.Character
 import io.davidosemwota.ui.GeneralPreview
 import io.davidosemwota.ui.PreviewComposable
 import io.davidosemwota.ui.theme.RickAndMortyTheme
+import timber.log.Timber
 
 @Composable
 fun CharactersRoute(
@@ -118,16 +117,16 @@ fun CharactersScreenContent(
     characters.apply {
         when (loadState.refresh) {
             is LoadState.Error -> {
-                Log.d("xxx", "FULL REFRESH ERROR EMPTY")
+                Timber.tag("xxx").d("FULL REFRESH ERROR EMPTY")
                 error = loadState.refresh as LoadState.Error
                 updateFullScreenState(PagingState.Error)
             }
             LoadState.Loading -> {
-                Log.d("xxx", "FULL REFRESH LOADING")
+                Timber.tag("xxx").d("FULL REFRESH LOADING")
                 updateFullScreenState(PagingState.Loading)
             }
             is LoadState.NotLoading -> {
-                Log.d("xxx", "FULL REFRESH NOT LOADING")
+                Timber.tag("xxx").d("FULL REFRESH NOT LOADING")
                 updateFullScreenState(PagingState.NotLoading)
             }
         }
@@ -135,15 +134,15 @@ fun CharactersScreenContent(
         when (loadState.append) {
             is LoadState.Error -> {
                 error = loadState.append as LoadState.Error
-                Log.d("xxx", "APPEND ERROR")
+                Timber.tag("xxx").d("APPEND ERROR")
                 updateAppendState(PagingState.Error)
             }
             LoadState.Loading -> {
-                Log.d("xxx", "APPEND LOADING")
+                Timber.tag("xxx").d("APPEND LOADING")
                 updateAppendState(PagingState.Loading)
             }
             is LoadState.NotLoading -> {
-                Log.d("xxx", "APPEND NOT LOADING")
+                Timber.tag("xxx").d("APPEND NOT LOADING")
                 updateAppendState(PagingState.NotLoading)
             }
         }
@@ -158,9 +157,9 @@ fun CharactersScreenContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .testTag(ERROR_SCREEN),
-                error = characters.loadState.refresh as LoadState.Error,
+                error = error,
                 retry = {
-                    Log.d("xxx", "CLICKED")
+                    Timber.tag("xxx").d("CLICKED")
                     updateFullScreenState(PagingState.Loading)
                     characters.retry()
                 },
@@ -213,7 +212,7 @@ fun CharactersScreenContent(
                                 modifier = Modifier.fillMaxSize(),
                                 error = error,
                                 retry = {
-                                    Log.d("xxx", "CLICKED")
+                                    Timber.tag("xxx").d("CLICKED")
                                     updateAppendState(PagingState.Loading)
                                     characters.retry()
                                 },
@@ -273,6 +272,7 @@ fun ErrorScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
+        // TODO : default error message for various exceptions. eg IllegalStateException
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             modifier = Modifier
@@ -415,8 +415,11 @@ fun CharacterGridItemPreview() {
             name = "Prime Rick",
             type = "Human",
             gender = "Male",
-            origin = null,
             status = "Unknown",
+            species = "Human",
+            originId = null,
+            locations = emptyList(),
+            episodes = emptyList(),
         ),
     )
 }

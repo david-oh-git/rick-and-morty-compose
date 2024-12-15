@@ -28,23 +28,29 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import io.davidosemwota.rickandmorty.data.db.CharacterWithEpisodesAndLocations
 import io.davidosemwota.rickandmorty.data.db.RickAndMortyDatabase
-import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
+import io.davidosemwota.rickandmorty.data.db.entities.CharacterAndEpisodeEntityRef
+import io.davidosemwota.rickandmorty.data.db.entities.CharacterAndLocationEntityRef
 import io.davidosemwota.rickandmorty.data.db.entities.PageInfoEntity
 import io.davidosemwota.rickandmorty.data.db.entities.getCharacterIdentifier
 import io.davidosemwota.rickandmorty.data.db.entities.toEntity
+import io.davidosemwota.rickandmorty.data.db.mappers.toCharacterEntity
+import io.davidosemwota.rickandmorty.data.db.mappers.toListOfEntity
+import io.davidosemwota.rickandmorty.data.db.mappers.toLocationEntity
 import io.davidosemwota.rickandmorty.network.RickAndMortyApiService
+import timber.log.Timber
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
 class CharactersRemoteMediator constructor(
     private val database: RickAndMortyDatabase,
     private val rickAndMortyApiService: RickAndMortyApiService,
-) : RemoteMediator<Int, CharacterEntity>() {
+) : RemoteMediator<Int, CharacterWithEpisodesAndLocations>() {
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, CharacterEntity>,
+        state: PagingState<Int, CharacterWithEpisodesAndLocations>,
     ): MediatorResult {
         return try {
             val page = when (loadType) {
@@ -87,18 +93,48 @@ class CharactersRemoteMediator constructor(
                 // save pageInfo
                 pageInfo?.let { database.pageInfoDao().insert(it) }
 
-                // Save characters
-                val characters = response.results?.map {
-                    it.toEntity().copy(pageIdentity = pageIdentity)
-                }
-                if (characters != null) {
-                    database.characterDao().insertAll(characters)
+                // Save characters information
+                response.results?.map {
+                    val character = it.toCharacterEntity()
+                        ?.copy(pageIdentity = pageIdentity)
+                    val episodes = it.episode.toListOfEntity()
+                    val location = it.location?.takeIf { it.id != null }?.toLocationEntity()
+
+                    // Save character
+                    character?.let {
+                        Timber.d("NAME : ${character.name}")
+
+                        database.characterDao().insert(character)
+
+                        // Save character location & ref entity.
+                        location?.let {
+                            database.locationDao().insertIgnore(location)
+                            database.characterEntitiesRefDao().insert(
+                                CharacterAndLocationEntityRef(
+                                    characterId = character.characterId,
+                                    locationId = location.locationId,
+                                ),
+                            )
+                        }
+
+                        // Save episodes & reference , entities
+                        episodes.map { episode ->
+                            database.episodeDao().insertIgnore(episode)
+                            val characterAndEpisodeEntityRef = CharacterAndEpisodeEntityRef(
+                                characterId = character.characterId,
+                                episodeId = episode.episodeId,
+                            )
+                            // Save character episode ref
+                            database.characterEntitiesRefDao().insert(characterAndEpisodeEntityRef)
+                        }
+                    }
                 }
             }
             return MediatorResult.Success(endOfPaginationReached = pageInfo?.next == null)
         } catch (e: IOException) {
             MediatorResult.Error(e)
         } catch (e: Exception) {
+            e.printStackTrace()
             MediatorResult.Error(e)
         }
     }
@@ -108,20 +144,24 @@ class CharactersRemoteMediator constructor(
     }
 
     private suspend fun getPageInfoForFirstItem(
-        state: PagingState<Int, CharacterEntity>,
+        state: PagingState<Int, CharacterWithEpisodesAndLocations>,
     ): PageInfoEntity? {
         return state.pages.firstOrNull() { it.data.isNotEmpty() }?.data?.firstOrNull()
-            ?.let { character ->
-                database.pageInfoDao().getPageInfo(character.pageIdentity)
+            ?.let { characterWithEpisodesAndLocations ->
+                database.pageInfoDao().getPageInfo(
+                    characterWithEpisodesAndLocations.character.pageIdentity,
+                )
             }
     }
 
     private suspend fun getPageInfoEntityForLastItem(
-        state: PagingState<Int, CharacterEntity>,
+        state: PagingState<Int, CharacterWithEpisodesAndLocations>,
     ): PageInfoEntity? {
         return state.pages.lastOrNull() { it.data.isNotEmpty() }?.data?.lastOrNull()
-            ?.let { character ->
-                database.pageInfoDao().getPageInfo(character.pageIdentity)
+            ?.let { characterWithEpisodesAndLocations ->
+                database.pageInfoDao().getPageInfo(
+                    characterWithEpisodesAndLocations.character.pageIdentity,
+                )
             }
     }
 }

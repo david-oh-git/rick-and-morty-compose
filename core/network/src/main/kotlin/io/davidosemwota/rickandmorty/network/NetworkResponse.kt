@@ -23,6 +23,7 @@
  */
 package io.davidosemwota.rickandmorty.network
 
+import com.apollographql.apollo3.api.Error
 import io.davidosemwota.rickandmorty.network.graphql.CharacterListQuery
 import io.davidosemwota.rickandmorty.network.graphql.EpisodesQuery
 
@@ -56,42 +57,30 @@ data class NetworkInfo(
 )
 
 data class NetworkCharacter(
-    val id: String,
-    val name: String = "",
-    val status: String = "",
-    val image: String,
-    val species: String = "",
-    val type: String = "",
-    val gender: String = "",
-    val origin: NetworkOrigin? = null,
+    val id: String?,
+    val name: String? = null,
+    val status: String? = null,
+    val image: String? = null,
+    val species: String? = null,
+    val type: String? = null,
+    val gender: String? = null,
+    val origin: NetworkLocation? = null,
     val location: NetworkLocation? = null,
     val episode: List<NetworkEpisode> = emptyList(),
 )
 
-data class NetworkOrigin(
-    val id: String,
-    val name: String,
-    val dimension: String,
-)
-
-data class NetworkResident(
-    val id: String,
-    val name: String,
-    val image: String,
-)
-
 data class NetworkLocation(
-    val id: String,
-    val name: String,
-    val dimension: String,
-    val residents: List<NetworkResident>,
+    val id: String?,
+    val name: String?,
+    val dimension: String?,
+    val residents: List<NetworkCharacter> = emptyList(),
 )
 
 data class NetworkEpisode(
-    val id: String = "",
-    val airDate: String = "",
-    val episode: String,
-    val name: String,
+    val id: String?,
+    val airDate: String? = null,
+    val episode: String?,
+    val name: String?,
     val characters: List<NetworkCharacter> = emptyList(),
 )
 
@@ -109,7 +98,7 @@ fun EpisodesQuery.Info.networkInfo(): NetworkInfo = NetworkInfo(
     prev = this.prev,
 )
 
-fun List<com.apollographql.apollo3.api.Error>.toListOfNetworkError(): List<NetworkError> {
+fun List<Error>.toListOfNetworkError(): List<NetworkError> {
     return this.map {
         NetworkError(
             serverErrorMessage = it.message,
@@ -118,33 +107,33 @@ fun List<com.apollographql.apollo3.api.Error>.toListOfNetworkError(): List<Netwo
     }
 }
 
-fun CharacterListQuery.Resident.toNetworkResident(): NetworkResident = NetworkResident(
-    id = this.id.orEmpty(),
-    name = this.name.orEmpty(),
-    image = this.image.orEmpty(),
+fun CharacterListQuery.Resident.toNetworkCharacter(): NetworkCharacter = NetworkCharacter(
+    id = this.id,
+    name = this.name,
+    image = this.image,
 )
 
 fun CharacterListQuery.Location.toNetworkLocation(): NetworkLocation = NetworkLocation(
-    id = this.id.orEmpty(),
+    id = this.id,
     name = this.name.orEmpty(),
     dimension = this.dimension.orEmpty(),
-    residents = this.residents.filterNotNull().map { it.toNetworkResident() },
+    residents = this.residents.filterNotNull().map { it.toNetworkCharacter() },
 )
 
-fun CharacterListQuery.Origin.toNetworkOrigin(): NetworkOrigin = NetworkOrigin(
-    id = this.id.orEmpty(),
-    name = this.name.orEmpty(),
-    dimension = this.dimension.orEmpty(),
+fun CharacterListQuery.Origin.toNetworkOrigin(): NetworkLocation = NetworkLocation(
+    id = this.id,
+    name = this.name,
+    dimension = this.dimension,
 )
 
 fun CharacterListQuery.Episode.toNetworkEpisode(): NetworkEpisode = NetworkEpisode(
-    id = this.id.orEmpty(),
+    id = this.id,
     name = this.name.orEmpty(),
     episode = this.episode.orEmpty(),
     characters = this.characters.filterNotNull().map {
         NetworkCharacter(
-            id = it.id.orEmpty(),
-            image = it.image.orEmpty(),
+            id = it.id.toString(),
+            image = it.image.toString(),
             gender = "null",
             origin = null,
             location = null,
@@ -154,6 +143,7 @@ fun CharacterListQuery.Episode.toNetworkEpisode(): NetworkEpisode = NetworkEpiso
             type = "",
         )
     },
+    airDate = TODO(),
 )
 
 fun EpisodesQuery.Episodes?.toNetworkEpisodeListResponse(): NetworkEpisodeListResponse {
@@ -185,29 +175,29 @@ fun EpisodesQuery.Episodes?.toNetworkEpisodeListResponse(): NetworkEpisodeListRe
 
 fun CharacterListQuery.Characters?.toNetworkCharacterListResponse(): NetworkCharacterListResponse {
     val info = this?.info?.networkInfo()
-    val characters = this?.results?.filterNotNull()?.map {
-        it.let {
+    val characters = this?.results?.filterNotNull()?.filter { it.id != null }?.map { characterResponse ->
+        characterResponse.let {
             NetworkCharacter(
-                id = it.id.orEmpty(),
+                id = it.id!!, // filter removes characters with null id already
                 gender = it.gender.orEmpty(),
                 image = it.image.orEmpty(),
                 name = it.name.orEmpty(),
                 type = it.type.orEmpty(),
                 status = it.status.orEmpty(),
                 species = it.species.orEmpty(),
-                location = it.location?.toNetworkLocation(),
-                origin = it.origin?.toNetworkOrigin(),
-                episode = it.episode.map { queryEpisode ->
+                location = it.location?.takeIf { it.id != null }?.toNetworkLocation(),
+                origin = it.origin?.takeIf { it.id != null }?.toNetworkOrigin(),
+                episode = it.episode.filterNotNull().filter { it.id != null }.map { queryEpisode ->
                     NetworkEpisode(
-                        id = queryEpisode?.id.orEmpty(),
-                        episode = queryEpisode?.episode.orEmpty(),
-                        name = queryEpisode?.name.orEmpty(),
-                        characters = queryEpisode?.characters?.map { queryCharacter ->
+                        id = queryEpisode.id.orEmpty(),
+                        episode = queryEpisode.episode.orEmpty(),
+                        name = queryEpisode.name.orEmpty(),
+                        characters = queryEpisode.characters.map { queryCharacter ->
                             NetworkCharacter(
                                 id = queryCharacter?.id.orEmpty(),
                                 image = queryCharacter?.image.orEmpty(),
                             )
-                        } ?: emptyList(),
+                        },
                     )
                 },
             )

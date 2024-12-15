@@ -23,40 +23,28 @@
  */
 package io.davidosemwota.rickandmorty.data.db.mappers
 
+import io.davidosemwota.rickandmorty.data.db.CharacterWithEpisodesAndLocations
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
-import io.davidosemwota.rickandmorty.data.db.entities.CharacterLocationEntity
-import io.davidosemwota.rickandmorty.data.db.entities.CharacterOriginEntity
-import io.davidosemwota.rickandmorty.data.db.entities.CharacterResidentEntity
 import io.davidosemwota.rickandmorty.models.Character
-import io.davidosemwota.rickandmorty.models.Location
-import io.davidosemwota.rickandmorty.models.Origin
 import io.davidosemwota.rickandmorty.network.NetworkCharacter
-import io.davidosemwota.rickandmorty.network.NetworkResident
 
-internal fun NetworkCharacter.toCharacterEntity(): CharacterEntity = CharacterEntity(
-    characterId = this.id.toInt(),
-    name = this.name,
-    image = this.image,
-    gender = this.gender,
-    type = this.type,
-    status = this.status,
-    species = this.status,
-    origin = CharacterOriginEntity(
-        id = this.origin?.id.orEmpty(),
-        name = this.origin?.name.orEmpty(),
-        dimension = this.origin?.dimension.orEmpty(),
-    ),
-    location = CharacterLocationEntity(
-        id = this.location?.id.orEmpty(),
-        name = this.location?.name.orEmpty(),
-        dimension = this.location?.dimension.orEmpty(),
-        residents = this.location?.residents?.map(::networkResidentToCharacterResidentEntity) ?: emptyList(),
-    ),
-    pageIdentity = "",
-)
+internal fun NetworkCharacter.toCharacterEntity(): CharacterEntity? =
+    this.id?.let {
+        CharacterEntity(
+            characterId = it.toInt(),
+            name = this.name.toString(),
+            image = this.image.toString(),
+            gender = this.gender.toString(),
+            type = this.type.toString(),
+            status = this.status.toString(),
+            species = this.status.toString(),
+            originId = this.origin?.id?.toInt() ?: -1,
+            pageIdentity = "",
+        )
+    }
 
 internal fun List<NetworkCharacter>.toListOfCharacterEntity(): List<CharacterEntity> =
-    this.map { it.toCharacterEntity() }
+    this.map { it.toCharacterEntity() }.filterNotNull()
 
 /**
  *  Convert [CharacterEntity] object to [Character] object.
@@ -69,31 +57,18 @@ internal fun CharacterEntity.toCharacterUiModel(): Character = Character(
     species = this.species,
     type = this.type,
     gender = this.gender,
-    origin = Origin(
-        id = this.origin.id,
-        name = this.origin.name,
-        dimension = this.origin.dimension,
-    ),
-    location = Location(
-        id = this.location.id,
-        name = this.location.name,
-        dimension = this.location.dimension,
-        residents = this.location.residents.map(::characterResidentEntityToCharacter),
-    ),
+    originId = this.originId,
 )
 
-private fun networkResidentToCharacterResidentEntity(
-    networkResident: NetworkResident,
-): CharacterResidentEntity = CharacterResidentEntity(
-    id = networkResident.id,
-    name = networkResident.name,
-    image = networkResident.image,
-)
-
-private fun characterResidentEntityToCharacter(
-    characterResidentEntity: CharacterResidentEntity,
-): Character = Character(
-    id = characterResidentEntity.id.toInt(),
-    name = characterResidentEntity.name,
-    imageUrl = characterResidentEntity.image,
+internal fun CharacterWithEpisodesAndLocations.toCharacterUi(): Character = Character(
+    id = this.character.characterId,
+    name = this.character.name,
+    status = this.character.status,
+    imageUrl = this.character.image,
+    species = this.character.species,
+    type = this.character.type,
+    gender = this.character.gender,
+    originId = this.character.originId,
+    locations = this.locations.toListOfLocationUi(),
+    episodes = this.episodes.toListOfEpisodeUi(),
 )

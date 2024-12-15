@@ -36,13 +36,19 @@ internal fun EpisodeEntity.toEpisodeUiModel(): Episode = Episode(
     characters = emptyList(),
 )
 
-internal fun NetworkEpisode.toEpisodeEntity(): EpisodeEntity = EpisodeEntity(
-    episodeId = this.id.toInt(),
-    airDate = this.airDate,
-    episode = this.episode,
-    name = this.name,
-    pageIdentity = "",
-)
+internal fun List<EpisodeEntity>.toListOfEpisodeUi(): List<Episode> =
+    this.map { it.toEpisodeUiModel() }
+
+internal fun NetworkEpisode.toEpisodeEntity(): EpisodeEntity? =
+    this.id?.let {
+        EpisodeEntity(
+            episodeId = it.toInt(),
+            airDate = this.airDate.orEmpty(),
+            episode = this.episode.orEmpty(),
+            name = this.name.toString(),
+            pageIdentity = "",
+        )
+    }
 
 internal fun List<NetworkEpisode>.toListOfEntity(): List<EpisodeEntity> =
-    this.map { it.toEpisodeEntity() }
+    this.map { it.toEpisodeEntity() }.filterNotNull()

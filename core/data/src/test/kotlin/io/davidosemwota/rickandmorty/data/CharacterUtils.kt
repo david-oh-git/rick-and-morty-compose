@@ -23,11 +23,7 @@
  */
 package io.davidosemwota.rickandmorty.data
 
-import io.davidosemwota.rickandmorty.data.db.entities.CHARACTER_ENTITY_PAGE_PREFIX
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
-import io.davidosemwota.rickandmorty.data.db.entities.CharacterLocationEntity
-import io.davidosemwota.rickandmorty.data.db.entities.CharacterOriginEntity
-import io.davidosemwota.rickandmorty.data.db.entities.CharacterResidentEntity
 import io.davidosemwota.rickandmorty.data.db.entities.getCharacterIdentifier
 
 private fun generateFirstName(): String = listOf(
@@ -42,61 +38,31 @@ private fun generateLastName(): String = listOf(
     "Summer",
 ).random()
 
-internal fun generateCharacters(): List<CharacterEntity> {
+internal fun generateCharacters(
+    startId: Int = 1,
+): List<CharacterEntity> {
     return listOf(
         CharacterEntity(
-            characterId = 1,
+            characterId = startId,
             name = "Rick Sanchez",
             status = "Alive",
             image = "http://image_url",
             species = "Human",
             type = "whatever type",
             gender = "male",
-            origin = CharacterOriginEntity(
-                id = "40",
-                name = "C -137 Earth",
-                dimension = "C-137",
-            ),
-            location = CharacterLocationEntity(
-                id = "22",
-                name = "londoninion",
-                dimension = "C-137",
-                residents = listOf(
-                    CharacterResidentEntity(
-                        id = "34",
-                        name = "Evil morty",
-                        image = "image url",
-                    ),
-                ),
-            ),
-            pageIdentity = "${CHARACTER_ENTITY_PAGE_PREFIX}9",
+            pageIdentity = getCharacterIdentifier(1),
+            originId = 1,
         ),
         CharacterEntity(
-            characterId = 2,
+            characterId = startId + 1,
             name = "Morty Smith",
             status = "Alive",
             image = "http://image_url",
             species = "Human",
             type = "whatever type",
             gender = "male",
-            origin = CharacterOriginEntity(
-                id = "40",
-                name = "C -137 Earth",
-                dimension = "C-137",
-            ),
-            location = CharacterLocationEntity(
-                id = "22",
-                name = "londoninion",
-                dimension = "C-137",
-                residents = listOf(
-                    CharacterResidentEntity(
-                        id = "34",
-                        name = "Evil morty",
-                        image = "image url",
-                    ),
-                ),
-            ),
             pageIdentity = getCharacterIdentifier(1),
+            originId = 2,
         ),
     )
 }

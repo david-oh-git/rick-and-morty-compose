@@ -42,26 +42,7 @@ internal class CharacterEntityTest {
         val species = "alien"
         val type = "TYPE"
         val gender = "unknown"
-        val characterOriginEntity = CharacterOriginEntity(
-            id = "23",
-            name = "earth",
-            dimension = "c-137",
-        )
-        val locationId = "21"
-        val locationName = "Ajegunle"
-        val locationDimension = "c-137"
-        val locationEntity = CharacterLocationEntity(
-            id = locationId,
-            name = locationName,
-            dimension = locationDimension,
-            residents = listOf(
-                CharacterResidentEntity(
-                    id = "23",
-                    name = "Morty smith",
-                    image = "image_url_morty",
-                ),
-            ),
-        )
+        val originId = 22
 
         val entity = CharacterEntity(
             characterId = id,
@@ -71,9 +52,8 @@ internal class CharacterEntityTest {
             species = species,
             type = type,
             gender = gender,
-            origin = characterOriginEntity,
-            location = locationEntity,
             pageIdentity = getCharacterIdentifier(1),
+            originId = originId,
         )
 
         // When/Act
@@ -87,18 +67,5 @@ internal class CharacterEntityTest {
         assertThat(result.imageUrl).isEqualTo(image)
         assertThat(result.status).isEqualTo(status)
         assertThat(result.type).isEqualTo(type)
-
-        assertThat(result.episodes).isNotEmpty()
-        assertThat(result.episodes[0]).isNotNull()
-        assertThat(result.episodes[0].id).isEqualTo(episodeOneId)
-        assertThat(result.episodes[0].name).isEqualTo(episodeOneName)
-
-        assertThat(result.location).isNotNull()
-        val location = result.location
-        assertThat(location?.id).isEqualTo(locationId)
-        assertThat(location?.name).isEqualTo(locationName)
-        assertThat(location?.dimension).isEqualTo(locationDimension)
-        assertThat(location?.residents).isNotEmpty()
-        assertThat(location?.residents?.size).isEqualTo(1)
     }
 }

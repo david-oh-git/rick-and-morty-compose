@@ -31,7 +31,7 @@ data class Character(
     val species: String = "",
     val type: String = "",
     val gender: String = "",
-    val origin: Origin? = null,
-    val location: Location? = null,
+    val originId: Int? = null,
+    val locations: List<Location> = emptyList(),
     val episodes: List<Episode> = emptyList(),
 )

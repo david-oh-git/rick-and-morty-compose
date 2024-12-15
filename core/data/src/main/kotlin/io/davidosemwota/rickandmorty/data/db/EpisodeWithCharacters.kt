@@ -21,11 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.models
+package io.davidosemwota.rickandmorty.data.db
 
-data class Location(
-    val id: Int,
-    val name: String = "",
-    val dimension: String = "",
-    val residents: List<Character> = emptyList(),
+import androidx.room.Embedded
+import androidx.room.Junction
+import androidx.room.Relation
+import io.davidosemwota.rickandmorty.data.db.entities.CharacterAndEpisodeEntityRef
+import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
+import io.davidosemwota.rickandmorty.data.db.entities.EpisodeEntity
+
+data class EpisodeWithCharacters(
+    @Embedded val episode: EpisodeEntity,
+
+    @Relation(
+        parentColumn = "episodeId",
+        entityColumn = "characterId",
+        associateBy = Junction(
+            value = CharacterAndEpisodeEntityRef::class,
+        ),
+    )
+    val characters: List<CharacterEntity>,
 )

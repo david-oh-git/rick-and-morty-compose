@@ -56,13 +56,13 @@ object FakeApiResponseData {
                         name = resultEpisode.name
                         air_date = resultEpisode.airDate
                         episode = resultEpisode.episode
-                        characters = resultEpisode.characters.map {
+                        characters = resultEpisode.characters?.map {
                             buildCharacter {
                                 id = it.id
                                 name = it.name
                                 image = it.image
                             }
-                        }
+                        } ?: emptyList()
                     }
                 }
             }
@@ -112,12 +112,12 @@ object FakeApiResponseData {
                                 id = it.id
                                 episode = it.episode
                                 name = it.name
-                                characters = it.characters.map { episodeCharacters ->
+                                characters = it.characters?.map { episodeCharacters ->
                                     buildCharacter {
                                         id = episodeCharacters.id
                                         image = episodeCharacters.image
                                     }
-                                }
+                                } ?: emptyList()
                             }
                         }
                     }

@@ -72,7 +72,7 @@ class RickAndMortyApiServiceTest {
             status = "Alive",
             species = "Human",
             gender = "Male",
-            origin = NetworkOrigin(
+            origin = NetworkLocation(
                 id = "1",
                 name = "Earth (c-137)",
                 dimension = "Dimension c-137",
@@ -82,7 +82,7 @@ class RickAndMortyApiServiceTest {
                 name = "Citadel of ricks",
                 dimension = "unknown",
                 residents = listOf(
-                    NetworkResident(
+                    NetworkCharacter(
                         id = "2",
                         name = "Morty Smith",
                         image = "http IMAGE URL",
@@ -107,7 +107,10 @@ class RickAndMortyApiServiceTest {
 
         val location = character?.location
         assertThat(location?.dimension).isEqualTo(rickSanchez.location?.dimension)
-        assertThat(response.results?.get(0)).isEqualTo(rickSanchez)
+        assertThat(character?.id).isEqualTo(rickSanchez.id)
+        assertThat(character?.image).isEqualTo(rickSanchez.image)
+        assertThat(character?.name).isEqualTo(rickSanchez.name)
+        assertThat(character?.id).isEqualTo(rickSanchez.id)
     }
 
     @Test
@@ -118,7 +121,7 @@ class RickAndMortyApiServiceTest {
         apolloClient.enqueueTestResponse(
             operation = testQuery,
             errors = listOf(
-                com.apollographql.apollo3.api.Error.Builder(errorMessage)
+                Error.Builder(errorMessage)
                     .locations(listOf(Error.Location(1, 34)))
                     .putExtension("code", "GRAPHQL_VALIDATION_FAILED")
                     .build(),
@@ -148,16 +151,22 @@ class RickAndMortyApiServiceTest {
             id = "1",
             episode = "S01E01",
             name = "the bla bla",
+            airDate = "",
+            characters = emptyList(),
         )
         val s01e02 = NetworkEpisode(
             id = "2",
             episode = "S01E02",
             name = "the bla bla II",
+            airDate = "",
+            characters = emptyList(),
         )
         val s01e03 = NetworkEpisode(
             id = "3",
             episode = "S01E03",
             name = "The rise of balablu",
+            airDate = "",
+            characters = emptyList(),
         )
         episodes.addAll(listOf(s01e01, s01e02, s01e03))
         apolloClient.enqueueTestResponse(

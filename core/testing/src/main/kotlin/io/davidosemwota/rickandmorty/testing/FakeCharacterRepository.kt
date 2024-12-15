@@ -45,30 +45,35 @@ class FakeCharacterRepository(
                     name = "Rick Smith",
                     gender = "Male",
                     imageUrl = "https:samada.com/kenny_chan",
+                    originId = 1,
                 ),
                 Character(
                     id = 2,
                     name = "Morty Smith",
                     gender = "Male",
                     imageUrl = "https:samada.com/kenny_chan",
+                    originId = 2,
                 ),
                 Character(
                     id = 3,
                     name = "Rick Smith",
                     gender = "Male",
                     imageUrl = "https:samada.com/kenny_chan",
+                    originId = 3,
                 ),
                 Character(
                     id = 4,
                     name = "Rick Smith",
                     gender = "Male",
                     imageUrl = "https:samada.com/kenny_chan",
+                    originId = 4,
                 ),
                 Character(
                     id = 5,
                     name = "Rick Smith",
                     gender = "Male",
                     imageUrl = "https:samada.com/kenny_chan",
+                    originId = 5,
                 ),
             )
     }

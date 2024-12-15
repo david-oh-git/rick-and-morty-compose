@@ -23,13 +23,12 @@
  */
 package io.davidosemwota.rickandmorty.data.db.entities
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.serialization.Serializable
 
-@Entity(tableName = "character_entity_table")
+const val CHARACTER_ENTITY_TABLE_NAME = "character_entity_table"
+
+@Entity(tableName = CHARACTER_ENTITY_TABLE_NAME)
 data class CharacterEntity(
     @PrimaryKey
     val characterId: Int,
@@ -40,26 +39,5 @@ data class CharacterEntity(
     val type: String,
     val gender: String,
     val pageIdentity: String,
-    @Embedded(prefix = "origin_") val origin: CharacterOriginEntity,
-    @Embedded(prefix = "location_") val location: CharacterLocationEntity,
-)
-
-data class CharacterOriginEntity(
-    val id: String,
-    val name: String,
-    val dimension: String,
-)
-
-data class CharacterLocationEntity(
-    val id: String,
-    val name: String,
-    val dimension: String,
-    val residents: List<CharacterResidentEntity>,
-)
-
-@Serializable
-data class CharacterResidentEntity(
-    @ColumnInfo(name = "resident_id") val id: String,
-    @ColumnInfo(name = "resident_name") val name: String,
-    @ColumnInfo(name = "resident_image") val image: String,
+    val originId: Int,
 )

@@ -30,9 +30,6 @@ import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import io.davidosemwota.rickandmorty.data.db.RickAndMortyDatabase
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
-import io.davidosemwota.rickandmorty.data.db.entities.CharacterLocationEntity
-import io.davidosemwota.rickandmorty.data.db.entities.CharacterOriginEntity
-import io.davidosemwota.rickandmorty.data.db.entities.CharacterResidentEntity
 import io.davidosemwota.rickandmorty.data.db.entities.getCharacterIdentifier
 import io.davidosemwota.rickandmorty.data.generateCharacters
 import kotlinx.coroutines.test.runTest
@@ -90,23 +87,7 @@ internal class CharacterDaoTest {
             species = "Human",
             type = "whatever type",
             gender = "male",
-            origin = CharacterOriginEntity(
-                id = "40",
-                name = "C -139 Earth",
-                dimension = "C-137",
-            ),
-            location = CharacterLocationEntity(
-                id = "22",
-                name = "londoninion",
-                dimension = "C-137",
-                residents = listOf(
-                    CharacterResidentEntity(
-                        id = "34",
-                        name = "Evil morty",
-                        image = "image url",
-                    ),
-                ),
-            ),
+            originId = 2,
             pageIdentity = getCharacterIdentifier(1),
         )
         characterDao.insertAll(listOf(evilMorty))
@@ -142,24 +123,8 @@ internal class CharacterDaoTest {
             species = "Human",
             type = "whatever type",
             gender = "male",
-            origin = CharacterOriginEntity(
-                id = "40",
-                name = "C -137 Earth",
-                dimension = "C-137",
-            ),
-            location = CharacterLocationEntity(
-                id = "22",
-                name = "londoninion",
-                dimension = "C-137",
-                residents = listOf(
-                    CharacterResidentEntity(
-                        id = "34",
-                        name = "Evil morty",
-                        image = "image url",
-                    ),
-                ),
-            ),
             pageIdentity = getCharacterIdentifier(1),
+            originId = 22,
         )
 
         val morty = CharacterEntity(
@@ -170,24 +135,8 @@ internal class CharacterDaoTest {
             species = "Human",
             type = "whatever type",
             gender = "male",
-            origin = CharacterOriginEntity(
-                id = "40",
-                name = "C -137 Earth",
-                dimension = "C-137",
-            ),
-            location = CharacterLocationEntity(
-                id = "22",
-                name = "londoninion",
-                dimension = "C-137",
-                residents = listOf(
-                    CharacterResidentEntity(
-                        id = "34",
-                        name = "Evil morty",
-                        image = "image url",
-                    ),
-                ),
-            ),
             pageIdentity = getCharacterIdentifier(1),
+            originId = 22,
         )
         val characters = listOf(rick, morty)
 

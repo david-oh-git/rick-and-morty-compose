@@ -29,12 +29,13 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import io.davidosemwota.rickandmorty.data.db.RickAndMortyDatabase
-import io.davidosemwota.rickandmorty.data.db.mappers.toCharacterUiModel
+import io.davidosemwota.rickandmorty.data.db.mappers.toCharacterUi
 import io.davidosemwota.rickandmorty.data.paging.CharactersRemoteMediator
 import io.davidosemwota.rickandmorty.models.Character
 import io.davidosemwota.rickandmorty.network.RickAndMortyApiService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 import javax.inject.Inject
 
 class CharacterRepositoryImpl @Inject constructor(
@@ -52,10 +53,11 @@ class CharacterRepositoryImpl @Inject constructor(
                 rickAndMortyApiService = service,
             ),
         ) {
-            database.characterDao().getPagedCharacters()
+            database.characterEntitiesRefDao().getPagedCharacterWithEpisodesAndLocations()
         }.flow.map { pagingData ->
             pagingData.map {
-                it.toCharacterUiModel()
+                Timber.d("Name ${it.character.name}")
+                it.toCharacterUi()
             }
         }
     }

@@ -24,13 +24,27 @@
 package io.davidosemwota.rickandmorty.data.db.mappers
 
 import io.davidosemwota.rickandmorty.data.db.entities.LocationEntity
+import io.davidosemwota.rickandmorty.models.Location
 import io.davidosemwota.rickandmorty.network.NetworkLocation
 
 internal fun NetworkLocation.toLocationEntity(
     pageIdentity: String = "",
-): LocationEntity = LocationEntity(
-    locationId = this.id.toInt(),
+): LocationEntity? =
+    this.id?.let {
+        LocationEntity(
+            locationId = it.toInt(),
+            name = this.name.toString(),
+            dimension = this.dimension.toString(),
+            pageIdentity = pageIdentity,
+        )
+    }
+
+internal fun LocationEntity.toLocationUi(): Location = Location(
+    id = this.locationId.toInt(),
     name = this.name,
     dimension = this.dimension,
-    pageIdentity = pageIdentity,
+    residents = emptyList(), // TODO to be implemented.
 )
+
+internal fun List<LocationEntity>.toListOfLocationUi(): List<Location> =
+    this.map { it.toLocationUi() }

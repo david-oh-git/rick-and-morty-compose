@@ -30,8 +30,6 @@ import io.davidosemwota.rickandmorty.network.NetworkError
 import io.davidosemwota.rickandmorty.network.NetworkErrorResponse
 import io.davidosemwota.rickandmorty.network.NetworkInfo
 import io.davidosemwota.rickandmorty.network.NetworkLocation
-import io.davidosemwota.rickandmorty.network.NetworkOrigin
-import io.davidosemwota.rickandmorty.network.NetworkResident
 import io.davidosemwota.rickandmorty.network.RickAndMortyApiService
 import java.io.IOException
 
@@ -72,7 +70,7 @@ object FakeApiService {
         status = "Alive",
         species = "Human",
         gender = "Male",
-        origin = NetworkOrigin(
+        origin = NetworkLocation(
             id = "1",
             name = "Earth (c-137)",
             dimension = "Dimension c-137",
@@ -82,7 +80,7 @@ object FakeApiService {
             name = "Citadel of ricks",
             dimension = "unknown",
             residents = listOf(
-                NetworkResident(
+                NetworkCharacter(
                     id = "2",
                     name = "Morty Smith",
                     image = "http IMAGE URL",
@@ -109,7 +107,7 @@ object FakeApiService {
             status = "Alive",
             species = "Human",
             gender = "Male",
-            origin = NetworkOrigin(
+            origin = NetworkLocation(
                 id = "1",
                 name = "Earth (c-137)",
                 dimension = "Dimension c-137",
@@ -119,7 +117,7 @@ object FakeApiService {
                 name = "Citadel of ricks",
                 dimension = "unknown",
                 residents = listOf(
-                    NetworkResident(
+                    NetworkCharacter(
                         id = "2",
                         name = "Morty Smith",
                         image = "http IMAGE URL",
