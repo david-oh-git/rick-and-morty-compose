@@ -149,65 +149,69 @@ object FakeApiService {
         name = "Morty Smith",
     )
 
-    val successWithMoreData = object : RickAndMortyApiService {
-        override suspend fun getCharacters(
-            page: Int?,
-            name: String?,
-            status: String?,
-            species: String?,
-            type: String?,
-            gender: String?,
-        ): NetworkCharacterListResponse {
-            return NetworkCharacterListResponse(
-                errorResponse = null,
-                info = info,
-                results = listOf(rickSanchez, morty),
-            )
-        }
+    fun RemoteServiceSuccessWithMoreData(): RickAndMortyApiService {
+        return object : RickAndMortyApiService {
+            override suspend fun getCharacters(
+                page: Int?,
+                name: String?,
+                status: String?,
+                species: String?,
+                type: String?,
+                gender: String?,
+            ): NetworkCharacterListResponse {
+                return NetworkCharacterListResponse(
+                    errorResponse = null,
+                    info = info,
+                    results = listOf(rickSanchez, morty),
+                )
+            }
 
-        override suspend fun getEpisodes(
-            page: Int?,
-            name: String?,
-            episode: String?,
-        ): NetworkEpisodeListResponse {
-            return NetworkEpisodeListResponse(
-                errorResponse = null,
-                info = info,
-                results = listOf(s01E01, s01E02),
-            )
+            override suspend fun getEpisodes(
+                page: Int?,
+                name: String?,
+                episode: String?,
+            ): NetworkEpisodeListResponse {
+                return NetworkEpisodeListResponse(
+                    errorResponse = null,
+                    info = info,
+                    results = listOf(s01E01, s01E02),
+                )
+            }
         }
     }
 
-    val successWithNoMoreData = object : RickAndMortyApiService {
-        override suspend fun getCharacters(
-            page: Int?,
-            name: String?,
-            status: String?,
-            species: String?,
-            type: String?,
-            gender: String?,
-        ): NetworkCharacterListResponse {
-            val characters = mutableListOf<NetworkCharacter>()
-            for (num in 1..50) {
-                characters.add(generateRandomCharacter(num.toString()))
+    fun RemoteServiceSuccessNoMoreData(): RickAndMortyApiService {
+        return object : RickAndMortyApiService {
+            override suspend fun getCharacters(
+                page: Int?,
+                name: String?,
+                status: String?,
+                species: String?,
+                type: String?,
+                gender: String?,
+            ): NetworkCharacterListResponse {
+                val characters = mutableListOf<NetworkCharacter>()
+                for (num in 1..50) {
+                    characters.add(generateRandomCharacter(num.toString()))
+                }
+                return NetworkCharacterListResponse(
+                    errorResponse = null,
+                    info = info.copy(next = null, prev = 5),
+                    results = listOf(rickSanchez, morty),
+                )
             }
-            return NetworkCharacterListResponse(
-                errorResponse = null,
-                info = info.copy(next = null, prev = 5),
-                results = listOf(rickSanchez, morty),
-            )
-        }
 
-        override suspend fun getEpisodes(
-            page: Int?,
-            name: String?,
-            episode: String?,
-        ): NetworkEpisodeListResponse {
-            return NetworkEpisodeListResponse(
-                errorResponse = null,
-                info = info.copy(next = null, prev = 5),
-                results = listOf(s01E01, s01E02),
-            )
+            override suspend fun getEpisodes(
+                page: Int?,
+                name: String?,
+                episode: String?,
+            ): NetworkEpisodeListResponse {
+                return NetworkEpisodeListResponse(
+                    errorResponse = null,
+                    info = info.copy(next = null, prev = 5),
+                    results = listOf(s01E01, s01E02),
+                )
+            }
         }
     }
 
@@ -245,48 +249,50 @@ object FakeApiService {
         }
     }
 
-    val errorResponse = object : RickAndMortyApiService {
-        override suspend fun getCharacters(
-            page: Int?,
-            name: String?,
-            status: String?,
-            species: String?,
-            type: String?,
-            gender: String?,
-        ): NetworkCharacterListResponse {
-            return NetworkCharacterListResponse(
-                errorResponse = NetworkErrorResponse(
-                    exception = IOException(),
-                    errors = listOf(
-                        NetworkError(
-                            serverErrorMessage = "",
-                            code = "504",
+    fun RemoteServiceWithError(): RickAndMortyApiService {
+        return object : RickAndMortyApiService {
+            override suspend fun getCharacters(
+                page: Int?,
+                name: String?,
+                status: String?,
+                species: String?,
+                type: String?,
+                gender: String?,
+            ): NetworkCharacterListResponse {
+                return NetworkCharacterListResponse(
+                    errorResponse = NetworkErrorResponse(
+                        exception = IOException(),
+                        errors = listOf(
+                            NetworkError(
+                                serverErrorMessage = "",
+                                code = "504",
+                            ),
                         ),
                     ),
-                ),
-                info = null,
-                results = null,
-            )
-        }
+                    info = null,
+                    results = null,
+                )
+            }
 
-        override suspend fun getEpisodes(
-            page: Int?,
-            name: String?,
-            episode: String?,
-        ): NetworkEpisodeListResponse {
-            return NetworkEpisodeListResponse(
-                errorResponse = NetworkErrorResponse(
-                    exception = IOException(),
-                    errors = listOf(
-                        NetworkError(
-                            serverErrorMessage = "",
-                            code = "504",
+            override suspend fun getEpisodes(
+                page: Int?,
+                name: String?,
+                episode: String?,
+            ): NetworkEpisodeListResponse {
+                return NetworkEpisodeListResponse(
+                    errorResponse = NetworkErrorResponse(
+                        exception = IOException(),
+                        errors = listOf(
+                            NetworkError(
+                                serverErrorMessage = "",
+                                code = "504",
+                            ),
                         ),
                     ),
-                ),
-                info = null,
-                results = null,
-            )
+                    info = null,
+                    results = null,
+                )
+            }
         }
     }
 }

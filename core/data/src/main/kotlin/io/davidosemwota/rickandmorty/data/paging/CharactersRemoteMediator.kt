@@ -39,7 +39,6 @@ import io.davidosemwota.rickandmorty.data.db.mappers.toCharacterEntity
 import io.davidosemwota.rickandmorty.data.db.mappers.toListOfEntity
 import io.davidosemwota.rickandmorty.data.db.mappers.toLocationEntity
 import io.davidosemwota.rickandmorty.network.RickAndMortyApiService
-import timber.log.Timber
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
@@ -102,8 +101,6 @@ class CharactersRemoteMediator constructor(
 
                     // Save character
                     character?.let {
-                        Timber.d("NAME : ${character.name}")
-
                         database.characterDao().insert(character)
 
                         // Save character location & ref entity.

@@ -31,7 +31,9 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator.MediatorResult
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import io.davidosemwota.rickandmorty.data.FakeApiService
+import io.davidosemwota.rickandmorty.data.FakeApiService.RemoteServiceSuccessNoMoreData
+import io.davidosemwota.rickandmorty.data.FakeApiService.RemoteServiceSuccessWithMoreData
+import io.davidosemwota.rickandmorty.data.FakeApiService.RemoteServiceWithError
 import io.davidosemwota.rickandmorty.data.db.CharacterWithEpisodesAndLocations
 import io.davidosemwota.rickandmorty.data.db.RickAndMortyDatabase
 import io.davidosemwota.rickandmorty.network.RickAndMortyApiService
@@ -70,7 +72,7 @@ internal class CharactersRemoteMediatorTest {
     @Test
     fun verifyRefreshLoadReturnsSuccessWhenMoreData() = runTest {
         // Given/Arrange
-        rickAndMortyApiService = FakeApiService.successWithMoreData
+        rickAndMortyApiService = RemoteServiceSuccessWithMoreData()
         charactersRemoteMediator = CharactersRemoteMediator(
             database = rickAndMortyDatabase,
             rickAndMortyApiService = rickAndMortyApiService,
@@ -93,7 +95,7 @@ internal class CharactersRemoteMediatorTest {
     @Test
     fun verifyRefreshLoadReturnsSuccessAndPaginationEndWhenNoMoreData() = runTest {
         // Given/Arrange
-        rickAndMortyApiService = FakeApiService.successWithNoMoreData
+        rickAndMortyApiService = RemoteServiceSuccessNoMoreData()
         charactersRemoteMediator = CharactersRemoteMediator(
             database = rickAndMortyDatabase,
             rickAndMortyApiService = rickAndMortyApiService,
@@ -116,7 +118,7 @@ internal class CharactersRemoteMediatorTest {
     @Test
     fun verifyRefreshLoadReturnsErrorWhenItOccurs() = runTest {
         // Given/Arrange
-        rickAndMortyApiService = FakeApiService.errorResponse
+        rickAndMortyApiService = RemoteServiceWithError()
         charactersRemoteMediator = CharactersRemoteMediator(
             database = rickAndMortyDatabase,
             rickAndMortyApiService = rickAndMortyApiService,
