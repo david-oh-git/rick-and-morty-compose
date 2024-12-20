@@ -25,6 +25,7 @@ package io.davidosemwota.rickandmorty.data
 
 import io.davidosemwota.rickandmorty.network.NetworkCharacter
 import io.davidosemwota.rickandmorty.network.NetworkCharacterListResponse
+import io.davidosemwota.rickandmorty.network.NetworkEpisode
 import io.davidosemwota.rickandmorty.network.NetworkEpisodeListResponse
 import io.davidosemwota.rickandmorty.network.NetworkError
 import io.davidosemwota.rickandmorty.network.NetworkErrorResponse
@@ -87,6 +88,22 @@ object FakeApiService {
                 ),
             ),
         ),
+    )
+
+    private val s01E01 = NetworkEpisode(
+        id = "2",
+        airDate = "25-01-20",
+        episode = "S01E01",
+        name = "Episode name",
+        characters = emptyList(),
+    )
+
+    private val s01E02 = NetworkEpisode(
+        id = "3",
+        airDate = "25-01-20",
+        episode = "S01E02",
+        name = "Episode name",
+        characters = emptyList(),
     )
 
     private fun generateRandomCharacter(
@@ -153,7 +170,11 @@ object FakeApiService {
             name: String?,
             episode: String?,
         ): NetworkEpisodeListResponse {
-            TODO("Not yet implemented")
+            return NetworkEpisodeListResponse(
+                errorResponse = null,
+                info = info,
+                results = listOf(s01E01, s01E02),
+            )
         }
     }
 
@@ -182,7 +203,11 @@ object FakeApiService {
             name: String?,
             episode: String?,
         ): NetworkEpisodeListResponse {
-            TODO("Not yet implemented")
+            return NetworkEpisodeListResponse(
+                errorResponse = null,
+                info = info.copy(next = null, prev = 5),
+                results = listOf(s01E01, s01E02),
+            )
         }
     }
 
@@ -249,7 +274,19 @@ object FakeApiService {
             name: String?,
             episode: String?,
         ): NetworkEpisodeListResponse {
-            TODO("Not yet implemented")
+            return NetworkEpisodeListResponse(
+                errorResponse = NetworkErrorResponse(
+                    exception = IOException(),
+                    errors = listOf(
+                        NetworkError(
+                            serverErrorMessage = "",
+                            code = "504",
+                        ),
+                    ),
+                ),
+                info = null,
+                results = null,
+            )
         }
     }
 }
