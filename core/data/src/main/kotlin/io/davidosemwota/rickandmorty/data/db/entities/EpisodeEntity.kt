@@ -26,7 +26,7 @@ package io.davidosemwota.rickandmorty.data.db.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-private const val EPISODE_ENTITY_TABLE_NAME = "episode_entity_table"
+const val EPISODE_ENTITY_TABLE_NAME = "episode_entity_table"
 
 /**
  *  @param episodeId unique id for entity, also serves as primary key

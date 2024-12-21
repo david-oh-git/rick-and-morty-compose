@@ -36,10 +36,11 @@ import io.davidosemwota.rickandmorty.data.db.entities.CHARACTER_EPISODE_REF_TABL
 import io.davidosemwota.rickandmorty.data.db.entities.CHARACTER_LOCATION_REF_TABLE
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterAndEpisodeEntityRef
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterAndLocationEntityRef
+import io.davidosemwota.rickandmorty.data.db.entities.EPISODE_ENTITY_TABLE_NAME
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface CharacterEntitiesRefDao {
+interface ReferenceEntitiesDao {
 
     /**
      * Adds all character location ref item/items to local Db
@@ -74,10 +75,14 @@ interface CharacterEntitiesRefDao {
     // TODO move to separate dao.
 
     @Transaction
-    @Query("SELECT * FROM episode_entity_table ORDER by episodeId")
+    @Query("SELECT * FROM $EPISODE_ENTITY_TABLE_NAME ORDER by episodeId")
     fun getEpisodeWithCharacters(): List<EpisodeWithCharacters>
 
     @Transaction
+    @Query("SELECT * FROM $EPISODE_ENTITY_TABLE_NAME ORDER by episodeId")
+    fun getPagedEpisodeWithCharacters(): PagingSource<Int, EpisodeWithCharacters>
+
+    @Transaction
     @Query("SELECT * FROM episode_entity_table WHERE episodeId = :query")
-    fun getEpisodeWithCharacters(query: Int): List<EpisodeWithCharacters>
+    fun getEpisodeWithCharacters(query: Int): EpisodeWithCharacters?
 }

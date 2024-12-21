@@ -26,10 +26,10 @@ package io.davidosemwota.rickandmorty.data.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import io.davidosemwota.rickandmorty.data.db.dao.CharacterDao
-import io.davidosemwota.rickandmorty.data.db.dao.CharacterEntitiesRefDao
 import io.davidosemwota.rickandmorty.data.db.dao.EpisodeDao
 import io.davidosemwota.rickandmorty.data.db.dao.LocationDao
 import io.davidosemwota.rickandmorty.data.db.dao.PageInfoDao
+import io.davidosemwota.rickandmorty.data.db.dao.ReferenceEntitiesDao
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterAndEpisodeEntityRef
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterAndLocationEntityRef
 import io.davidosemwota.rickandmorty.data.db.entities.CharacterEntity
@@ -59,5 +59,5 @@ abstract class RickAndMortyDatabase : RoomDatabase() {
 
     abstract fun locationDao(): LocationDao
 
-    abstract fun characterEntitiesRefDao(): CharacterEntitiesRefDao
+    abstract fun characterEntitiesRefDao(): ReferenceEntitiesDao
 }

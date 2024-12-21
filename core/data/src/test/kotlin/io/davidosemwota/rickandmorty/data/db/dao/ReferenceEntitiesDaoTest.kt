@@ -46,13 +46,13 @@ import org.robolectric.RobolectricTestRunner
 import kotlin.test.Test
 
 @RunWith(RobolectricTestRunner::class)
-internal class CharacterEntitiesRefDaoTest {
+internal class ReferenceEntitiesDaoTest {
 
     private lateinit var rickAndMortyDatabase: RickAndMortyDatabase
     private lateinit var characterDao: CharacterDao
     private lateinit var episodeDao: EpisodeDao
     private lateinit var locationDao: LocationDao
-    private lateinit var characterEntitiesRefDao: CharacterEntitiesRefDao
+    private lateinit var referenceEntitiesDao: ReferenceEntitiesDao
 
     @Before
     fun setUp() {
@@ -66,7 +66,7 @@ internal class CharacterEntitiesRefDaoTest {
         characterDao = rickAndMortyDatabase.characterDao()
         episodeDao = rickAndMortyDatabase.episodeDao()
         locationDao = rickAndMortyDatabase.locationDao()
-        characterEntitiesRefDao = rickAndMortyDatabase.characterEntitiesRefDao()
+        referenceEntitiesDao = rickAndMortyDatabase.characterEntitiesRefDao()
     }
 
     @After
@@ -104,8 +104,9 @@ internal class CharacterEntitiesRefDaoTest {
             originId = 22,
         )
 
+        val expectedEpisodeOneId = 1
         val s01e01 = EpisodeEntity(
-            episodeId = 1,
+            episodeId = expectedEpisodeOneId,
             airDate = "03-02-19",
             episode = "The birth",
             name = "S01E01",
@@ -160,7 +161,7 @@ internal class CharacterEntitiesRefDaoTest {
         locationDao.insert(citadelOfRicks, earthReplacement, abadango)
 
         // Evil Morty character referenced with 3 episodes & 2 locations.
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndEpisodeEntityRef(
                 characterId = evilMorty.characterId,
                 episodeId = s01e01.episodeId,
@@ -174,7 +175,7 @@ internal class CharacterEntitiesRefDaoTest {
                 episodeId = s01e04.episodeId,
             ),
         )
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndLocationEntityRef(
                 characterId = evilMorty.characterId,
                 locationId = citadelOfRicks.locationId,
@@ -185,7 +186,7 @@ internal class CharacterEntitiesRefDaoTest {
             ),
         )
         // Rick character referenced with all 4 episodes & 3 locations.
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndEpisodeEntityRef(
                 characterId = rick.characterId,
                 episodeId = s01e01.episodeId,
@@ -203,7 +204,7 @@ internal class CharacterEntitiesRefDaoTest {
                 episodeId = s01e04.episodeId,
             ),
         )
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndLocationEntityRef(
                 characterId = rick.characterId,
                 locationId = citadelOfRicks.locationId,
@@ -218,11 +219,15 @@ internal class CharacterEntitiesRefDaoTest {
             ),
         )
 
-        val totalDataResult = characterEntitiesRefDao.getCharacterWithEpisodesAndLocations().first()
-        val evilMortyResult = characterEntitiesRefDao.getCharacterWithEpisodesAndLocations(
+        val totalDataResult = referenceEntitiesDao.getCharacterWithEpisodesAndLocations()
+            .first()
+        val evilMortyResult = referenceEntitiesDao.getCharacterWithEpisodesAndLocations(
             expectedEvilMortyId,
         )
-        val rickResult = characterEntitiesRefDao.getCharacterWithEpisodesAndLocations(expectedRickId)
+        val rickResult = referenceEntitiesDao.getCharacterWithEpisodesAndLocations(
+            expectedRickId,
+        )
+        val episodeResult = referenceEntitiesDao.getEpisodeWithCharacters(expectedEpisodeOneId)
 
         // Assert
         assertThat(totalDataResult).isNotEmpty()
@@ -235,6 +240,12 @@ internal class CharacterEntitiesRefDaoTest {
         assertThat(rickResult).isNotNull()
         assertThat(rickResult?.episodes).isNotEmpty()
         assertThat(rickResult?.locations).isNotEmpty()
+
+        assertThat(episodeResult).isNotNull()
+        assertThat(episodeResult?.episode?.episodeId).isEqualTo(expectedEpisodeOneId)
+        assertThat(episodeResult?.episode?.episode).isEqualTo(s01e01.episode)
+        assertThat(episodeResult?.episode?.name).isEqualTo(s01e01.name)
+        assertThat(episodeResult?.episode?.airDate).isEqualTo(s01e01.airDate)
     }
 
     @Test
@@ -323,7 +334,7 @@ internal class CharacterEntitiesRefDaoTest {
         locationDao.insert(citadelOfRicks, earthReplacement, abadango)
 
         // Evil Morty character referenced with 3 episodes & 2 locations.
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndEpisodeEntityRef(
                 characterId = evilMorty.characterId,
                 episodeId = s01e01.episodeId,
@@ -337,7 +348,7 @@ internal class CharacterEntitiesRefDaoTest {
                 episodeId = s01e04.episodeId,
             ),
         )
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndLocationEntityRef(
                 characterId = evilMorty.characterId,
                 locationId = citadelOfRicks.locationId,
@@ -348,7 +359,7 @@ internal class CharacterEntitiesRefDaoTest {
             ),
         )
         // Rick character referenced with all 4 episodes & 3 locations.
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndEpisodeEntityRef(
                 characterId = rick.characterId,
                 episodeId = s01e01.episodeId,
@@ -366,7 +377,7 @@ internal class CharacterEntitiesRefDaoTest {
                 episodeId = s01e04.episodeId,
             ),
         )
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndLocationEntityRef(
                 characterId = rick.characterId,
                 locationId = citadelOfRicks.locationId,
@@ -381,8 +392,19 @@ internal class CharacterEntitiesRefDaoTest {
             ),
         )
 
-        val totalDataResult = (
-            characterEntitiesRefDao.getPagedCharacterWithEpisodesAndLocations()
+        val characterResult = (
+            referenceEntitiesDao.getPagedCharacterWithEpisodesAndLocations()
+                .load(
+                    PagingSource.LoadParams.Refresh(
+                        key = null,
+                        loadSize = 50,
+                        placeholdersEnabled = false,
+                    ),
+                ) as PagingSource.LoadResult.Page
+            ).data
+
+        val episodeResult = (
+            referenceEntitiesDao.getPagedEpisodeWithCharacters()
                 .load(
                     PagingSource.LoadParams.Refresh(
                         key = null,
@@ -393,8 +415,10 @@ internal class CharacterEntitiesRefDaoTest {
             ).data
 
         // Assert
-        assertThat(totalDataResult).isNotEmpty()
-        assertThat(totalDataResult.size).isEqualTo(2) // No of characters is 2.
+        assertThat(characterResult).isNotEmpty()
+        assertThat(characterResult.size).isEqualTo(2) // No of characters is 2.
+        assertThat(episodeResult).isNotEmpty()
+        assertThat(episodeResult.size).isEqualTo(4) // No of episodes added is 4.
     }
 
     @Test
@@ -483,7 +507,7 @@ internal class CharacterEntitiesRefDaoTest {
         locationDao.insert(citadelOfRicks, earthReplacement, abadango)
 
         // Evil Morty character referenced with 3 episodes.
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndEpisodeEntityRef(
                 characterId = evilMorty.characterId,
                 episodeId = s01e01.episodeId,
@@ -498,7 +522,7 @@ internal class CharacterEntitiesRefDaoTest {
             ),
         )
         // Rick character referenced with all 4 episodes & 3 locations.
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndEpisodeEntityRef(
                 characterId = rick.characterId,
                 episodeId = s01e01.episodeId,
@@ -516,7 +540,7 @@ internal class CharacterEntitiesRefDaoTest {
                 episodeId = s01e04.episodeId,
             ),
         )
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndLocationEntityRef(
                 characterId = rick.characterId,
                 locationId = citadelOfRicks.locationId,
@@ -531,11 +555,11 @@ internal class CharacterEntitiesRefDaoTest {
             ),
         )
 
-        val totalDataResult = characterEntitiesRefDao.getCharacterWithEpisodesAndLocations().first()
-        val evilMortyResult = characterEntitiesRefDao.getCharacterWithEpisodesAndLocations(
+        val totalDataResult = referenceEntitiesDao.getCharacterWithEpisodesAndLocations().first()
+        val evilMortyResult = referenceEntitiesDao.getCharacterWithEpisodesAndLocations(
             expectedEvilMortyId,
         )
-        val rickResult = characterEntitiesRefDao.getCharacterWithEpisodesAndLocations(expectedRickId)
+        val rickResult = referenceEntitiesDao.getCharacterWithEpisodesAndLocations(expectedRickId)
 
         // Assert
         assertThat(totalDataResult).isNotEmpty()
@@ -637,7 +661,7 @@ internal class CharacterEntitiesRefDaoTest {
         locationDao.insert(citadelOfRicks, earthReplacement, abadango)
 
         // Evil Morty character referenced with 2 locations.
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndLocationEntityRef(
                 characterId = evilMorty.characterId,
                 locationId = citadelOfRicks.locationId,
@@ -648,7 +672,7 @@ internal class CharacterEntitiesRefDaoTest {
             ),
         )
         // Rick character referenced with all 4 episodes & 3 locations.
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndEpisodeEntityRef(
                 characterId = rick.characterId,
                 episodeId = s01e01.episodeId,
@@ -666,7 +690,7 @@ internal class CharacterEntitiesRefDaoTest {
                 episodeId = s01e04.episodeId,
             ),
         )
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndLocationEntityRef(
                 characterId = rick.characterId,
                 locationId = citadelOfRicks.locationId,
@@ -681,11 +705,11 @@ internal class CharacterEntitiesRefDaoTest {
             ),
         )
 
-        val totalDataResult = characterEntitiesRefDao.getCharacterWithEpisodesAndLocations().first()
-        val evilMortyResult = characterEntitiesRefDao.getCharacterWithEpisodesAndLocations(
+        val totalDataResult = referenceEntitiesDao.getCharacterWithEpisodesAndLocations().first()
+        val evilMortyResult = referenceEntitiesDao.getCharacterWithEpisodesAndLocations(
             expectedEvilMortyId,
         )
-        val rickResult = characterEntitiesRefDao.getCharacterWithEpisodesAndLocations(expectedRickId)
+        val rickResult = referenceEntitiesDao.getCharacterWithEpisodesAndLocations(expectedRickId)
 
         // Assert
         assertThat(totalDataResult).isNotEmpty()
@@ -788,7 +812,7 @@ internal class CharacterEntitiesRefDaoTest {
         // Evil Morty character referenced with 0 episodes & 0 locations.
 
         // Rick character referenced with all 4 episodes & 3 locations.
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndEpisodeEntityRef(
                 characterId = rick.characterId,
                 episodeId = s01e01.episodeId,
@@ -806,7 +830,7 @@ internal class CharacterEntitiesRefDaoTest {
                 episodeId = s01e04.episodeId,
             ),
         )
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndLocationEntityRef(
                 characterId = rick.characterId,
                 locationId = citadelOfRicks.locationId,
@@ -821,11 +845,11 @@ internal class CharacterEntitiesRefDaoTest {
             ),
         )
 
-        val totalDataResult = characterEntitiesRefDao.getCharacterWithEpisodesAndLocations().first()
-        val evilMortyResult = characterEntitiesRefDao.getCharacterWithEpisodesAndLocations(
+        val totalDataResult = referenceEntitiesDao.getCharacterWithEpisodesAndLocations().first()
+        val evilMortyResult = referenceEntitiesDao.getCharacterWithEpisodesAndLocations(
             expectedEvilMortyId,
         )
-        val rickResult = characterEntitiesRefDao.getCharacterWithEpisodesAndLocations(expectedRickId)
+        val rickResult = referenceEntitiesDao.getCharacterWithEpisodesAndLocations(expectedRickId)
 
         // Assert
         assertThat(totalDataResult).isNotEmpty()
@@ -924,7 +948,7 @@ internal class CharacterEntitiesRefDaoTest {
         locationDao.insert(citadelOfRicks, earthReplacement, abadango)
 
         // Evil Morty character referenced with 3 episodes & 2 locations.
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndEpisodeEntityRef(
                 characterId = evilMorty.characterId,
                 episodeId = s01e01.episodeId,
@@ -938,7 +962,7 @@ internal class CharacterEntitiesRefDaoTest {
                 episodeId = s01e04.episodeId,
             ),
         )
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndLocationEntityRef(
                 characterId = evilMorty.characterId,
                 locationId = citadelOfRicks.locationId,
@@ -949,7 +973,7 @@ internal class CharacterEntitiesRefDaoTest {
             ),
         )
         // Rick character referenced with all 4 episodes & 3 locations.
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndEpisodeEntityRef(
                 characterId = rick.characterId,
                 episodeId = s01e01.episodeId,
@@ -967,7 +991,7 @@ internal class CharacterEntitiesRefDaoTest {
                 episodeId = s01e04.episodeId,
             ),
         )
-        characterEntitiesRefDao.insert(
+        referenceEntitiesDao.insert(
             CharacterAndLocationEntityRef(
                 characterId = rick.characterId,
                 locationId = citadelOfRicks.locationId,
@@ -983,15 +1007,15 @@ internal class CharacterEntitiesRefDaoTest {
         )
 
         // Act: Delete all references table.
-        characterEntitiesRefDao.deleteCharacterEpisodeRefDb()
-        characterEntitiesRefDao.deleteCharacterLocationRefDb()
+        referenceEntitiesDao.deleteCharacterEpisodeRefDb()
+        referenceEntitiesDao.deleteCharacterLocationRefDb()
 
         // Assert
-        val totalDataResult = characterEntitiesRefDao.getCharacterWithEpisodesAndLocations().first()
-        val evilMortyResult = characterEntitiesRefDao.getCharacterWithEpisodesAndLocations(
+        val totalDataResult = referenceEntitiesDao.getCharacterWithEpisodesAndLocations().first()
+        val evilMortyResult = referenceEntitiesDao.getCharacterWithEpisodesAndLocations(
             expectedEvilMortyId,
         )
-        val rickResult = characterEntitiesRefDao.getCharacterWithEpisodesAndLocations(expectedRickId)
+        val rickResult = referenceEntitiesDao.getCharacterWithEpisodesAndLocations(expectedRickId)
 
         assertThat(totalDataResult).isNotEmpty() // References deleted but not character entities.
         assertThat(totalDataResult.size).isEqualTo(2) // No of characters is 2.
