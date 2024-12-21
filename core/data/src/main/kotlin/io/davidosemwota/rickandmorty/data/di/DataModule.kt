@@ -35,6 +35,8 @@ import dagger.hilt.components.SingletonComponent
 import io.davidosemwota.rickandmorty.data.db.RickAndMortyDatabase
 import io.davidosemwota.rickandmorty.data.repository.CharacterRepository
 import io.davidosemwota.rickandmorty.data.repository.CharacterRepositoryImpl
+import io.davidosemwota.rickandmorty.data.repository.EpisodeRepository
+import io.davidosemwota.rickandmorty.data.repository.EpisodeRepositoryImpl
 import javax.inject.Singleton
 
 @Module
@@ -45,6 +47,11 @@ abstract class DataModule {
     abstract fun bindCharactersRepository(
         characterRepository: CharacterRepositoryImpl,
     ): CharacterRepository
+
+    @Binds
+    abstract fun bindEpisodesRepository(
+        episodeRepository: EpisodeRepositoryImpl,
+    ): EpisodeRepository
 
     companion object {
 
