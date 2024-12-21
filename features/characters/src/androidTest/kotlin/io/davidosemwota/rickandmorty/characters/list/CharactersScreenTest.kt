@@ -45,6 +45,7 @@ import io.davidosemwota.rickandmorty.characters.list.CharactersScreenTestTags.LO
 import io.davidosemwota.rickandmorty.characters.list.CharactersScreenTestTags.LOADING_SCREEN_APPEND
 import io.davidosemwota.rickandmorty.data.repository.CharacterRepository
 import io.davidosemwota.rickandmorty.models.Character
+import io.davidosemwota.rickandmorty.models.PagingState
 import io.davidosemwota.rickandmorty.testing.FakeCharacterRepository
 import io.davidosemwota.ui.theme.RickAndMortyTheme
 import kotlinx.coroutines.flow.flowOf

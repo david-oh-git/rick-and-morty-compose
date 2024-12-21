@@ -21,27 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.characters.list
+package io.davidosemwota.rickandmorty.models
 
-import io.davidosemwota.rickandmorty.models.PagingState
-import io.davidosemwota.rickandmorty.models.PagingState.Error
-import io.davidosemwota.rickandmorty.models.PagingState.Loading
-import io.davidosemwota.rickandmorty.models.PagingState.NotLoading
+sealed interface PagingState {
 
-data class CharacterScreenState(
-    val isCharacterDatabaseEmpty: Boolean = true,
-    val fullScreenState: PagingState = NotLoading,
-    val appendState: PagingState = NotLoading,
-) {
-    val hasFullScreenError: Boolean
-        get() = fullScreenState == Error && isCharacterDatabaseEmpty
-
-    val hasFullScreenLoading: Boolean
-        get() = fullScreenState == Loading && isCharacterDatabaseEmpty
-
-    val hasAppendScreenError: Boolean
-        get() = appendState == Error && !isCharacterDatabaseEmpty
-
-    val hasAppendScreenLoading: Boolean
-        get() = appendState == Loading && !isCharacterDatabaseEmpty
+    data object NotLoading : PagingState
+    data object Loading : PagingState
+    data object Error : PagingState
 }

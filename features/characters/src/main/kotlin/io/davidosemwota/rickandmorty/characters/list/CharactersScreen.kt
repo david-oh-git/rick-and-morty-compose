@@ -81,6 +81,7 @@ import io.davidosemwota.rickandmorty.characters.list.CharactersScreenTestTags.ER
 import io.davidosemwota.rickandmorty.characters.list.CharactersScreenTestTags.LOADING_SCREEN
 import io.davidosemwota.rickandmorty.characters.list.CharactersScreenTestTags.LOADING_SCREEN_APPEND
 import io.davidosemwota.rickandmorty.models.Character
+import io.davidosemwota.rickandmorty.models.PagingState
 import io.davidosemwota.ui.GeneralPreview
 import io.davidosemwota.ui.PreviewComposable
 import io.davidosemwota.ui.theme.RickAndMortyTheme

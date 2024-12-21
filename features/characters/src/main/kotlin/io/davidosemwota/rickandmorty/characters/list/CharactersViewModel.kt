@@ -28,6 +28,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.davidosemwota.rickandmorty.domain.GetCharactersUseCase
+import io.davidosemwota.rickandmorty.models.PagingState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged

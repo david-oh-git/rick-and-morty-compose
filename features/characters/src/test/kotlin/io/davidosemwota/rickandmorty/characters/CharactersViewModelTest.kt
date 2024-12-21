@@ -25,8 +25,8 @@ package io.davidosemwota.rickandmorty.characters
 
 import com.google.common.truth.Truth.assertThat
 import io.davidosemwota.rickandmorty.characters.list.CharactersViewModel
-import io.davidosemwota.rickandmorty.characters.list.PagingState
 import io.davidosemwota.rickandmorty.domain.GetCharactersUseCase
+import io.davidosemwota.rickandmorty.models.PagingState
 import io.mockk.MockKAnnotations
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
