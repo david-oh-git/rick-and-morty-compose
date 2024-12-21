@@ -21,38 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-pluginManagement {
-    includeBuild("plugin-build")
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
+plugins {
+    alias(libs.plugins.rickandmorty.feature.library)
+    alias(libs.plugins.rickandmorty.compose.library)
 }
 
-// Fix prevent project from building
-// Error msg : Unable to make progress running work. The following items are queued
-// for execution but none of them can be started
-gradle.startParameter.excludedTaskNames.addAll(listOf(":plugin-build:customplugin:testClasses"))
+android {
+    namespace = "io.davidosemwota.rickandmorty.episodes"
+}
 
-rootProject.name = "rickandmorty"
+dependencies {
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-include(":app")
-include(":core:network")
-include(":core:testing")
-include(":core:data")
-include(":core:models")
-include(":features:characters")
-include(":features:episodes")
-include(":core:domain")
-include(":core:ui")
-include(":baseline-profile")
+    implementation(projects.core.domain)
+    implementation(projects.core.models)
+    implementation(projects.core.ui)
+
+    implementation(libs.androidx.paging.compose)
+
+    testImplementation(libs.junit4)
+    testImplementation(libs.truth)
+    testImplementation(projects.core.testing)
+    testImplementation(libs.test.core)
+    testImplementation(projects.core.data)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.mockk.agent)
+
+    androidTestImplementation(libs.androidx.text.ext)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.jnit4)
+    androidTestImplementation(libs.truth)
+    androidTestImplementation(projects.core.testing)
+
+    debugImplementation(libs.androidx.ui.test.manifest)
+}
