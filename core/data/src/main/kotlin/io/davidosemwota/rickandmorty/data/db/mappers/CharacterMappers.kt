@@ -72,3 +72,6 @@ internal fun CharacterWithEpisodesAndLocations.toCharacterUi(): Character = Char
     locations = this.locations.toListOfLocationUi(),
     episodes = this.episodes.toListOfEpisodeUi(),
 )
+
+internal fun List<CharacterEntity>.toListOfCharacterUi(): List<Character> =
+    this.map { it.toCharacterUiModel() }

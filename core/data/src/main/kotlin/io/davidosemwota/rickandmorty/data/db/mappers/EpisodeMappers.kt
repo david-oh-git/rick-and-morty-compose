@@ -23,6 +23,7 @@
  */
 package io.davidosemwota.rickandmorty.data.db.mappers
 
+import io.davidosemwota.rickandmorty.data.db.EpisodeWithCharacters
 import io.davidosemwota.rickandmorty.data.db.entities.EpisodeEntity
 import io.davidosemwota.rickandmorty.models.Episode
 import io.davidosemwota.rickandmorty.network.NetworkEpisode
@@ -52,3 +53,12 @@ internal fun NetworkEpisode.toEpisodeEntity(): EpisodeEntity? =
 
 internal fun List<NetworkEpisode>.toListOfEntity(): List<EpisodeEntity> =
     this.map { it.toEpisodeEntity() }.filterNotNull()
+
+internal fun EpisodeWithCharacters.toEpisodeUi(): Episode = Episode(
+    id = this.episode.episodeId,
+    name = this.episode.name,
+    airDate = this.episode.airDate,
+    episode = this.episode.episode,
+    pageIdentity = this.episode.pageIdentity,
+    characters = this.characters.toListOfCharacterUi(),
+)
