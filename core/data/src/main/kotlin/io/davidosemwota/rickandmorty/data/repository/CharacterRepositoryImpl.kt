@@ -35,7 +35,6 @@ import io.davidosemwota.rickandmorty.models.Character
 import io.davidosemwota.rickandmorty.network.RickAndMortyApiService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import timber.log.Timber
 import javax.inject.Inject
 
 class CharacterRepositoryImpl @Inject constructor(
@@ -56,7 +55,6 @@ class CharacterRepositoryImpl @Inject constructor(
             database.characterEntitiesRefDao().getPagedCharacterWithEpisodesAndLocations()
         }.flow.map { pagingData ->
             pagingData.map {
-                Timber.d("Name ${it.character.name}")
                 it.toCharacterUi()
             }
         }
