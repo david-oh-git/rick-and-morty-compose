@@ -28,6 +28,7 @@ plugins {
     alias(libs.plugins.rickandmorty.android.application.compose)
     alias(libs.plugins.rickandmorty.dagger.hilt)
     alias(libs.plugins.baselineprofile)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -76,6 +77,7 @@ android {
 
 dependencies {
     implementation(projects.features.characters)
+    implementation(projects.features.episodes)
     implementation(projects.core.ui)
 
     implementation(platform(libs.androidx.compose.bom))
