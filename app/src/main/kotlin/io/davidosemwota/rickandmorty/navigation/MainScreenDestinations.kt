@@ -46,7 +46,7 @@ enum class MainScreenDestinations(
     ),
     EPISODES(
         iconTitleId = R.string.episodes,
-        selectedIcon = MortyIcons.FormatListBulleted,
-        unSelectedIcon = MortyIcons.Lists,
+        selectedIcon = MortyIcons.Lists,
+        unSelectedIcon = MortyIcons.FormatListBulleted,
     ),
 }
