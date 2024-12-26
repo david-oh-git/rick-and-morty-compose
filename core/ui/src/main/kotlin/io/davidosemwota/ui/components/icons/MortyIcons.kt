@@ -21,32 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.navigation
+package io.davidosemwota.ui.components.icons
 
-import androidx.annotation.StringRes
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.outlined.Face
-import androidx.compose.ui.graphics.vector.ImageVector
-import io.davidosemwota.rickandmorty.R
-import io.davidosemwota.ui.components.icons.FormatListBulleted
-import io.davidosemwota.ui.components.icons.Lists
-import io.davidosemwota.ui.components.icons.MortyIcons
-import io.davidosemwota.rickandmorty.characters.R as characters
-
-enum class MainScreenDestinations(
-    @StringRes val iconTitleId: Int,
-    val selectedIcon: ImageVector,
-    val unSelectedIcon: ImageVector,
-) {
-    CHARACTERS(
-        iconTitleId = characters.string.feature_characters_title,
-        selectedIcon = Icons.Filled.Face,
-        unSelectedIcon = Icons.Outlined.Face,
-    ),
-    EPISODES(
-        iconTitleId = R.string.episodes,
-        selectedIcon = MortyIcons.FormatListBulleted,
-        unSelectedIcon = MortyIcons.Lists,
-    ),
-}
+object MortyIcons
