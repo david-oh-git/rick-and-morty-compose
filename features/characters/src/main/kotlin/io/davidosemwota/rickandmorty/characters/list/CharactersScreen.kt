@@ -43,11 +43,9 @@ import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridS
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -84,7 +82,7 @@ import io.davidosemwota.rickandmorty.models.Character
 import io.davidosemwota.rickandmorty.models.PagingState
 import io.davidosemwota.ui.GeneralPreview
 import io.davidosemwota.ui.PreviewComposable
-import io.davidosemwota.ui.theme.RickAndMortyTheme
+import io.davidosemwota.ui.components.FullScreenLoading
 import timber.log.Timber
 
 @Composable
@@ -166,7 +164,9 @@ fun CharactersScreenContent(
                 },
             )
         } else if (screenState.hasFullScreenLoading) {
-            LoadingScreen()
+            FullScreenLoading(
+                modifier = Modifier.testTag(LOADING_SCREEN),
+            )
         } else {
             val listState = rememberLazyStaggeredGridState()
             val refreshButtonVisibility by remember {
@@ -309,36 +309,6 @@ fun ErrorScreenContentPreview() {
             modifier = Modifier.fillMaxSize(),
             retry = { },
         )
-    }
-}
-
-@Composable
-fun LoadingScreen(
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .testTag(LOADING_SCREEN),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        CircularProgressIndicator(
-            modifier = Modifier.width(32.dp),
-            color = MaterialTheme.colorScheme.secondary,
-        )
-    }
-}
-
-@GeneralPreview
-@Composable
-fun LoadingScreenPreview() {
-    RickAndMortyTheme {
-        Surface(
-            color = MaterialTheme.colorScheme.background,
-        ) {
-            LoadingScreen()
-        }
     }
 }
 
