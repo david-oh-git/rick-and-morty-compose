@@ -27,10 +27,16 @@ plugins {
 }
 
 android {
-    namespace = "com.rickandmorty.testing"
+    namespace = "io.davidosemwota.rickandmorty.testing"
 }
 
 dependencies {
 
     api(libs.bundles.test.impl)
+
+    api(projects.core.data)
+    implementation(projects.core.models)
+
+    implementation(libs.androidx.paging)
+    api(libs.androidx.paging.test)
 }

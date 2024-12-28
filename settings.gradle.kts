@@ -38,6 +38,11 @@ dependencyResolutionManagement {
     }
 }
 
+// Fix prevent project from building
+// Error msg : Unable to make progress running work. The following items are queued
+// for execution but none of them can be started
+gradle.startParameter.excludedTaskNames.addAll(listOf(":plugin-build:customplugin:testClasses"))
+
 rootProject.name = "rickandmorty"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -47,3 +52,7 @@ include(":core:testing")
 include(":core:data")
 include(":core:models")
 include(":features:characters")
+include(":features:episodes")
+include(":core:domain")
+include(":core:ui")
+include(":baseline-profile")

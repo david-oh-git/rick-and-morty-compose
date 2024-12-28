@@ -26,10 +26,11 @@ plugins {
     alias(libs.plugins.rickandmorty.android.library)
     id(libs.plugins.ksp.get().pluginId)
     id(libs.plugins.kotlin.serialization.get().pluginId)
+    alias(libs.plugins.rickandmorty.dagger.hilt)
 }
 
 android {
-    namespace = "com.rickandmorty.data"
+    namespace = "io.davidosemwota.rickandmorty.data"
 
     testOptions.unitTests {
         isIncludeAndroidResources = true
@@ -39,7 +40,7 @@ android {
 
 dependencies {
     implementation(projects.core.network)
-    implementation(projects.core.models)
+    api(projects.core.models)
 
     implementation(libs.room)
     ksp(libs.room.compiler)
@@ -52,4 +53,5 @@ dependencies {
     testImplementation(libs.room.testing)
     testImplementation(libs.robolectric)
     testImplementation(libs.test.core)
+    testImplementation(libs.androidx.paging.test)
 }

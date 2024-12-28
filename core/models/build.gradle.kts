@@ -27,5 +27,5 @@ plugins {
 }
 
 android {
-    namespace = "com.rickandmorty.models"
+    namespace = "io.davidosemwota.rickandmorty.models"
 }

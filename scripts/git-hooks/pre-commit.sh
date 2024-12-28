@@ -1,5 +1,8 @@
 #!/bin/sh
-echo "Running pre -commit checks..."
+echo "#############################"
+echo "#    Code Scan : Running    #"
+echo "#############################"
+
 
 osname=$(uname -s)
 #check if mac os
@@ -24,7 +27,11 @@ EXIT_CODE=$?
 if [ ${EXIT_CODE} -ne 0 ]; then
     cat ${OUTPUT}
     rm ${OUTPUT}
-    echo "Pre Commit Checks Failed. Please fix the above issues before committing"
+    echo "#################################"
+    echo "#      Code Scan : Failed       #"
+    echo "#     Kindly fix above issues   #"
+    echo "#     before commiting.         #"
+    echo "#################################"
     exit ${EXIT_CODE}
 else
     rm ${OUTPUT}
@@ -35,5 +42,8 @@ else
         git add $file
       fi
     done
-    echo "Pre Commit Checks Passed -- no problems found"
+    echo "#############################"
+    echo "#    Code Scan : Success    #"
+    echo "#     No issues found !     #"
+    echo "#############################"
 fi

@@ -24,11 +24,12 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.rickandmorty.android.library)
+    alias(libs.plugins.rickandmorty.dagger.hilt)
     id("com.apollographql.apollo3")
 }
 
 android {
-    namespace = "com.rickandmorty.network"
+    namespace = "io.davidosemwota.rickandmorty.network"
 
     buildFeatures {
         buildConfig = true

@@ -23,6 +23,7 @@
  */
 import com.android.build.gradle.LibraryExtension
 import io.davidosemwota.rickandmorty.plugins.configureKotlinAndroid
+import io.davidosemwota.rickandmorty.plugins.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -44,6 +45,7 @@ class AndroidLibraryCustomPlugin : Plugin<Project> {
             }
 
             dependencies {
+                "implementation"(libs.findLibrary("timber").get())
                 add("testImplementation", kotlin("test"))
                 add("androidTestImplementation", kotlin("test"))
             }

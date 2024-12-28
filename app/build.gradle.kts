@@ -26,6 +26,9 @@ import io.davidosemwota.rickandmorty.plugins.RickAndMortyBuildType
 plugins {
     alias(libs.plugins.rickandmorty.android.application)
     alias(libs.plugins.rickandmorty.android.application.compose)
+    alias(libs.plugins.rickandmorty.dagger.hilt)
+    alias(libs.plugins.baselineprofile)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -40,6 +43,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -70,16 +77,14 @@ android {
 
 dependencies {
     implementation(projects.features.characters)
+    implementation(projects.features.episodes)
+    implementation(projects.core.ui)
 
-    implementation(libs.androidx.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.material3)
+
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.profileinstaller)
+    implementation(libs.timber)
 
     testImplementation(libs.junit4)
     testImplementation(libs.truth)
@@ -89,6 +94,7 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.jnit4)
     androidTestImplementation(libs.truth)
+    baselineProfile(project(":baseline-profile"))
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)

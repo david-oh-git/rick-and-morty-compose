@@ -26,12 +26,13 @@ package io.davidosemwota.rickandmorty.navigation
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.outlined.Face
-import androidx.compose.material.icons.outlined.List
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.davidosemwota.rickandmorty.R
-import io.davidosemwota.characters.R as characters
+import io.davidosemwota.ui.components.icons.FormatListBulleted
+import io.davidosemwota.ui.components.icons.Lists
+import io.davidosemwota.ui.components.icons.MortyIcons
+import io.davidosemwota.rickandmorty.characters.R as characters
 
 enum class MainScreenDestinations(
     @StringRes val iconTitleId: Int,
@@ -45,7 +46,7 @@ enum class MainScreenDestinations(
     ),
     EPISODES(
         iconTitleId = R.string.episodes,
-        selectedIcon = Icons.Filled.List,
-        unSelectedIcon = Icons.Outlined.List,
+        selectedIcon = MortyIcons.Lists,
+        unSelectedIcon = MortyIcons.FormatListBulleted,
     ),
 }

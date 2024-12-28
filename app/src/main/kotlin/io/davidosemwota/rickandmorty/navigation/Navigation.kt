@@ -29,22 +29,21 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import io.davidosemwota.rickandmorty.characters.list.CHARACTERS_ROUTE
+import io.davidosemwota.rickandmorty.characters.list.charactersScreen
 
 @Composable
 fun RickAndMortyNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: String = MainScreenDestinations.CHARACTERS.name,
+    startDestination: String = CHARACTERS_ROUTE,
 ) {
     NavHost(
         modifier = modifier,
         navController = navController,
         startDestination = startDestination,
     ) {
-        composable(MainScreenDestinations.CHARACTERS.name) {
-            Text("Characters screen")
-        }
-
+        charactersScreen()
         composable(MainScreenDestinations.EPISODES.name) {
             Text("Episodes screen")
         }

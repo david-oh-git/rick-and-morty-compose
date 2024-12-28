@@ -71,6 +71,18 @@ gradlePlugin {
             implementationClass = "AndroidApplicationComposePlugin"
         }
 
+        register("androidFeatureLibrary") {
+            id = "rickandmorty.android.feature.library"
+            implementationClass = "AndroidFeatureCustomPlugin"
+        }
+        register("androidComposeLibrary") {
+            id = "rickandmorty.android.compose.library"
+            implementationClass = "AndroidComposeLibraryPlugin"
+        }
+        register("androidDaggerHilt") {
+            id = "rickandmorty.android.dagger.hilt"
+            implementationClass = "AndroidDaggerHiltPlugin"
+        }
     }
 
 }

@@ -25,7 +25,7 @@ package io.davidosemwota.rickandmorty.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -34,17 +34,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import io.davidosemwota.rickandmorty.R
+import io.davidosemwota.rickandmorty.characters.list.CHARACTERS_ROUTE
+import io.davidosemwota.rickandmorty.characters.list.navigateToCharacters
 import io.davidosemwota.rickandmorty.navigation.MainScreenDestinations
 import io.davidosemwota.rickandmorty.navigation.RickAndMortyNavHost
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RickAndMortyApp(
     navController: NavHostController = rememberNavController(),
@@ -70,23 +75,29 @@ private fun RickAndMortyBottomNavigation(
     navController: NavHostController,
     destinations: List<MainScreenDestinations>,
 ) {
-    NavigationBar {
+    NavigationBar(
+        modifier = Modifier
+            .padding(8.dp)
+            .clip(shape = RoundedCornerShape(8.dp)),
+    ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination
+
+        val currentDestination: NavDestination? = navController
+            .currentBackStackEntryAsState().value?.destination
+
+        val currentTopLevelDestination: MainScreenDestinations? = when (currentDestination?.route) {
+            CHARACTERS_ROUTE -> MainScreenDestinations.CHARACTERS
+            MainScreenDestinations.EPISODES.name -> MainScreenDestinations.EPISODES
+            else -> null
+        }
 
         destinations.forEach { destination ->
             val selected = currentDestination?.hierarchy?.any { it.route?.contains(destination.name, true) ?: false } ?: false
             val icon = if (selected) destination.selectedIcon else destination.unSelectedIcon
             NavigationBarItem(
-                selected = currentDestination?.hierarchy?.any { it.route?.contains(destination.name, true) ?: false } ?: false,
+                selected = selected,
                 onClick = {
-                    navController.navigate(destination.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navigateToTopLevelDestination(navController, destination)
                 },
                 icon = {
                     Icon(
@@ -98,5 +109,23 @@ private fun RickAndMortyBottomNavigation(
 
             )
         }
+    }
+}
+
+fun navigateToTopLevelDestination(
+    navController: NavHostController,
+    bottomBarDestination: MainScreenDestinations,
+) {
+    val bottomBarNavOptions = navOptions {
+        popUpTo(navController.graph.findStartDestination().id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
+
+    when (bottomBarDestination) {
+        MainScreenDestinations.CHARACTERS -> navController.navigateToCharacters(bottomBarNavOptions)
+        else -> navController.navigate(bottomBarDestination.name, bottomBarNavOptions)
     }
 }
