@@ -82,7 +82,9 @@ import io.davidosemwota.rickandmorty.models.Character
 import io.davidosemwota.rickandmorty.models.PagingState
 import io.davidosemwota.ui.GeneralPreview
 import io.davidosemwota.ui.PreviewComposable
+import io.davidosemwota.ui.components.FullScreenError
 import io.davidosemwota.ui.components.FullScreenLoading
+import io.davidosemwota.ui.util.getDisplayMessage
 import timber.log.Timber
 
 @Composable
@@ -112,6 +114,7 @@ fun CharactersScreenContent(
     updateAppendState: (PagingState) -> Unit,
 ) {
     var error = LoadState.Error(Exception())
+    val context = LocalContext.current
 
     characters.apply {
         when (loadState.refresh) {
@@ -152,16 +155,20 @@ fun CharactersScreenContent(
     ) { paddingValues ->
 
         if (screenState.hasFullScreenError) {
-            ErrorScreenContent(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .testTag(ERROR_SCREEN),
-                error = error,
+            FullScreenError(
+                errorMessage = getDisplayMessage(
+                    context = context,
+                    error.error,
+                ),
+                retryButtonText = "Try again",
                 retry = {
                     Timber.tag("xxx").d("CLICKED")
                     updateFullScreenState(PagingState.Loading)
                     characters.retry()
                 },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag(ERROR_SCREEN),
             )
         } else if (screenState.hasFullScreenLoading) {
             FullScreenLoading(
