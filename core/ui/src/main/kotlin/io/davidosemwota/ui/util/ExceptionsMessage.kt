@@ -25,7 +25,6 @@ package io.davidosemwota.ui.util
 
 import android.content.Context
 import io.davidosemwota.ui.R
-import timber.log.Timber
 import java.io.IOException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -33,19 +32,16 @@ import java.net.UnknownHostException
 import javax.net.ssl.SSLHandshakeException
 
 /**
- * TO easily convert [Exception]s to human readable error messages.
+ * To easily convert [Throwable]s to human readable error messages.
  */
 fun getDisplayMessage(
     context: Context,
     throwable: Throwable,
-): String {
-    Timber.d(throwable)
-    return when (throwable) {
-        is UnknownHostException -> context.getString(R.string.host_unreachable_msg)
-        is SocketTimeoutException -> context.getString(R.string.connection_timed_out_msg)
-        is SSLHandshakeException -> context.getString(R.string.ssl_error_msg)
-        is ConnectException -> context.getString(R.string.connection_exception_msg)
-        is IOException -> context.getString(R.string.io_exception_error)
-        else -> context.getString(R.string.unknown_error_msg)
-    }
+): String = when (throwable.cause) {
+    is UnknownHostException -> context.getString(R.string.host_unreachable_msg)
+    is SocketTimeoutException -> context.getString(R.string.connection_timed_out_msg)
+    is SSLHandshakeException -> context.getString(R.string.ssl_error_msg)
+    is ConnectException -> context.getString(R.string.connection_exception_msg)
+    is IOException -> context.getString(R.string.io_exception_error)
+    else -> context.getString(R.string.unknown_error_msg)
 }
