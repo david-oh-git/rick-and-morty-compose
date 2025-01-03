@@ -218,7 +218,10 @@ fun CharactersScreenContent(
                         ) {
                             ErrorScreenContent(
                                 modifier = Modifier.fillMaxSize(),
-                                error = error,
+                                errorMessage = getDisplayMessage(
+                                    context = context,
+                                    throwable = error.error,
+                                ),
                                 retry = {
                                     Timber.tag("xxx").d("CLICKED")
                                     updateAppendState(PagingState.Loading)
@@ -271,21 +274,20 @@ fun ErrorButton(
 
 @Composable
 fun ErrorScreenContent(
-    modifier: Modifier = Modifier,
-    error: LoadState.Error,
+    errorMessage: String,
     retry: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        // TODO : default error message for various exceptions. eg IllegalStateException
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             modifier = Modifier
                 .testTag(ERROR_SCREEN_TEXT),
-            text = error.error.message ?: stringResource(R.string.api_default_error_response),
+            text = errorMessage,
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
         )
@@ -312,7 +314,7 @@ fun ErrorScreenContent(
 fun ErrorScreenContentPreview() {
     PreviewComposable {
         ErrorScreenContent(
-            error = LoadState.Error(error = Throwable("Unauthorized access")),
+            errorMessage = "Unauthorized access",
             modifier = Modifier.fillMaxSize(),
             retry = { },
         )
