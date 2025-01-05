@@ -21,12 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.characters.list
+package io.davidosemwota.rickandmorty.characters.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import io.davidosemwota.rickandmorty.characters.list.CharactersRoute
 
 const val CHARACTERS_ROUTE = "characters"
 
