@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2024   David Osemwota.
+ * Copyright (c) 2025   David Osemwota.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,31 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package io.davidosemwota.rickandmorty.testing
 
-@Suppress("DSL_SCOPE_VIOLATION")
-plugins {
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.rickandmorty.compose.library)
-    alias(libs.plugins.rickandmorty.android.library)
-}
+import androidx.paging.PagingData
+import io.davidosemwota.rickandmorty.data.repository.EpisodeRepository
+import io.davidosemwota.rickandmorty.models.Episode
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
-android {
-    namespace = "io.davidosemwota.ui"
-}
+class FakeEpisodesRepository(
+    private val episodes: List<Episode> = generateEpisodes(),
+) : EpisodeRepository {
 
-dependencies {
+    override fun getPagedEpisodes(): Flow<PagingData<Episode>> {
+        return flowOf(PagingData.from(episodes))
+    }
 
-    implementation(libs.timber)
-
-    api(libs.androidx.ktx)
-    api(libs.androidx.lifecycle.runtime.ktx)
-    api(libs.androidx.lifecycle.runtime.compose)
-
-    implementation(platform(libs.androidx.compose.bom))
-    api(libs.androidx.compose.ui)
-    api(libs.androidx.compose.ui.graphics)
-    api(libs.androidx.compose.ui.tooling.preview)
-    api(libs.androidx.compose.material3)
-
-    debugApi(libs.androidx.ui.tooling)
+    companion object {
+        fun generateEpisodes(): List<Episode> =
+            listOf(
+                Episode(
+                    id = 2,
+                    name = "The curse of dulila",
+                    airDate = "13th-Jan-2018",
+                    episode = "S04E05",
+                    pageIdentity = "ep-03",
+                    characters = emptyList(),
+                ),
+            )
+    }
 }

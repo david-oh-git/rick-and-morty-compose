@@ -21,31 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package io.davidosemwota.rickandmorty.episodes.navigation
 
-@Suppress("DSL_SCOPE_VIOLATION")
-plugins {
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.rickandmorty.compose.library)
-    alias(libs.plugins.rickandmorty.android.library)
-}
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
+import androidx.navigation.compose.composable
+import io.davidosemwota.rickandmorty.episodes.list.EpisodesRoute
 
-android {
-    namespace = "io.davidosemwota.ui"
-}
+const val EPISODES_ROUTE = "episodes"
 
-dependencies {
+fun NavController.navigateToEpisodes(navOptions: NavOptions) =
+    navigate(EPISODES_ROUTE, navOptions)
 
-    implementation(libs.timber)
-
-    api(libs.androidx.ktx)
-    api(libs.androidx.lifecycle.runtime.ktx)
-    api(libs.androidx.lifecycle.runtime.compose)
-
-    implementation(platform(libs.androidx.compose.bom))
-    api(libs.androidx.compose.ui)
-    api(libs.androidx.compose.ui.graphics)
-    api(libs.androidx.compose.ui.tooling.preview)
-    api(libs.androidx.compose.material3)
-
-    debugApi(libs.androidx.ui.tooling)
+fun NavGraphBuilder.episodesScreen() {
+    composable(
+        route = EPISODES_ROUTE,
+    ) {
+        EpisodesRoute()
+    }
 }

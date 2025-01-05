@@ -23,14 +23,13 @@
  */
 package io.davidosemwota.rickandmorty.navigation
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import io.davidosemwota.rickandmorty.characters.list.CHARACTERS_ROUTE
 import io.davidosemwota.rickandmorty.characters.list.charactersScreen
+import io.davidosemwota.rickandmorty.episodes.navigation.episodesScreen
 
 @Composable
 fun RickAndMortyNavHost(
@@ -44,8 +43,6 @@ fun RickAndMortyNavHost(
         startDestination = startDestination,
     ) {
         charactersScreen()
-        composable(MainScreenDestinations.EPISODES.name) {
-            Text("Episodes screen")
-        }
+        episodesScreen()
     }
 }
