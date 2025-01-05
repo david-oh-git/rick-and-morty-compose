@@ -47,6 +47,7 @@ import androidx.navigation.navOptions
 import io.davidosemwota.rickandmorty.R
 import io.davidosemwota.rickandmorty.characters.navigation.CHARACTERS_ROUTE
 import io.davidosemwota.rickandmorty.characters.navigation.navigateToCharacters
+import io.davidosemwota.rickandmorty.episodes.navigation.navigateToEpisodes
 import io.davidosemwota.rickandmorty.navigation.MainScreenDestinations
 import io.davidosemwota.rickandmorty.navigation.RickAndMortyNavHost
 
@@ -126,6 +127,6 @@ fun navigateToTopLevelDestination(
 
     when (bottomBarDestination) {
         MainScreenDestinations.CHARACTERS -> navController.navigateToCharacters(bottomBarNavOptions)
-        else -> navController.navigate(bottomBarDestination.name, bottomBarNavOptions)
+        MainScreenDestinations.EPISODES -> navController.navigateToEpisodes(bottomBarNavOptions)
     }
 }
