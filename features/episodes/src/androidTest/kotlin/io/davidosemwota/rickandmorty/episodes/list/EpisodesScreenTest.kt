@@ -73,6 +73,7 @@ internal class EpisodesScreenTest {
                     fullScreenErrorButtonText = "",
                     updateFullScreenState = { },
                     updateAppendState = { },
+                    onEpisodeClick = { },
                 )
             }
         }
@@ -114,6 +115,7 @@ internal class EpisodesScreenTest {
                     updateFullScreenState = { },
                     fullScreenErrorButtonText = fullScreenErrorButtonText,
                     updateAppendState = { },
+                    onEpisodeClick = { },
                 )
             }
         }
@@ -149,6 +151,7 @@ internal class EpisodesScreenTest {
                     fullScreenErrorButtonText = "",
                     updateFullScreenState = { },
                     updateAppendState = { },
+                    onEpisodeClick = { },
                 )
             }
         }
@@ -201,6 +204,7 @@ internal class EpisodesScreenTest {
                 fullScreenErrorButtonText = "",
                 updateFullScreenState = { },
                 updateAppendState = { },
+                onEpisodeClick = { },
             )
         }
 

@@ -24,6 +24,7 @@
 package io.davidosemwota.rickandmorty.episodes.list
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -69,6 +70,7 @@ import timber.log.Timber
 
 @Composable
 fun EpisodesRoute(
+    onEpisodeClick: (Int) -> Unit,
     viewModel: EpisodesViewModel = hiltViewModel(),
 ) {
     val episodes = viewModel.episodesPagingDataState.collectAsLazyPagingItems()
@@ -82,6 +84,7 @@ fun EpisodesRoute(
         episodes = episodes,
         fullScreenErrorButtonText = stringResource(R.string.episodes_error_retry_btn),
         modifier = Modifier.fillMaxSize(),
+        onEpisodeClick = onEpisodeClick,
     )
 }
 
@@ -92,6 +95,7 @@ fun EpisodesScreenContent(
     screenState: EpisodesScreenState,
     episodes: LazyPagingItems<Episode>,
     fullScreenErrorButtonText: String,
+    onEpisodeClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var error = LoadState.Error(Exception())
@@ -168,6 +172,7 @@ fun EpisodesScreenContent(
                         if (episode != null) {
                             EpisodeItem(
                                 episode = episode,
+                                onEpisodeClick = onEpisodeClick,
                             )
                         }
                     }
@@ -200,6 +205,7 @@ fun EpisodesScreenContent(
 @Composable
 fun EpisodeItem(
     episode: Episode,
+    onEpisodeClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     JerryCard(
@@ -211,7 +217,8 @@ fun EpisodeItem(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .clickable { onEpisodeClick(episode.id) },
         ) {
             Spacer(modifier = Modifier.size(4.dp))
             Text(
@@ -290,6 +297,7 @@ fun PreviewEpisodeItem() {
                 pageIdentity = "",
                 characters = emptyList(),
             ),
+            onEpisodeClick = { },
         )
     }
 }
@@ -340,6 +348,7 @@ private fun PreviewEpisodesSreen(
             updateFullScreenState = { },
             updateAppendState = { },
             modifier = modifier,
+            onEpisodeClick = { },
         )
     }
 }

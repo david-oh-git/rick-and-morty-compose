@@ -31,6 +31,8 @@ import io.davidosemwota.rickandmorty.characters.navigation.CHARACTERS_ROUTE
 import io.davidosemwota.rickandmorty.characters.navigation.characterDetailScreen
 import io.davidosemwota.rickandmorty.characters.navigation.characterScreen
 import io.davidosemwota.rickandmorty.characters.navigation.charactersScreen
+import io.davidosemwota.rickandmorty.episodes.navigation.episodeDetailScreen
+import io.davidosemwota.rickandmorty.episodes.navigation.episodeScreen
 import io.davidosemwota.rickandmorty.episodes.navigation.episodesScreen
 
 @Composable
@@ -47,7 +49,10 @@ fun RickAndMortyNavHost(
         charactersScreen(
             onCharacterClick = navController::characterScreen,
         )
-        episodesScreen()
+        episodesScreen(
+            onEpisodeClick = navController::episodeScreen,
+        )
         characterDetailScreen()
+        episodeDetailScreen()
     }
 }

@@ -27,17 +27,45 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
+import io.davidosemwota.rickandmorty.episodes.detail.EpisodeDetailsRoute
 import io.davidosemwota.rickandmorty.episodes.list.EpisodesRoute
+import kotlinx.serialization.Serializable
 
 const val EPISODES_ROUTE = "episodes"
 
 fun NavController.navigateToEpisodes(navOptions: NavOptions) =
     navigate(EPISODES_ROUTE, navOptions)
 
-fun NavGraphBuilder.episodesScreen() {
+@Serializable
+data class EpisodeRoute(
+    val id: Int? = null,
+)
+
+fun NavController.episodeScreen(
+    id: Int? = null,
+    navOptions: NavOptions? = null,
+) {
+    navigate(route = EpisodeRoute(id), navOptions)
+}
+
+fun NavGraphBuilder.episodesScreen(
+    onEpisodeClick: (Int) -> Unit,
+) {
     composable(
         route = EPISODES_ROUTE,
     ) {
-        EpisodesRoute()
+        EpisodesRoute(
+            onEpisodeClick = onEpisodeClick,
+        )
+    }
+}
+
+fun NavGraphBuilder.episodeDetailScreen() {
+    composable<EpisodeRoute> { backStackEntry ->
+        val episodeRoute: EpisodeRoute = backStackEntry.toRoute()
+        EpisodeDetailsRoute(
+            id = episodeRoute.id,
+        )
     }
 }
