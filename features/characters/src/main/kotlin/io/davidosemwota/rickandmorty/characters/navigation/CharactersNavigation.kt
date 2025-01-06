@@ -27,16 +27,47 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
+import io.davidosemwota.rickandmorty.characters.character.CharacterDetailsRoute
 import io.davidosemwota.rickandmorty.characters.list.CharactersRoute
+import kotlinx.serialization.Serializable
 
 const val CHARACTERS_ROUTE = "characters"
 
-fun NavController.navigateToCharacters(navOptions: NavOptions) = navigate(CHARACTERS_ROUTE, navOptions)
+fun NavController.navigateToCharacters(navOptions: NavOptions) = navigate(
+    CHARACTERS_ROUTE,
+    navOptions,
+)
 
-fun NavGraphBuilder.charactersScreen() {
+@Serializable
+data class CharacterRoute(
+    val id: Int? = null,
+)
+
+fun NavController.characterScreen(
+    id: Int? = null,
+    navOptions: NavOptions? = null,
+) {
+    navigate(route = CharacterRoute(id), navOptions)
+}
+
+fun NavGraphBuilder.charactersScreen(
+    onCharacterClick: (Int) -> Unit,
+) {
     composable(
         route = CHARACTERS_ROUTE,
     ) {
-        CharactersRoute()
+        CharactersRoute(
+            onCharacterClick = onCharacterClick,
+        )
+    }
+}
+
+fun NavGraphBuilder.characterDetailScreen() {
+    composable<CharacterRoute> { backStackEntry ->
+        val characterRoute: CharacterRoute = backStackEntry.toRoute()
+        CharacterDetailsRoute(
+            id = characterRoute.id,
+        )
     }
 }

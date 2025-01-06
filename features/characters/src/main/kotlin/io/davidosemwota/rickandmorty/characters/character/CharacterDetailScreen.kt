@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2024   David Osemwota.
+ * Copyright (c) 2025   David Osemwota.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,33 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.navigation
+package io.davidosemwota.rickandmorty.characters.character
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import io.davidosemwota.rickandmorty.characters.navigation.CHARACTERS_ROUTE
-import io.davidosemwota.rickandmorty.characters.navigation.characterDetailScreen
-import io.davidosemwota.rickandmorty.characters.navigation.characterScreen
-import io.davidosemwota.rickandmorty.characters.navigation.charactersScreen
-import io.davidosemwota.rickandmorty.episodes.navigation.episodesScreen
 
 @Composable
-fun RickAndMortyNavHost(
-    modifier: Modifier = Modifier,
-    navController: NavHostController,
-    startDestination: String = CHARACTERS_ROUTE,
+fun CharacterDetailsRoute(
+    id: Int? = null,
 ) {
-    NavHost(
-        modifier = modifier,
-        navController = navController,
-        startDestination = startDestination,
-    ) {
-        charactersScreen(
-            onCharacterClick = navController::characterScreen,
-        )
-        episodesScreen()
-        characterDetailScreen()
-    }
+    Text(text = "ID $id")
 }

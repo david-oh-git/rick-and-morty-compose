@@ -35,6 +35,7 @@ class AndroidFeatureCustomPlugin : Plugin<Project> {
             pluginManager.apply {
                 apply("rickandmorty.android.library")
                 apply("rickandmorty.android.dagger.hilt")
+                apply("org.jetbrains.kotlin.plugin.serialization")
             }
 
             extensions.configure<LibraryExtension> {
@@ -46,6 +47,7 @@ class AndroidFeatureCustomPlugin : Plugin<Project> {
             dependencies {
                 add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
                 add("implementation", libs.findLibrary("androidx.navigation.compose").get())
+                add("implementation", libs.findLibrary("kotlin-serialization").get())
             }
         }
     }

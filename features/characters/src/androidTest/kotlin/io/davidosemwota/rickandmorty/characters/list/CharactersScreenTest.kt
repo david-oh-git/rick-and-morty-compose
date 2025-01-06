@@ -77,6 +77,7 @@ internal class CharactersScreenTest {
                     ),
                     updateFullScreenState = { },
                     updateAppendState = { },
+                    onCharacterClick = { },
                 )
             }
         }
@@ -117,6 +118,7 @@ internal class CharactersScreenTest {
                     ),
                     updateFullScreenState = { },
                     updateAppendState = { },
+                    onCharacterClick = { },
                 )
             }
         }
@@ -167,6 +169,7 @@ internal class CharactersScreenTest {
                     ),
                     updateFullScreenState = { },
                     updateAppendState = { },
+                    onCharacterClick = { },
                 )
             }
         }
@@ -220,6 +223,7 @@ internal class CharactersScreenTest {
                     ),
                     updateFullScreenState = { },
                     updateAppendState = { },
+                    onCharacterClick = { },
                 )
             }
         }

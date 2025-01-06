@@ -89,6 +89,7 @@ import timber.log.Timber
 
 @Composable
 fun CharactersRoute(
+    onCharacterClick: (Int) -> Unit,
     viewModel: CharactersViewModel = hiltViewModel(),
 ) {
     val characters = viewModel.charactersPagingDataState.collectAsLazyPagingItems()
@@ -102,16 +103,18 @@ fun CharactersRoute(
         characters = characters,
         updateFullScreenState = viewModel::updateFullScreenState,
         updateAppendState = viewModel::updateAppendScreenState,
+        onCharacterClick = onCharacterClick,
     )
 }
 
 @Composable
 fun CharactersScreenContent(
-    modifier: Modifier = Modifier,
     screenState: CharacterScreenState,
     characters: LazyPagingItems<Character>,
     updateFullScreenState: (PagingState) -> Unit,
     updateAppendState: (PagingState) -> Unit,
+    onCharacterClick: (Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     var error = LoadState.Error(Exception())
     val context = LocalContext.current
@@ -202,6 +205,7 @@ fun CharactersScreenContent(
                         if (character != null) {
                             CharacterGridItem(
                                 character = character,
+                                onCharacterClick = onCharacterClick,
                             )
                         }
                     }
@@ -336,8 +340,9 @@ fun LoadingItem(
 
 @Composable
 fun CharacterGridItem(
-    modifier: Modifier = Modifier,
     character: Character,
+    onCharacterClick: (Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Card(
         elevation = CardDefaults.cardElevation(
@@ -348,7 +353,7 @@ fun CharacterGridItem(
         ),
         modifier = modifier
             .fillMaxWidth()
-            .clickable { /** TODO item click then navigate **/ }
+            .clickable { onCharacterClick(character.id) }
             .testTag(CHARACTER_SCREEN_VERTICAL_GRID_ITEM),
     ) {
         Box(
@@ -401,5 +406,6 @@ fun CharacterGridItemPreview() {
             locations = emptyList(),
             episodes = emptyList(),
         ),
+        onCharacterClick = { },
     )
 }
