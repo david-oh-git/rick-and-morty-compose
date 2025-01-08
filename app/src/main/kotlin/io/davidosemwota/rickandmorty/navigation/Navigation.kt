@@ -52,7 +52,9 @@ fun RickAndMortyNavHost(
         episodesScreen(
             onEpisodeClick = navController::episodeScreen,
         )
-        characterDetailScreen()
+        characterDetailScreen(
+            onBackNav = navController::popBackStack,
+        )
         episodeDetailScreen()
     }
 }

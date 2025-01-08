@@ -28,7 +28,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import io.davidosemwota.rickandmorty.characters.character.CharacterDetailsRoute
+import io.davidosemwota.rickandmorty.characters.detail.CharacterDetailsRoute
 import io.davidosemwota.rickandmorty.characters.list.CharactersRoute
 import kotlinx.serialization.Serializable
 
@@ -63,11 +63,14 @@ fun NavGraphBuilder.charactersScreen(
     }
 }
 
-fun NavGraphBuilder.characterDetailScreen() {
+fun NavGraphBuilder.characterDetailScreen(
+    onBackNav: () -> Unit,
+) {
     composable<CharacterRoute> { backStackEntry ->
         val characterRoute: CharacterRoute = backStackEntry.toRoute()
         CharacterDetailsRoute(
             id = characterRoute.id,
+            onBackNav = onBackNav,
         )
     }
 }
