@@ -26,7 +26,7 @@ package io.davidosemwota.ui.components
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.Send
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,6 +40,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.davidosemwota.ui.GeneralPreview
 import io.davidosemwota.ui.PreviewComposable
@@ -47,13 +48,9 @@ import io.davidosemwota.ui.PreviewComposable
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SummerAppBar(
-    actionIconContentDescription: String,
-    navigationIconContentDescription: String,
-    onActionClick: () -> Unit,
-    onNavigationClick: () -> Unit,
     modifier: Modifier = Modifier,
-    actionIcon: ImageVector? = null,
-    navigationIcon: ImageVector? = null,
+    actionIcon: @Composable (() -> Unit),
+    navigationIcon: @Composable (() -> Unit),
     title: String = "",
     colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
@@ -66,34 +63,35 @@ fun SummerAppBar(
             }
         },
         actions = {
-            if (actionIcon != null) {
-                IconButton(onClick = onActionClick) {
-                    Icon(
-                        imageVector = actionIcon,
-                        contentDescription = actionIconContentDescription,
-                        tint = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.size(32.dp),
-                    )
-                }
-            }
+            actionIcon()
         },
-        navigationIcon = {
-            if (navigationIcon != null) {
-                IconButton(onClick = onNavigationClick) {
-                    Icon(
-                        imageVector = navigationIcon,
-                        contentDescription = navigationIconContentDescription,
-                        tint = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.size(32.dp),
-                    )
-                }
-            }
-        },
+        navigationIcon = navigationIcon,
         colors = colors,
         modifier = modifier,
         windowInsets = windowInsets,
         scrollBehavior = scrollBehavior,
     )
+}
+
+@Composable
+fun AppbarIcon(
+    icon: ImageVector,
+    iconContentDescription: String,
+    onIconClick: () -> Unit,
+    iconSize: Dp = 32.dp,
+    modifier: Modifier = Modifier,
+) {
+    IconButton(
+        modifier = modifier,
+        onClick = onIconClick,
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = iconContentDescription,
+            tint = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.size(iconSize),
+        )
+    }
 }
 
 @GeneralPreview
@@ -104,13 +102,21 @@ private fun PreviewSummerAppBar(
 ) {
     PreviewComposable {
         SummerAppBar(
-            actionIconContentDescription = "",
-            navigationIconContentDescription = "",
-            onActionClick = { },
-            onNavigationClick = { },
             modifier = modifier,
-            actionIcon = Icons.AutoMirrored.Rounded.Send,
-            navigationIcon = Icons.AutoMirrored.Outlined.ArrowBack,
+            actionIcon = {
+                AppbarIcon(
+                    icon = Icons.AutoMirrored.Rounded.Send,
+                    iconContentDescription = "",
+                    onIconClick = { },
+                )
+            },
+            navigationIcon = {
+                AppbarIcon(
+                    icon = Icons.AutoMirrored.Filled.ArrowBack,
+                    iconContentDescription = "",
+                    onIconClick = { },
+                )
+            },
             title = "Summer appbar",
         )
     }
