@@ -23,6 +23,12 @@
  */
 package io.davidosemwota.rickandmorty.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,6 +42,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -47,21 +54,48 @@ import androidx.navigation.navOptions
 import io.davidosemwota.rickandmorty.R
 import io.davidosemwota.rickandmorty.characters.navigation.CHARACTERS_ROUTE
 import io.davidosemwota.rickandmorty.characters.navigation.navigateToCharacters
+import io.davidosemwota.rickandmorty.episodes.navigation.EPISODES_ROUTE
 import io.davidosemwota.rickandmorty.episodes.navigation.navigateToEpisodes
 import io.davidosemwota.rickandmorty.navigation.MainScreenDestinations
 import io.davidosemwota.rickandmorty.navigation.RickAndMortyNavHost
+import timber.log.Timber
 
 @Composable
 fun RickAndMortyApp(
     navController: NavHostController = rememberNavController(),
 ) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+    val currentDestination: NavDestination? = navBackStackEntry?.destination
+
+    val currentTopLevelDestination: MainScreenDestinations? = when (currentDestination?.route) {
+        CHARACTERS_ROUTE -> MainScreenDestinations.CHARACTERS
+        EPISODES_ROUTE -> MainScreenDestinations.EPISODES
+        else -> null
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            RickAndMortyBottomNavigation(
-                navController = navController,
-                destinations = MainScreenDestinations.entries,
-            )
+            AnimatedVisibility(
+                visible = currentTopLevelDestination != null,
+                enter = slideInVertically(
+                    initialOffsetY = { it },
+                ),
+                exit = slideOutVertically(
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessMediumLow,
+                        visibilityThreshold = IntOffset.VisibilityThreshold,
+                    ),
+                    targetOffsetY = { it },
+                ),
+            ) {
+                RickAndMortyBottomNavigation(
+                    navController = navController,
+                    destinations = MainScreenDestinations.entries,
+                    currentDestination = currentDestination,
+                )
+            }
         },
     ) { padding ->
         RickAndMortyNavHost(
@@ -74,6 +108,7 @@ fun RickAndMortyApp(
 @Composable
 private fun RickAndMortyBottomNavigation(
     navController: NavHostController,
+    currentDestination: NavDestination?,
     destinations: List<MainScreenDestinations>,
 ) {
     NavigationBar(
@@ -81,16 +116,7 @@ private fun RickAndMortyBottomNavigation(
             .padding(8.dp)
             .clip(shape = RoundedCornerShape(8.dp)),
     ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-
-        val currentDestination: NavDestination? = navController
-            .currentBackStackEntryAsState().value?.destination
-
-        val currentTopLevelDestination: MainScreenDestinations? = when (currentDestination?.route) {
-            CHARACTERS_ROUTE -> MainScreenDestinations.CHARACTERS
-            MainScreenDestinations.EPISODES.name -> MainScreenDestinations.EPISODES
-            else -> null
-        }
+        Timber.d("Current DEST:  $currentDestination")
 
         destinations.forEach { destination ->
             val selected = currentDestination?.hierarchy?.any { it.route?.contains(destination.name, true) ?: false } ?: false
