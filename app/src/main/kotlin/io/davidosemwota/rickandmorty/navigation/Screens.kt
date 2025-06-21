@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2024   David Osemwota.
+ * Copyright (c) 2025   David Osemwota.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,25 +28,47 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.ui.graphics.vector.ImageVector
-import io.davidosemwota.rickandmorty.R
+import androidx.navigation3.runtime.NavKey
 import io.davidosemwota.ui.components.icons.FormatListBulleted
 import io.davidosemwota.ui.components.icons.Lists
 import io.davidosemwota.ui.components.icons.MortyIcons
-import io.davidosemwota.rickandmorty.characters.R as characters
+import kotlinx.serialization.Serializable
 
-enum class MainScreenDestinations(
-    @StringRes val iconTitleId: Int,
-    val selectedIcon: ImageVector,
-    val unSelectedIcon: ImageVector,
-) {
-    CHARACTERS(
-        iconTitleId = characters.string.feature_characters_title,
-        selectedIcon = Icons.Filled.Face,
-        unSelectedIcon = Icons.Outlined.Face,
-    ),
-    EPISODES(
-        iconTitleId = R.string.episodes,
-        selectedIcon = MortyIcons.Lists,
-        unSelectedIcon = MortyIcons.FormatListBulleted,
-    ),
+sealed class MainScreens(
+    @StringRes open val iconTitleId: Int,
+    open val selectedIcon: ImageVector,
+    open val unSelectedIcon: ImageVector,
+) : NavKey {
+
+    @Serializable
+    data class EpisodeList(
+        @StringRes override val iconTitleId: Int = io.davidosemwota.ui.R.string.episodes,
+        override val selectedIcon: ImageVector = MortyIcons.Lists,
+        override val unSelectedIcon: ImageVector = MortyIcons.FormatListBulleted,
+    ) : MainScreens(
+        iconTitleId = iconTitleId,
+        selectedIcon = selectedIcon,
+        unSelectedIcon = unSelectedIcon,
+    )
+
+    @Serializable
+    data class CharacterList(
+        @StringRes override val iconTitleId: Int = io.davidosemwota.ui.R.string.feature_characters_title,
+        override val selectedIcon: ImageVector = Icons.Filled.Face,
+        override val unSelectedIcon: ImageVector = Icons.Outlined.Face,
+    ) : MainScreens(
+        iconTitleId = iconTitleId,
+        selectedIcon = selectedIcon,
+        unSelectedIcon = unSelectedIcon,
+    )
 }
+
+@Serializable
+data class CharacterDetails(
+    val id: Int,
+) : NavKey
+
+@Serializable
+data class EpisodeDetails(
+    val id: Int,
+) : NavKey

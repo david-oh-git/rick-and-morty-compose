@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 @Composable
 fun EpisodeDetailsRoute(
     id: Int? = null,
+    onBackNav: () -> Unit,
 ) {
     Text(text = "ID $id")
 }

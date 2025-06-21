@@ -46,8 +46,15 @@ class AndroidFeatureCustomPlugin : Plugin<Project> {
 
             dependencies {
                 add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
-                add("implementation", libs.findLibrary("androidx.navigation.compose").get())
                 add("implementation", libs.findLibrary("kotlin-serialization").get())
+
+                // Navigation 3
+                add("implementation", libs.findLibrary("androidx.navigation3.ui").get())
+                add("implementation", libs.findLibrary("androidx.navigation3.runtime").get())
+                add("implementation", libs.findLibrary("androidx.lifecycle.viewmodel.navigation3").get())
+                add("implementation", libs.findLibrary("androidx.material3.adaptive.navigation3").get())
+                add("implementation", libs.findLibrary("kotlinx.serialization.core").get())
+                add("implementation", libs.findLibrary("androidx.adaptive.android").get())
             }
         }
     }

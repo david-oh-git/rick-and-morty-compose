@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="feature_characters_title">Characters</string>
+
     <string name="character_image_desc">%1$s image</string>
     <string name="api_default_error_response">Unknown error</string>
 </resources>

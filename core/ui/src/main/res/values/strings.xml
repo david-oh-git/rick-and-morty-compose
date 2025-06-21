@@ -6,4 +6,7 @@
     <string name="ssl_error_msg">SSL error</string>
     <string name="connection_exception_msg">Unable to reach remote host</string>
     <string name="io_exception_error">I/O operation error</string>
+
+    <string name="feature_characters_title">Characters</string>
+    <string name="episodes">Episodes</string>
 </resources>

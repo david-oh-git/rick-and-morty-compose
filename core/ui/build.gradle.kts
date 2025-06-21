@@ -26,6 +26,7 @@
 plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.rickandmorty.compose.library)
+    alias(libs.plugins.rickandmorty.feature.library)
     alias(libs.plugins.rickandmorty.android.library)
 }
 
@@ -40,6 +41,7 @@ dependencies {
     api(libs.androidx.ktx)
     api(libs.androidx.lifecycle.runtime.ktx)
     api(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.coil)
 
     implementation(platform(libs.androidx.compose.bom))
     api(libs.androidx.compose.ui)

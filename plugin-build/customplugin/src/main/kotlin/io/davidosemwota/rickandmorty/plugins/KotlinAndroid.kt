@@ -40,10 +40,10 @@ internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
     commonExtension.apply {
-        compileSdk = 34
+        compileSdk = RickAndMortyBuildVersions.COMPILE_SDK_VERSION
 
         defaultConfig {
-            minSdk = 24
+            minSdk = RickAndMortyBuildVersions.MIN_SDK_VERSION
         }
 
         compileOptions {

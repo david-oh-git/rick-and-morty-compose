@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 import com.android.build.api.dsl.ApplicationExtension
+import io.davidosemwota.rickandmorty.plugins.RickAndMortyBuildVersions
 import io.davidosemwota.rickandmorty.plugins.configureKotlinAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -38,7 +39,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
 
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
-                defaultConfig.targetSdk = 34
+                defaultConfig.targetSdk = RickAndMortyBuildVersions.TARGET_SDK_VERSION
             }
         }
     }

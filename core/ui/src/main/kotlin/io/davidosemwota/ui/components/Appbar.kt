@@ -23,8 +23,12 @@
  */
 package io.davidosemwota.ui.components
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.Send
@@ -39,9 +43,15 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImagePainter
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import io.davidosemwota.ui.GeneralPreview
 import io.davidosemwota.ui.PreviewComposable
 
@@ -78,8 +88,8 @@ fun AppbarIcon(
     icon: ImageVector,
     iconContentDescription: String,
     onIconClick: () -> Unit,
-    iconSize: Dp = 32.dp,
     modifier: Modifier = Modifier,
+    iconSize: Dp = 32.dp,
 ) {
     IconButton(
         modifier = modifier,
@@ -92,6 +102,46 @@ fun AppbarIcon(
             modifier = Modifier.size(iconSize),
         )
     }
+}
+
+@Composable
+fun AppBarImage(
+    imageUrl: String,
+    modifier: Modifier = Modifier,
+) {
+    val painter = rememberAsyncImagePainter(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(imageUrl)
+            .crossfade(true)
+            .build(),
+    )
+
+    when (painter.state) {
+        AsyncImagePainter.State.Empty,
+        is AsyncImagePainter.State.Loading,
+        -> { }
+        is AsyncImagePainter.State.Error -> { }
+        is AsyncImagePainter.State.Success -> {
+            Image(
+                painter = painter,
+                contentDescription = "Appbar image icon",
+                modifier = modifier
+                    .size(32.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .border(BorderStroke(1.dp, Color.Gray)),
+            )
+        }
+    }
+}
+
+@GeneralPreview
+@Composable
+private fun PreviewAppBarImage(
+    modifier: Modifier = Modifier,
+) {
+    AppBarImage(
+        imageUrl = "",
+    )
 }
 
 @GeneralPreview

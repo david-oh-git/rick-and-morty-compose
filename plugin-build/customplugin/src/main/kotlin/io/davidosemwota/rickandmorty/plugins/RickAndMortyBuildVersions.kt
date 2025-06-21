@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2023   David Osemwota.
+ * Copyright (c) 2025   David Osemwota.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,35 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty
+package io.davidosemwota.rickandmorty.plugins
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
-import dagger.hilt.android.AndroidEntryPoint
-import io.davidosemwota.rickandmorty.ui.RickAndMortyNav3App
-import io.davidosemwota.ui.theme.RickAndMortyTheme
+object RickAndMortyBuildVersions {
+    const val COMPILE_SDK_VERSION = 36
+    const val MIN_SDK_VERSION = 24
+    const val TARGET_SDK_VERSION: Int = COMPILE_SDK_VERSION
+    const val VERSION_CODE: Int = 1
 
-@AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-
-    val viewModel: MainActivityViewModel by viewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            RickAndMortyTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background,
-                ) {
-                    RickAndMortyNav3App()
-                }
-            }
-        }
-    }
+    /**
+     * The version name of the application.
+     * This is displayed to the user.
+     * •MAJOR version when you make incompatible API changes,
+     * •MINOR version when you add functionality in a backward-compatible manner, and
+     * •PATCH version when you make backward-compatible bug fixes.
+     */
+    const val VERSION_NAME: String = "0.0.1" // MAJOR.MINOR.PATCH
 }

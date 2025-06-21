@@ -26,6 +26,8 @@ package io.davidosemwota.rickandmorty.characters.detail
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,6 +35,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.davidosemwota.ui.GeneralPreview
+import io.davidosemwota.ui.PreviewComposable
 import io.davidosemwota.ui.components.AppbarIcon
 import io.davidosemwota.ui.components.SummerAppBar
 
@@ -48,7 +52,8 @@ fun CharacterDetailsRoute(
             SummerAppBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = "Character Name HERE __",
-                actionIcon = { },
+                actionIcon = {
+                },
                 navigationIcon = {
                     AppbarIcon(
                         icon = Icons.AutoMirrored.Filled.ArrowBack,
@@ -59,9 +64,32 @@ fun CharacterDetailsRoute(
             )
         },
     ) { padding ->
-        Text(
+
+        val listState = rememberLazyListState()
+        LazyColumn(
+            state = listState,
             modifier = Modifier.padding(padding),
-            text = "ID $id",
-        )
+        ) {
+            item {
+                Text(
+                    text = "ID $id",
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ImageThumbnail(
+    modifier: Modifier = Modifier,
+) {
+}
+
+@GeneralPreview
+@Composable
+private fun PreviewImageThumbnail(
+    modifier: Modifier = Modifier,
+) {
+    PreviewComposable {
     }
 }
