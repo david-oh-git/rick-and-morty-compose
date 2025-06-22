@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2023   David Osemwota.
+ * Copyright (c) 2025   David Osemwota.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,35 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty
+package io.davidosemwota.rickandmorty.testing
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
-import dagger.hilt.android.AndroidEntryPoint
-import io.davidosemwota.rickandmorty.ui.RickAndMortyNav3App
-import io.davidosemwota.ui.theme.RickAndMortyTheme
+import androidx.paging.PagingData
+import io.davidosemwota.rickandmorty.data.repository.EpisodeRepository
+import io.davidosemwota.rickandmorty.models.Episode
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
-@AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class FakeEpisodesRepository(
+    private val episodes: List<Episode> = generateEpisodes(),
+) : EpisodeRepository {
 
-    val viewModel: MainActivityViewModel by viewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            RickAndMortyTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background,
-                ) {
-                    RickAndMortyNav3App()
-                }
-            }
-        }
+    override fun getPagedEpisodes(): Flow<PagingData<Episode>> {
+        return flowOf(PagingData.from(episodes))
+    }
+
+    companion object {
+        fun generateEpisodes(): List<Episode> =
+            listOf(
+                Episode(
+                    id = 2,
+                    name = "The curse of dulila",
+                    airDate = "13th-Jan-2018",
+                    episode = "S04E05",
+                    pageIdentity = "ep-03",
+                    characters = emptyList(),
+                ),
+            )
     }
 }

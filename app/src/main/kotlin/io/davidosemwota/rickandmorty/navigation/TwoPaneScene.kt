@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2023   David Osemwota.
+ * Copyright (c) 2025   David Osemwota.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,35 +21,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty
+package io.davidosemwota.rickandmorty.navigation
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import dagger.hilt.android.AndroidEntryPoint
-import io.davidosemwota.rickandmorty.ui.RickAndMortyNav3App
-import io.davidosemwota.ui.theme.RickAndMortyTheme
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.ui.Scene
 
-@AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class TwoPaneScene<T : Any>(
+    override val key: Any,
+    override val previousEntries: List<NavEntry<T>>,
+    val firstEntry: NavEntry<T>,
+    val secondEntry: NavEntry<T>,
+) : Scene<T> {
+    override val entries: List<NavEntry<T>> = listOf(firstEntry, secondEntry)
 
-    val viewModel: MainActivityViewModel by viewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            RickAndMortyTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background,
-                ) {
-                    RickAndMortyNav3App()
-                }
+    override val content: @Composable (() -> Unit) = {
+        Row(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.weight(0.5f)) {
+                firstEntry.Content()
+            }
+            Column(modifier = Modifier.weight(0.5f)) {
+                secondEntry.Content()
             }
         }
+    }
+
+    companion object {
+        internal const val TWO_PANE_KEY = "TwoPane"
+
+        /**
+         * Helper function to add metadata to a [NavEntry] indicating it can be displayed
+         * in a two-pane layout.
+         */
+        fun twoPane() = mapOf(TWO_PANE_KEY to true)
     }
 }

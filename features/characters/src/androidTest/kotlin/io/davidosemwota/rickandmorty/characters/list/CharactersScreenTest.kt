@@ -77,6 +77,7 @@ internal class CharactersScreenTest {
                     ),
                     updateFullScreenState = { },
                     updateAppendState = { },
+                    onCharacterClick = { },
                 )
             }
         }
@@ -117,6 +118,7 @@ internal class CharactersScreenTest {
                     ),
                     updateFullScreenState = { },
                     updateAppendState = { },
+                    onCharacterClick = { },
                 )
             }
         }
@@ -167,6 +169,7 @@ internal class CharactersScreenTest {
                     ),
                     updateFullScreenState = { },
                     updateAppendState = { },
+                    onCharacterClick = { },
                 )
             }
         }
@@ -192,21 +195,21 @@ internal class CharactersScreenTest {
                                     name = rick,
                                     gender = "Male",
                                     imageUrl = "https:samada.com/kenny_chan",
-                                    originId = TODO(),
+                                    originId = 3,
                                 ),
                                 Character(
                                     id = 2,
                                     name = primeRick,
                                     gender = "Male",
                                     imageUrl = "https:samada.com/kenny_chan",
-                                    originId = TODO(),
+                                    originId = 2,
                                 ),
                                 Character(
                                     id = 3,
                                     name = summer,
                                     gender = "Female",
                                     imageUrl = "https:samada.com/kenny_chan",
-                                    originId = TODO(),
+                                    originId = 7,
                                 ),
                             ),
                         ),
@@ -220,6 +223,7 @@ internal class CharactersScreenTest {
                     ),
                     updateFullScreenState = { },
                     updateAppendState = { },
+                    onCharacterClick = { },
                 )
             }
         }

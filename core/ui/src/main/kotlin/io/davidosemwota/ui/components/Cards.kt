@@ -21,21 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.davidosemwota.rickandmorty.characters.list
+package io.davidosemwota.ui.components
 
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
-import androidx.navigation.compose.composable
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
-const val CHARACTERS_ROUTE = "characters"
-
-fun NavController.navigateToCharacters(navOptions: NavOptions) = navigate(CHARACTERS_ROUTE, navOptions)
-
-fun NavGraphBuilder.charactersScreen() {
-    composable(
-        route = CHARACTERS_ROUTE,
-    ) {
-        CharactersRoute()
-    }
+@Composable
+fun JerryCard(
+    elevation: Dp = 8.dp,
+    cardColour: Color = MaterialTheme.colorScheme.surfaceVariant,
+    modifier: Modifier = Modifier,
+    shape: Shape = CardDefaults.shape,
+    content: @Composable (ColumnScope.() -> Unit),
+) {
+    Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = elevation,
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = cardColour,
+        ),
+        modifier = modifier
+            .fillMaxWidth(),
+        shape = shape,
+        content = content,
+    )
 }

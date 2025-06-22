@@ -82,11 +82,14 @@ import io.davidosemwota.rickandmorty.models.Character
 import io.davidosemwota.rickandmorty.models.PagingState
 import io.davidosemwota.ui.GeneralPreview
 import io.davidosemwota.ui.PreviewComposable
+import io.davidosemwota.ui.components.FullScreenError
 import io.davidosemwota.ui.components.FullScreenLoading
+import io.davidosemwota.ui.util.getDisplayMessage
 import timber.log.Timber
 
 @Composable
 fun CharactersRoute(
+    onCharacterClick: (Int) -> Unit,
     viewModel: CharactersViewModel = hiltViewModel(),
 ) {
     val characters = viewModel.charactersPagingDataState.collectAsLazyPagingItems()
@@ -100,18 +103,21 @@ fun CharactersRoute(
         characters = characters,
         updateFullScreenState = viewModel::updateFullScreenState,
         updateAppendState = viewModel::updateAppendScreenState,
+        onCharacterClick = onCharacterClick,
     )
 }
 
 @Composable
 fun CharactersScreenContent(
-    modifier: Modifier = Modifier,
     screenState: CharacterScreenState,
     characters: LazyPagingItems<Character>,
     updateFullScreenState: (PagingState) -> Unit,
     updateAppendState: (PagingState) -> Unit,
+    onCharacterClick: (Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     var error = LoadState.Error(Exception())
+    val context = LocalContext.current
 
     characters.apply {
         when (loadState.refresh) {
@@ -152,16 +158,20 @@ fun CharactersScreenContent(
     ) { paddingValues ->
 
         if (screenState.hasFullScreenError) {
-            ErrorScreenContent(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .testTag(ERROR_SCREEN),
-                error = error,
+            FullScreenError(
+                errorMessage = getDisplayMessage(
+                    context = context,
+                    error.error,
+                ),
+                retryButtonText = "Try again",
                 retry = {
                     Timber.tag("xxx").d("CLICKED")
                     updateFullScreenState(PagingState.Loading)
                     characters.retry()
                 },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag(ERROR_SCREEN),
             )
         } else if (screenState.hasFullScreenLoading) {
             FullScreenLoading(
@@ -195,6 +205,7 @@ fun CharactersScreenContent(
                         if (character != null) {
                             CharacterGridItem(
                                 character = character,
+                                onCharacterClick = onCharacterClick,
                             )
                         }
                     }
@@ -211,7 +222,10 @@ fun CharactersScreenContent(
                         ) {
                             ErrorScreenContent(
                                 modifier = Modifier.fillMaxSize(),
-                                error = error,
+                                errorMessage = getDisplayMessage(
+                                    context = context,
+                                    throwable = error.error,
+                                ),
                                 retry = {
                                     Timber.tag("xxx").d("CLICKED")
                                     updateAppendState(PagingState.Loading)
@@ -264,21 +278,20 @@ fun ErrorButton(
 
 @Composable
 fun ErrorScreenContent(
-    modifier: Modifier = Modifier,
-    error: LoadState.Error,
+    errorMessage: String,
     retry: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        // TODO : default error message for various exceptions. eg IllegalStateException
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             modifier = Modifier
                 .testTag(ERROR_SCREEN_TEXT),
-            text = error.error.message ?: stringResource(R.string.api_default_error_response),
+            text = errorMessage,
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
         )
@@ -305,7 +318,7 @@ fun ErrorScreenContent(
 fun ErrorScreenContentPreview() {
     PreviewComposable {
         ErrorScreenContent(
-            error = LoadState.Error(error = Throwable("Unauthorized access")),
+            errorMessage = "Unauthorized access",
             modifier = Modifier.fillMaxSize(),
             retry = { },
         )
@@ -327,8 +340,9 @@ fun LoadingItem(
 
 @Composable
 fun CharacterGridItem(
-    modifier: Modifier = Modifier,
     character: Character,
+    onCharacterClick: (Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Card(
         elevation = CardDefaults.cardElevation(
@@ -339,7 +353,7 @@ fun CharacterGridItem(
         ),
         modifier = modifier
             .fillMaxWidth()
-            .clickable { /** TODO item click then navigate **/ }
+            .clickable { onCharacterClick(character.id) }
             .testTag(CHARACTER_SCREEN_VERTICAL_GRID_ITEM),
     ) {
         Box(
@@ -392,5 +406,6 @@ fun CharacterGridItemPreview() {
             locations = emptyList(),
             episodes = emptyList(),
         ),
+        onCharacterClick = { },
     )
 }

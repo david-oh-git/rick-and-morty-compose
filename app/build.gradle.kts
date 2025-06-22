@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 import io.davidosemwota.rickandmorty.plugins.RickAndMortyBuildType
+import io.davidosemwota.rickandmorty.plugins.RickAndMortyBuildVersions
 
 plugins {
     alias(libs.plugins.rickandmorty.android.application)
@@ -36,8 +37,8 @@ android {
 
     defaultConfig {
         applicationId = "io.davidosemwota.rickandmorty"
-        versionCode = 1
-        versionName = "0.0.1"
+        versionCode = RickAndMortyBuildVersions.VERSION_CODE
+        versionName = RickAndMortyBuildVersions.VERSION_NAME
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -82,9 +83,16 @@ dependencies {
 
     implementation(platform(libs.androidx.compose.bom))
 
-    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.profileinstaller)
     implementation(libs.timber)
+
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    implementation(libs.androidx.material3.adaptive.navigation3)
+    implementation(libs.kotlinx.serialization.core)
+    implementation(libs.androidx.adaptive.android)
+    implementation(libs.androidx.material3.window.size.class1.android)
 
     testImplementation(libs.junit4)
     testImplementation(libs.truth)

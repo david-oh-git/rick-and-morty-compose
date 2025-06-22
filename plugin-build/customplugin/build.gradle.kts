@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /*
@@ -44,8 +45,8 @@ java {
 }
 
 tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 
@@ -82,6 +83,10 @@ gradlePlugin {
         register("androidDaggerHilt") {
             id = "rickandmorty.android.dagger.hilt"
             implementationClass = "AndroidDaggerHiltPlugin"
+        }
+        register("androidNavigation3") {
+            id = "rickandmorty.android.navigation3"
+            implementationClass = "AndroidNavigation3"
         }
     }
 
