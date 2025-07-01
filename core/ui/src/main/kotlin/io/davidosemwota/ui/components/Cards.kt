@@ -23,23 +23,32 @@
  */
 package io.davidosemwota.ui.components
 
+import android.R.attr.text
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.davidosemwota.ui.GeneralPreview
+import io.davidosemwota.ui.PreviewComposable
 
 @Composable
 fun JerryCard(
+    modifier: Modifier = Modifier,
     elevation: Dp = 8.dp,
     cardColour: Color = MaterialTheme.colorScheme.surfaceVariant,
-    modifier: Modifier = Modifier,
     shape: Shape = CardDefaults.shape,
     content: @Composable (ColumnScope.() -> Unit),
 ) {
@@ -55,4 +64,52 @@ fun JerryCard(
         shape = shape,
         content = content,
     )
+}
+
+@Composable
+fun BethCard(
+    title: String,
+    description: String,
+    modifier: Modifier = Modifier,
+) {
+    JerryCard(
+        modifier = modifier
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp),
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+
+            HorizontalDivider(
+                thickness = 2.dp,
+            )
+
+            Text(
+                text = description,
+                style = MaterialTheme.typography.headlineSmall,
+            )
+        }
+    }
+}
+
+@GeneralPreview
+@Composable
+fun BethCardPreview(
+    modifier: Modifier = Modifier,
+) {
+    PreviewComposable {
+        BethCard(
+            title = "Sleepy Gary",
+            description = "what can I say",
+            modifier = modifier,
+        )
+    }
 }

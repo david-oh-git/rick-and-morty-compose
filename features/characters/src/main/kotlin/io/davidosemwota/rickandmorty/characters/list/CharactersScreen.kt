@@ -344,6 +344,7 @@ fun CharacterGridItem(
     onCharacterClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 8.dp,
@@ -363,7 +364,7 @@ fun CharacterGridItem(
                 modifier = Modifier
                     .fillMaxSize()
                     .align(Alignment.Center),
-                model = ImageRequest.Builder(LocalContext.current)
+                model = ImageRequest.Builder(context)
                     .data(character.imageUrl)
                     .crossfade(true)
                     .build(),
